@@ -30,12 +30,6 @@ public class User {
     @Column(nullable = false)
     private String refreshToken;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserEmotionHistory> userEmotionHistories = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EmotionTestResult> emotionTestResults = new ArrayList<>();
-
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private UserEmotion userEmotions;
 

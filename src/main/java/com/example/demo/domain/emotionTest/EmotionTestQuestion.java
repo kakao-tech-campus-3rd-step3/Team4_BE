@@ -29,7 +29,7 @@ public class EmotionTestQuestion {
     private SelectionData selectiondata;
 
     @OneToMany(mappedBy = "emotionTestQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EmotionTestQuestion> emotionTestQuestions = new ArrayList<>();
+    private List<EmotionTestResult> emotionTestResults = new ArrayList<>();
 
     protected EmotionTestQuestion() {
     }
