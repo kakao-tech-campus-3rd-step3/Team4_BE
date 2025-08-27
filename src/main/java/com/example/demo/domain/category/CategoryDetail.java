@@ -11,12 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "categoryDetails")
+@Table(name = "category_details")
 public class CategoryDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "detailCategoryId")
     private Long id;
 
     @Column(nullable = false)

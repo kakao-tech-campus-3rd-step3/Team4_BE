@@ -20,7 +20,6 @@ public class Mission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "missionId")
     private Long id;
 
     @Column(nullable = false)

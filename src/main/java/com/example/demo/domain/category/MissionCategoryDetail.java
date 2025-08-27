@@ -10,7 +10,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "missionCategoryDetails")
+@Table(name = "mission_category_details")
 public class MissionCategoryDetail {
 
     @EmbeddedId
@@ -18,12 +18,12 @@ public class MissionCategoryDetail {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("missionId")
-    @JoinColumn(name = "missionId")
+    @JoinColumn(name = "mission_id")
     private Mission mission;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("detailCategoryId")
-    @JoinColumn(name = "detailCategoryId")
+    @JoinColumn(name = "detail_category_id")
     private CategoryDetail categoryDetail;
 
     protected MissionCategoryDetail() {
