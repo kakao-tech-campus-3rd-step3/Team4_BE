@@ -1,7 +1,7 @@
 package com.example.demo.domain.diary;
 
-import com.example.demo.domain.BaseEntity;
 import com.example.demo.domain.User;
+import com.example.demo.domain.common.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,7 +17,7 @@ public class Diary extends BaseEntity {
     private User author;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(20)")
+    @Column(nullable = false, length = 20)
     private EmotionEnum emotion;
 
     @Column(nullable = false, columnDefinition = "TEXT")

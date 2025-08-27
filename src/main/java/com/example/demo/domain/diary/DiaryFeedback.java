@@ -1,6 +1,6 @@
 package com.example.demo.domain.diary;
 
-import com.example.demo.domain.BaseEntity;
+import com.example.demo.domain.common.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,17 +16,17 @@ public class DiaryFeedback extends BaseEntity {
     private Diary diary;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String feedback; //content?
+    private String content;
 
     protected DiaryFeedback() {
     }
 
-    private DiaryFeedback(Diary diary, String feedback) {
+    private DiaryFeedback(Diary diary, String content) {
         this.diary = diary;
-        this.feedback = feedback;
+        this.content = content;
     }
 
-    public static DiaryFeedback of(Diary diary, String feedback) {
-        return new DiaryFeedback(diary, feedback);
+    public static DiaryFeedback of(Diary diary, String content) {
+        return new DiaryFeedback(diary, content);
     }
 }

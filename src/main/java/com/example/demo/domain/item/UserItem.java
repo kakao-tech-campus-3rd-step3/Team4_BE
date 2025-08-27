@@ -1,7 +1,7 @@
 package com.example.demo.domain.item;
 
-import com.example.demo.domain.BaseEntity;
 import com.example.demo.domain.User;
+import com.example.demo.domain.common.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity

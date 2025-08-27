@@ -1,6 +1,6 @@
 package com.example.demo.domain.item;
 
-import com.example.demo.domain.BaseEntity;
+import com.example.demo.domain.common.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,7 +15,7 @@ public class Item extends BaseEntity {
     private Integer price;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(20)")
+    @Column(length = 20)
     private ItemCategoryEnum category;
 
     @Column(nullable = false)
