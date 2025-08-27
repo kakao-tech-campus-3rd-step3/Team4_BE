@@ -15,7 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(name = "UserEmotionHistory")
-public class UserEmotionHistory {
+public class UserEmotionHistory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,10 +42,6 @@ public class UserEmotionHistory {
 
     @Column(nullable = false)
     private Integer employmentLevel;
-
-    @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime date;
 
     protected UserEmotionHistory() {
     }

@@ -28,9 +28,6 @@ public class EmotionTestQuestion {
     @Convert(converter = SelectionDataConverter.class)
     private SelectionData selectiondata;
 
-    @OneToMany(mappedBy = "emotionTestQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EmotionTestResult> emotionTestResults = new ArrayList<>();
-
     protected EmotionTestQuestion() {
     }
 }

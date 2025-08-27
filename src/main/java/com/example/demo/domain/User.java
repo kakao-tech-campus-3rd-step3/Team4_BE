@@ -30,9 +30,6 @@ public class User {
     @Column(nullable = false)
     private String refreshToken;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private UserEmotion userEmotions;
-
     protected User() {
     }
 }
