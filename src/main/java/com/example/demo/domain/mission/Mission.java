@@ -1,7 +1,6 @@
 package com.example.demo.domain.mission;
 
 import com.example.demo.domain.category.MissionCategoryDetail;
-import com.example.demo.domain.common.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,7 +26,7 @@ public class Mission {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Category category;
+    private MissionCategoryEnum category;
 
     @Column(nullable = false)
     private Integer sentimentScore;

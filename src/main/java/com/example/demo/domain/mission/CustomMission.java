@@ -1,8 +1,6 @@
 package com.example.demo.domain.mission;
 
 import com.example.demo.domain.User;
-import com.example.demo.domain.common.Category;
-import com.example.demo.domain.common.CustomMissionState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,7 +30,7 @@ public class CustomMission {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Category category;
+    private MissionCategoryEnum category;
 
     @Column
     private Integer sentimentScore;
@@ -57,7 +55,7 @@ public class CustomMission {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CustomMissionState state;
+    private CustomMissionStateEnum state;
 
     protected CustomMission() {
     }
