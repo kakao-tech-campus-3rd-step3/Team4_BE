@@ -10,7 +10,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "missionCategoryDeatils")
+@Table(name = "missionCategoryDetails")
 public class MissionCategoryDetail {
 
     @EmbeddedId
