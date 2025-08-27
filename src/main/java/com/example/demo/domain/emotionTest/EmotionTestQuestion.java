@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-@Table(name = "EmotionTestQuestion")
+@Table(name = "emotion_test_question")
 public class EmotionTestQuestion {
 
     @Id

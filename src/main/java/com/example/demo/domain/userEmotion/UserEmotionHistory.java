@@ -1,6 +1,7 @@
 package com.example.demo.domain.userEmotion;
 
 import com.example.demo.domain.User;
+import com.example.demo.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,11 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
-import org.springframework.data.annotation.CreatedDate;
 
 @Entity
-@Table(name = "UserEmotionHistory")
+@Table(name = "user_emotion_history")
 public class UserEmotionHistory extends BaseEntity {
 
     @Id
