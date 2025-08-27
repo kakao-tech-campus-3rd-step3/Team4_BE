@@ -10,7 +10,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "UserEmotion")
+@Table(name = "user_emotion")
 public class UserEmotion {
 
     @Id
