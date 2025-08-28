@@ -1,8 +1,6 @@
 package com.example.demo.domain.mission;
 
 import com.example.demo.domain.User;
-import com.example.demo.domain.common.Category;
-import com.example.demo.domain.common.CustomMissionState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,16 +14,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "customMissions")
+@Table(name = "custom_missions")
 public class CustomMission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customMissionId")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
     @Column(nullable = false)
@@ -33,7 +30,7 @@ public class CustomMission {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Category category;
+    private MissionCategoryEnum category;
 
     @Column
     private Integer sentimentScore;
@@ -58,7 +55,7 @@ public class CustomMission {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CustomMissionState state;
+    private CustomMissionStateEnum state;
 
     protected CustomMission() {
     }

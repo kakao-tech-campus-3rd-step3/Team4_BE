@@ -14,24 +14,23 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "userMissions")
+@Table(name = "user_missions")
 public class UserMission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userMissionId")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "missionId")
+    @JoinColumn(name = "mission_id")
     private Mission mission;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customMissionId")
+    @JoinColumn(name = "custom_mission_id")
     private CustomMission customMission;
 
     @Column(nullable = false)
