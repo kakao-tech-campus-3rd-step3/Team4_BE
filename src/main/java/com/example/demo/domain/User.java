@@ -1,11 +1,6 @@
 package com.example.demo.domain;
 
-import com.example.demo.domain.emotionTest.EmotionTestResult;
-import com.example.demo.domain.userEmotion.UserEmotion;
-import com.example.demo.domain.userEmotion.UserEmotionHistory;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "Users")
