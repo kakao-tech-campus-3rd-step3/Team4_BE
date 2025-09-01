@@ -17,6 +17,9 @@ public class User {
     private String name;
 
     @Column(nullable = false)
+    private Integer point;
+
+    @Column(nullable = false)
     private String refreshToken;
 
     protected User() {

@@ -21,9 +21,6 @@ public class Cat {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Integer point;
-
     @OneToMany(mappedBy = "cat", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OwnedItem> ownedItemEntities = new ArrayList<>();
 
