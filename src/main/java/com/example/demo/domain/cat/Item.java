@@ -1,4 +1,4 @@
-package com.example.demo.domain.item;
+package com.example.demo.domain.cat;
 
 import com.example.demo.domain.common.BaseEntity;
 import jakarta.persistence.*;
@@ -11,11 +11,14 @@ public class Item extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private Integer price;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private ItemCategoryEnum category;
 
     @Column(nullable = false)
@@ -34,14 +37,9 @@ public class Item extends BaseEntity {
         return new Item(price, category, imageUrl);
     }
 
-    public static Item of(String imageUrl) {
-        return new Item(null, null, imageUrl);
-    }
-
     public void updateDetail(Integer price, ItemCategoryEnum category) {
         this.price = price;
         this.category = category;
     }
-
 
 }
