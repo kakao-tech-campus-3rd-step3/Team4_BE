@@ -22,7 +22,7 @@ public class Cat {
     private String name;
 
     @OneToMany(mappedBy = "cat", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OwnedItem> ownedItemEntities = new ArrayList<>();
+    private List<OwnedItem> ownedItems = new ArrayList<>();
 
     @Transient
     private Map<ItemCategoryEnum, OwnedItem> equippedItem;
