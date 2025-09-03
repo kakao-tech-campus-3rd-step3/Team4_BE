@@ -2,9 +2,11 @@ package com.example.demo.domain.cat;
 
 import com.example.demo.domain.common.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "item")
+@Getter
 public class Item extends BaseEntity {
 
     @Id
@@ -27,14 +29,15 @@ public class Item extends BaseEntity {
     protected Item() {
     }
 
-    private Item(Integer price, ItemCategoryEnum category, String imageUrl) {
+    private Item(String name, Integer price, ItemCategoryEnum category, String imageUrl) {
+        this.name = name;
         this.price = price;
         this.category = category;
         this.imageUrl = imageUrl;
     }
 
-    public static Item of(Integer price, ItemCategoryEnum category, String imageUrl) {
-        return new Item(price, category, imageUrl);
+    public static Item of(String name, Integer price, ItemCategoryEnum category, String imageUrl) {
+        return new Item(name, price, category, imageUrl);
     }
 
     public void updateDetail(Integer price, ItemCategoryEnum category) {
