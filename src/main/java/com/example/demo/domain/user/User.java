@@ -6,12 +6,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "Users")
 public class User {
@@ -32,16 +32,24 @@ public class User {
     @Column(nullable = false)
     private String refreshToken;
 
-    @Builder
-    public User(String name, String email, Integer point, String refreshToken) {
+    private User(String name, String email, Integer point, String refreshToken) {
         this.name = name;
         this.email = email;
         this.point = point;
         this.refreshToken = refreshToken;
     }
 
+    public static User of(String name, String email) {
+        return new User(name, email, 0, "");
+    }
+
     public User update(String name) {
         this.name = name;
         return this;
     }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+    
 }
