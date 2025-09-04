@@ -32,6 +32,7 @@ public class OwnedItem extends BaseEntity {
     private OwnedItem(Cat cat, Item item) {
         this.cat = cat;
         this.item = item;
+        this.isUsed = false;
     }
 
     public static OwnedItem of(Cat cat, Item item) {

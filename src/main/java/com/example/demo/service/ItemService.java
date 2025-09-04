@@ -31,7 +31,6 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final CatRepository catRepository;
 
-
     @Transactional(readOnly = true)
     public Page<ShopItemResponse> listShopItems(Integer page, ItemCategoryEnum category,
             User user) {
@@ -47,10 +46,10 @@ public class ItemService {
         return items.map(item -> new ShopItemResponse(item, ownedItemIds.contains(item.getId())));
     }
 
-    public OwnedItem purchaseItem(Long itemId, User user) {
+    public void purchaseItem(Long itemId, User user) {
         Cat cat = getCatById(user.getId());
         Item item = getItemById(itemId);
-        return cat.purchaseItem(item);
+        cat.purchaseItem(item);
     }
 
     @Transactional(readOnly = true)
@@ -88,7 +87,7 @@ public class ItemService {
     }
 
     private Cat getCatById(Long id) {
-        return catRepository.findByIdJoinFetchOwnedItems(id)
+        return catRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("고양이를 찾는데 실패하였습니다."));
     }
 

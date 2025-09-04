@@ -2,6 +2,7 @@ package com.example.demo.domain.cat;
 
 import com.example.demo.domain.common.BaseEntity;
 import jakarta.persistence.*;
+import java.util.Objects;
 import lombok.Getter;
 
 @Entity
@@ -48,4 +49,22 @@ public class Item extends BaseEntity {
         return new Item(name, price, category, imageUrl, offsetX, offsetY);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Item item = (Item) o;
+
+        return Objects.equals(id, item.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

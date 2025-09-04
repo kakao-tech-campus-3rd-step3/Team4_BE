@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface CatRepository extends JpaRepository<Cat, Long> {
 
     //Cat 가져올 시 반드시 아래 메서드를 사용해주세요
-    @Query("select c from Cat c join fetch c.ownedItems oi join fetch oi.item i where c.id = :catId")
+    @Query("select distinct c from Cat c left join fetch c.ownedItems oi join fetch oi.item where c.id = :catId")
     Optional<Cat> findByIdJoinFetchOwnedItems(@Param("catId") Long id);
 }
