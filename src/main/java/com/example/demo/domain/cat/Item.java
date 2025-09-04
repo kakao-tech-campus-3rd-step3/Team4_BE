@@ -26,23 +26,26 @@ public class Item extends BaseEntity {
     @Column(nullable = false)
     private String imageUrl;
 
+    @Column(nullable = false)
+    private Float offsetX;
+
+    @Column(nullable = false)
+    private Float offsetY;
+
     protected Item() {
     }
 
-    private Item(String name, Integer price, ItemCategoryEnum category, String imageUrl) {
+    private Item(String name, Integer price, ItemCategoryEnum category, String imageUrl, Float offsetX, Float offsetY) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.imageUrl = imageUrl;
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
     }
 
-    public static Item of(String name, Integer price, ItemCategoryEnum category, String imageUrl) {
-        return new Item(name, price, category, imageUrl);
-    }
-
-    public void updateDetail(Integer price, ItemCategoryEnum category) {
-        this.price = price;
-        this.category = category;
+    public static Item of(String name, Integer price, ItemCategoryEnum category, String imageUrl, Float offsetX, Float offsetY) {
+        return new Item(name, price, category, imageUrl, offsetX, offsetY);
     }
 
 }
