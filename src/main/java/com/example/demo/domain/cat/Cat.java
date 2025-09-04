@@ -39,6 +39,14 @@ public class Cat {
         return new Cat(user, name);
     }
 
+    @PostLoad
+    public void loadEquippedItem() {
+        List<OwnedItem> equippedItems = ownedItems.stream().filter(OwnedItem::getIsUsed).toList();
+        for (OwnedItem owned : equippedItems) {
+            equippedItem.put(owned.getItem().getCategory(), owned);
+        }
+    }
+
     public OwnedItem purchaseItem(Item item) {
         Optional<OwnedItem> findOwnedItem = ownedItems.stream().filter(oi -> oi.getItem().equals(item)).findFirst();
         if (findOwnedItem.isPresent()) {
@@ -86,7 +94,7 @@ public class Cat {
         OwnedItem old = equippedItem.get(category);
 
         if (!old.equals(ownedItem)) {
-            throw new RuntimeException(ownedItem + " 아이템을 착용하지 않았습니다.");
+            return;
         }
 
         old.unUse();

@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    Page<Item> findAllByCategory(Pageable pageable, ItemCategoryEnum category);
+    Page<Item> findAllByCategoryOrderByIdAsc(Pageable pageable, ItemCategoryEnum category);
 }
