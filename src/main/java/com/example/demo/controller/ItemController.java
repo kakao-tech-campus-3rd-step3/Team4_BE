@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.User;
 import com.example.demo.domain.cat.ItemCategoryEnum;
+import com.example.demo.domain.user.User;
 import com.example.demo.dto.item.CreateItemRequest;
 import com.example.demo.dto.item.EquipItemRequest;
 import com.example.demo.dto.item.OwnedItemResponse;
@@ -22,7 +22,8 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping("/items")
-    public ResponseEntity<Page<ShopItemResponse>> getShopItems(@RequestParam Integer page, @RequestParam ItemCategoryEnum category, User user) {
+    public ResponseEntity<Page<ShopItemResponse>> getShopItems(@RequestParam Integer page,
+            @RequestParam ItemCategoryEnum category, User user) {
         return ResponseEntity.ok(itemService.listShopItems(page, category, user));
     }
 
@@ -38,7 +39,8 @@ public class ItemController {
     }
 
     @PatchMapping("/me/items/{id}")
-    public ResponseEntity<Void> setItemEquipped(@RequestBody EquipItemRequest request, @PathVariable Long id, User user) {
+    public ResponseEntity<Void> setItemEquipped(@RequestBody EquipItemRequest request,
+            @PathVariable Long id, User user) {
         itemService.setItemEquipped(request, id, user);
         return ResponseEntity.ok().build();
     }

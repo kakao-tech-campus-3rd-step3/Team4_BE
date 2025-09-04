@@ -1,6 +1,6 @@
 package com.example.demo.domain.userEmotion;
 
-import com.example.demo.domain.User;
+import com.example.demo.domain.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

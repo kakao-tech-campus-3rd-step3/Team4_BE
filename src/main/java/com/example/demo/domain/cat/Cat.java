@@ -1,10 +1,22 @@
 package com.example.demo.domain.cat;
 
-import com.example.demo.domain.User;
-import jakarta.persistence.*;
+import com.example.demo.domain.user.User;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.Transient;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import lombok.Getter;
-
-import java.util.*;
 
 @Entity
 @Getter

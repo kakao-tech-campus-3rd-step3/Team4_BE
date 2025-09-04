@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.User;
 import com.example.demo.domain.cat.Cat;
 import com.example.demo.domain.cat.Item;
 import com.example.demo.domain.cat.ItemCategoryEnum;
 import com.example.demo.domain.cat.OwnedItem;
+import com.example.demo.domain.user.User;
 import com.example.demo.dto.item.CreateItemRequest;
 import com.example.demo.dto.item.EquipItemRequest;
 import com.example.demo.dto.item.OwnedItemResponse;
@@ -33,8 +33,10 @@ public class ItemService {
 
 
     @Transactional(readOnly = true)
-    public Page<ShopItemResponse> listShopItems(Integer page, ItemCategoryEnum category, User user) {
-        Page<Item> items = itemRepository.findAllByCategoryOrderByIdAsc(PageRequest.of(page - 1, SHOP_ITEM_PAGE_SIZE), category);
+    public Page<ShopItemResponse> listShopItems(Integer page, ItemCategoryEnum category,
+            User user) {
+        Page<Item> items = itemRepository.findAllByCategoryOrderByIdAsc(
+                PageRequest.of(page - 1, SHOP_ITEM_PAGE_SIZE), category);
         Cat cat = getCatById(user.getId());
         List<OwnedItem> ownedItems = cat.getOwnedItems();
 
@@ -86,10 +88,12 @@ public class ItemService {
     }
 
     private Cat getCatById(Long id) {
-        return catRepository.findByIdJoinFetchOwnedItems(id).orElseThrow(() -> new RuntimeException("고양이를 찾는데 실패하였습니다."));
+        return catRepository.findByIdJoinFetchOwnedItems(id)
+                .orElseThrow(() -> new RuntimeException("고양이를 찾는데 실패하였습니다."));
     }
 
     private Item getItemById(Long id) {
-        return itemRepository.findById(id).orElseThrow(() -> new RuntimeException("아이템을 찾는데 실패하였습니다."));
+        return itemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("아이템을 찾는데 실패하였습니다."));
     }
 }
