@@ -2,9 +2,7 @@ package com.example.demo.service.auth;
 
 import com.example.demo.domain.user.User;
 import com.example.demo.dto.auth.OAuthAttributes;
-import com.example.demo.dto.auth.SessionUser;
 import com.example.demo.repository.UserRepository;
-import jakarta.servlet.http.HttpSession;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final HttpSession httpSession;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -35,8 +32,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName,
             oAuth2User.getAttributes());
 
-        User user = saveOrUpadate(attributes);
-        httpSession.setAttribute("user", new SessionUser(user));
+        User user = saveOrUpdate(attributes);
 
         return new DefaultOAuth2User(
             Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
@@ -45,12 +41,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         );
     }
 
-    private User saveOrUpadate(OAuthAttributes attributes) {
+    private User saveOrUpdate(OAuthAttributes attributes) {
         User user = userRepository.findByEmail(attributes.getEmail())
             .map(entity -> entity.update(attributes.getName()))
             .orElse(attributes.toEntity());
 
         return userRepository.save(user);
     }
-
 }

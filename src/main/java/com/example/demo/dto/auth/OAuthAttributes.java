@@ -45,12 +45,7 @@ public class OAuthAttributes {
     }
 
     public User toEntity() {
-        return User.builder()
-            .name(name)
-            .email(email)
-            .point(0)
-            .refreshToken("")
-            .build();
+        return User.of(name, email);
     }
 
 }
