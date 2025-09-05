@@ -48,6 +48,14 @@ public class User {
         return this;
     }
 
+    public void spendPoints(Integer point) {
+        this.point -= point;
+    }
+
+    public void earnPoints(Integer point) {
+        this.point += point;
+    }
+
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
