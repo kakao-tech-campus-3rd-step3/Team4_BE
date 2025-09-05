@@ -30,6 +30,11 @@ jobs:
           mkdir -p src/main/resources
           echo "${{ secrets.APPLICATION_DEV_YML }}" > src/main/resources/application-dev.yml
 
+      - name: Generate secrets.properties
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.SECRETS_PROPERTIES }}" > src/main/resources/secrets.properties
+
       - name: Build with Gradle
         run: |
           chmod +x ./gradlew
