@@ -3,18 +3,16 @@ package com.example.demo.dto.item;
 import com.example.demo.domain.cat.Item;
 import com.example.demo.domain.cat.ItemCategoryEnum;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class ShopItemResponse {
 
-    private Long id;
-    private ItemCategoryEnum category;
-    private String name;
-    private Integer price;
-    private String imageUrl;
-    private Boolean isOwned;
+    private final Long id;
+    private final ItemCategoryEnum category;
+    private final String name;
+    private final Integer price;
+    private final String imageUrl;
+    private final Boolean isOwned;
 
     public ShopItemResponse(Item item, Boolean isOwned) {
         this.id = item.getId();

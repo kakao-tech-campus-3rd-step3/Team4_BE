@@ -36,13 +36,9 @@ public class Chat extends BaseEntity {
     protected Chat() {
     }
 
-    private Chat(User user, String content) {
+    public Chat(User user, String content) {
         this.user = user;
         this.content = content;
-    }
-
-    public static Chat of(User user, String content) {
-        return new Chat(user, content);
     }
 
     public void updateResponse(String response) {

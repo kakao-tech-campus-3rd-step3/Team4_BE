@@ -42,13 +42,9 @@ public class Cat {
     protected Cat() {
     }
 
-    private Cat(User user, String name) {
+    public Cat(User user, String name) {
         this.user = user;
         this.name = name;
-    }
-
-    public static Cat of(User user, String name) {
-        return new Cat(user, name);
     }
 
     @PostLoad

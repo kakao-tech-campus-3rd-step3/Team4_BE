@@ -21,12 +21,9 @@ public class DiaryFeedback extends BaseEntity {
     protected DiaryFeedback() {
     }
 
-    private DiaryFeedback(Diary diary, String content) {
+    public DiaryFeedback(Diary diary, String content) {
         this.diary = diary;
         this.content = content;
     }
 
-    public static DiaryFeedback of(Diary diary, String content) {
-        return new DiaryFeedback(diary, content);
-    }
 }

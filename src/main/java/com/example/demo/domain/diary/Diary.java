@@ -41,17 +41,13 @@ public class Diary extends BaseEntity {
     protected Diary() {
     }
 
-    private Diary(User author, EmotionEnum emotion, String content) {
+    public Diary(User author, EmotionEnum emotion, String content) {
         this.author = author;
         this.emotion = emotion;
         this.content = content;
     }
 
-    public static Diary of(User author, EmotionEnum emotion, String content) {
-        return new Diary(author, emotion, content);
-    }
-
     public void addFeedback(String feedbackContent) {
-        this.feedback = DiaryFeedback.of(this, feedbackContent);
+        this.feedback = new DiaryFeedback(this, feedbackContent);
     }
 }
