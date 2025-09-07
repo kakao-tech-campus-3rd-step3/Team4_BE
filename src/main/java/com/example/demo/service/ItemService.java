@@ -75,7 +75,7 @@ public class ItemService {
     }
 
     public void registerItem(CreateItemRequest request) {
-        Item item = Item.of(
+        Item item = new Item(
                 request.getName(),
                 request.getPrice(),
                 request.getCategory(),

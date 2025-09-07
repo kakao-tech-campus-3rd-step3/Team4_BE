@@ -36,17 +36,13 @@ public class Item extends BaseEntity {
     protected Item() {
     }
 
-    private Item(String name, Integer price, ItemCategoryEnum category, String imageUrl, Float offsetX, Float offsetY) {
+    public Item(String name, Integer price, ItemCategoryEnum category, String imageUrl, Float offsetX, Float offsetY) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.imageUrl = imageUrl;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
-    }
-
-    public static Item of(String name, Integer price, ItemCategoryEnum category, String imageUrl, Float offsetX, Float offsetY) {
-        return new Item(name, price, category, imageUrl, offsetX, offsetY);
     }
 
     @Override
