@@ -62,17 +62,12 @@ public class CustomMission {
     protected CustomMission() {
     }
 
-    private CustomMission(User author, String content, MissionCategoryEnum category,
+    public CustomMission(User author, String content, MissionCategoryEnum category,
             CustomMissionStateEnum state) {
         this.author = author;
         this.content = content;
         this.category = category;
         this.state = state;
-    }
-
-    public static CustomMission of(User author, String content, MissionCategoryEnum category,
-            CustomMissionStateEnum state) {
-        return new CustomMission(author, content, category, state);
     }
 
     public void update(String content, MissionCategoryEnum category) {

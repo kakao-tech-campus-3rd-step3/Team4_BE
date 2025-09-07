@@ -20,7 +20,7 @@ public class CustomMissionService {
     private final UserMissionRepository userMissionRepository;
 
     public CustomMission create(CustomMissionRequest request, User user) {
-        CustomMission customMission = CustomMission.of(
+        CustomMission customMission = new CustomMission(
                 user,
                 request.getContent(),
                 request.getCategory(),
@@ -28,7 +28,7 @@ public class CustomMissionService {
         );
         CustomMission savedCustomMission = customMissionRepository.save(customMission);
 
-        UserMission userMission = UserMission.of(
+        UserMission userMission = new UserMission(
                 user,
                 savedCustomMission
         );

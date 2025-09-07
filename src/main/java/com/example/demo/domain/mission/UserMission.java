@@ -49,12 +49,8 @@ public class UserMission {
         this.createdAt = LocalDateTime.now();
     }
 
-    private UserMission(User user, CustomMission customMission) {
+    public UserMission(User user, CustomMission customMission) {
         this.user = user;
         this.customMission = customMission;
-    }
-
-    public static UserMission of(User user, CustomMission customMission) {
-        return new UserMission(user, customMission);
     }
 }
