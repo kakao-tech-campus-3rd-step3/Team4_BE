@@ -87,7 +87,7 @@ public class ItemService {
     }
 
     private Cat getCatById(Long id) {
-        return catRepository.findByIdJoinFetchOwnedItems(id)
+        return catRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("고양이를 찾는데 실패하였습니다."));
     }
 
