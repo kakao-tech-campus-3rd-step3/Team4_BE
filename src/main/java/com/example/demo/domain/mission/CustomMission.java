@@ -12,7 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "custom_missions")
 public class CustomMission {
@@ -60,4 +62,21 @@ public class CustomMission {
     protected CustomMission() {
     }
 
+    private CustomMission(User author, String content, MissionCategoryEnum category,
+            CustomMissionStateEnum state) {
+        this.author = author;
+        this.content = content;
+        this.category = category;
+        this.state = state;
+    }
+
+    public static CustomMission of(User author, String content, MissionCategoryEnum category,
+            CustomMissionStateEnum state) {
+        return new CustomMission(author, content, category, state);
+    }
+
+    public void update(String content, MissionCategoryEnum category) {
+        this.content = content;
+        this.category = category;
+    }
 }
