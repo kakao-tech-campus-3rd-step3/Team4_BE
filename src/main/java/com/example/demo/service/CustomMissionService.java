@@ -36,7 +36,6 @@ public class CustomMissionService {
         return savedCustomMission;
     }
 
-    @Transactional
     public CustomMission update(Long id, CustomMissionRequest request, User user) {
         CustomMission customMission = customMissionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("미션을 찾는데 실패하였습니다."));
