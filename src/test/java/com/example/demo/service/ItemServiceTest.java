@@ -52,11 +52,11 @@ public class ItemServiceTest {
     @BeforeEach
     void setUp() {
         user = userRepository.save(User.of("상욱", "tkddnr@test.com"));
-        cat = catRepository.save(Cat.of(user, "고양yee"));
+        cat = catRepository.save(new Cat(user, "고양yee"));
 
-        item1 = itemRepository.save(Item.of("모자1", 1000, ItemCategoryEnum.HAT, "url1", 1.1f, 2.2f));
-        item2 = itemRepository.save(Item.of("모자2", 2000, ItemCategoryEnum.HAT, "url2", 3.3f, 4.4f));
-        item3 = itemRepository.save(Item.of("모자3", 3000, ItemCategoryEnum.HAT, "url3", 5.5f, 6.6f));
+        item1 = itemRepository.save(new Item("모자1", 1000, ItemCategoryEnum.HAT, "url1", 1.1f, 2.2f));
+        item2 = itemRepository.save(new Item("모자2", 2000, ItemCategoryEnum.HAT, "url2", 3.3f, 4.4f));
+        item3 = itemRepository.save(new Item("모자3", 3000, ItemCategoryEnum.HAT, "url3", 5.5f, 6.6f));
     }
 
     @Test
