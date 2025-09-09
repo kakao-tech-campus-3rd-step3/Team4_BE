@@ -1,6 +1,7 @@
 package com.example.demo.handler;
 
 import com.example.demo.config.jwt.JwtTokenProvider;
+import com.example.demo.domain.user.User;
 import com.example.demo.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,13 +28,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = oAuth2User.getAttribute("email");
 
-        String accessToken = jwtTokenProvider.createAccessToken(email);
-        String refreshToken = jwtTokenProvider.createRefreshToken(email);
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("User not found: " + email));
 
-        userRepository.findByEmail(email).ifPresent(user -> {
-            user.updateRefreshToken(refreshToken);
-            userRepository.save(user);
-        });
+        String accessToken = jwtTokenProvider.createAccessToken(user.getId());
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getId());
+
+        user.updateRefreshToken(refreshToken);
+        userRepository.save(user);
 
         String targetUrl = UriComponentsBuilder.fromUriString(
                 "http://localhost:3000/oauth-redirect")
