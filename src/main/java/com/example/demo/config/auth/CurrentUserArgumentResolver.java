@@ -34,11 +34,11 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
         if (authentication == null) {
             return null;
         }
+        
+        Long userId = Long.parseLong(authentication.getName());
 
-        String userEmail = authentication.getName();
-
-        return userRepository.findByEmail(userEmail)
+        return userRepository.findById(userId)
             .orElseThrow(
-                () -> new IllegalArgumentException("User not found with email: " + userEmail));
+                () -> new IllegalArgumentException("User not found with id: " + userId));
     }
 }
