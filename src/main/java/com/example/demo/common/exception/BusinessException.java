@@ -9,21 +9,13 @@ public class BusinessException extends RuntimeException {
     private final ErrorCode errorCode;
     private final String clientMessage;
 
-    private BusinessException(ErrorCode errorCode, String clientMessage) {
+    public BusinessException(ErrorCode errorCode, String clientMessage) {
         this.errorCode = errorCode;
         this.clientMessage = clientMessage;
     }
 
-    private BusinessException(ErrorCode errorCode) {
+    public BusinessException(ErrorCode errorCode) {
         this.errorCode = errorCode;
         this.clientMessage = errorCode.getDefaultMessage();
-    }
-
-    public static BusinessException of(ErrorCode errorCode, String clientMessage) {
-        return new BusinessException(errorCode, clientMessage);
-    }
-
-    public static BusinessException from(ErrorCode errorCode) {
-        return new BusinessException(errorCode);
     }
 }
