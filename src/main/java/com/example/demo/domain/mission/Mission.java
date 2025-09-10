@@ -10,11 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "missions")
+@Getter
 public class Mission {
 
     @Id

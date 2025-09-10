@@ -9,6 +9,8 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+import java.util.Map;
+
 @Entity
 @Table(name = "user_emotion")
 public class UserEmotion {
@@ -40,5 +42,20 @@ public class UserEmotion {
     private Integer employmentLevel;
 
     protected UserEmotion() {
+    }
+
+    public UserEmotionTypeEnum getMinEmotion() {
+        Map<UserEmotionTypeEnum, Integer> emotions = Map.of(
+                UserEmotionTypeEnum.SENTIMENT, sentimentLevel,
+                UserEmotionTypeEnum.ENERGY, energyLevel,
+                UserEmotionTypeEnum.COGNITIVE, cognitiveLevel,
+                UserEmotionTypeEnum.RELATIONSHIP, relationshipLevel,
+                UserEmotionTypeEnum.STRESS, stressLevel
+        );
+
+        return emotions.entrySet().stream()
+                .min(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElseThrow(() -> new RuntimeException(""));
     }
 }
