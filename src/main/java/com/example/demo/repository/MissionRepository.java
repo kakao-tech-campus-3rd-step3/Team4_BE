@@ -21,40 +21,23 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
                     "from Mission m " +
                     "where m.category = :category"
     )
-    MissionAverageResponse findAverageScoreByCategory(@Param("category") MissionCategoryEnum category);
-
-    @Query(value = """
-                SELECT * FROM mission m
-                WHERE m.category = :category
-                  AND (
-                    (:emotion = 'SENTIMENT' AND m.sentiment_level > :avg)
-                    OR (:emotion = 'ENERGY' AND m.energy_level > :avg)
-                    OR (:emotion = 'COGNITIVE' AND m.cognitive_level > :avg)
-                    OR (:emotion = 'RELATIONSHIP' AND m.relationship_level > :avg)
-                    OR (:emotion = 'STRESS' AND m.stress_level > :avg)
-                  )
-            """, nativeQuery = true)
-    List<Mission> findMissions(
-            @Param("category") String category,
-            @Param("emotion") String emotion,
-            @Param("avg") Double avg
-    );
-
+    MissionAverageResponse findAverageScoreByCategory(
+            @Param("category") MissionCategoryEnum category);
 
     List<Mission> findByCategoryAndSentimentScoreGreaterThanEqual(MissionCategoryEnum category,
-        Integer threshold);
+            Integer threshold);
 
     List<Mission> findByCategoryAndEnergyScoreGreaterThanEqual(MissionCategoryEnum category,
-        Integer threshold);
+            Integer threshold);
 
     List<Mission> findByCategoryAndCognitiveScoreGreaterThanEqual(MissionCategoryEnum category,
-        Integer threshold);
+            Integer threshold);
 
     List<Mission> findByCategoryAndRelationshipScoreGreaterThanEqual(MissionCategoryEnum category,
-        Integer threshold);
+            Integer threshold);
 
     List<Mission> findByCategoryAndStressScoreGreaterThanEqual(MissionCategoryEnum category,
-        Integer threshold);
+            Integer threshold);
 
     List<Mission> findAllByCategory(MissionCategoryEnum category);
 }
