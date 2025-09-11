@@ -4,10 +4,8 @@ import com.example.demo.domain.cat.Cat;
 import com.example.demo.dto.item.ItemResponse;
 import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class CatResponse {
 
     private final String name;

@@ -2,10 +2,8 @@ package com.example.demo.dto.item;
 
 import com.example.demo.domain.cat.Item;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class ItemResponse {
 
     private String imageUrl;
