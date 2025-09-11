@@ -23,8 +23,16 @@ public class PlanService {
     private final MissionRepository missionRepository;
 
     public void addMissionToPlan(Long missionId, User user) {
-        if (userMissionRepository.existsByUserAndMissionId(user, missionId)) {
-            throw new RuntimeException("이미 계획에 추가된 미션입니다.");
+        LocalDate today = LocalDate.now();
+        boolean exists = userMissionRepository.existsByUserAndMissionIdAndDoneIsFalseAndCreatedAtBetween(
+            user,
+            missionId,
+            today.atStartOfDay(),
+            today.atTime(LocalTime.MAX)
+        );
+
+        if (exists) {
+            throw new RuntimeException("오늘 아직 완료하지 않은 동일한 미션이 계획에 있습니다.");
         }
 
         Mission mission = missionRepository.findById(missionId)

@@ -20,5 +20,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
         @Param("startOfDay") LocalDateTime startOfDay,
         @Param("endOfDay") LocalDateTime endOfDay, @Param("isDone") Boolean isDone);
 
-    boolean existsByUserAndMissionId(User user, Long missionId);
+    boolean existsByUserAndMissionIdAndDoneIsFalseAndCreatedAtBetween(User user, Long missionId,
+        LocalDateTime startOfDay, LocalDateTime endOfDay);
+
 }
