@@ -53,4 +53,13 @@ public class UserMission {
         this.user = user;
         this.customMission = customMission;
     }
+
+    public UserMission(User user, Mission mission) {
+        this.user = user;
+        this.mission = mission;
+    }
+
+    public void updateDone(Boolean done) {
+        this.done = done;
+    }
 }

@@ -18,22 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/custom-missions")
+@RequestMapping("/api/custom-missions")
 public class CustomMissionController {
 
     private final CustomMissionService customMissionService;
 
     @PostMapping
     public ResponseEntity<CustomMissionResponse> create(@RequestBody CustomMissionRequest request,
-            @CurrentUser User user) {
+        @CurrentUser User user) {
         CustomMission savedCustomMission = customMissionService.create(request, user);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(CustomMissionResponse.from(savedCustomMission));
+            .body(CustomMissionResponse.from(savedCustomMission));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id,
-            @RequestBody CustomMissionRequest request, @CurrentUser User user) {
+        @RequestBody CustomMissionRequest request, @CurrentUser User user) {
         customMissionService.update(id, request, user);
         return ResponseEntity.ok().build();
     }
