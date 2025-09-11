@@ -18,4 +18,24 @@ public class MissionAverageResponse {
         this.relationshipAvg = relationshipAvg;
         this.stressAvg = stressAvg;
     }
+
+    public Integer getSentimentAvgInt() {
+        return (int) Math.ceil(sentimentAvg);
+    }
+
+    public Integer getEnergyAvgInt() {
+        return (int) Math.ceil(energyAvg);
+    }
+
+    public Integer getCognitiveAvgInt() {
+        return (int) Math.ceil(cognitiveAvg);
+    }
+
+    public Integer getRelationshipAvgInt() {
+        return (int) Math.ceil(relationshipAvg);
+    }
+
+    public Integer getStressAvgInt() {
+        return (int) Math.ceil(stressAvg);
+    }
 }

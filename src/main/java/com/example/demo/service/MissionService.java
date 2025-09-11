@@ -11,11 +11,17 @@ import com.example.demo.dto.mission.MissionResponse;
 import com.example.demo.repository.MissionRepository;
 import com.example.demo.repository.UserEmotionRepository;
 import com.example.demo.repository.UserMissionRepository;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,61 +32,115 @@ public class MissionService {
     private final UserMissionRepository userMissionRepository;
     private final UserEmotionRepository userEmotionRepository;
 
+    private static final Map<MissionCategoryEnum, Integer> defaultRecommendRate = Map.of(
+        MissionCategoryEnum.REFRESH, 2, MissionCategoryEnum.DAILY, 2,
+        MissionCategoryEnum.EMPLOYMENT, 2);
+
     public List<MissionResponse> recommend(User user) {
-        //미션 목록 6개 반환
-
-        //유저미션 카테고리별로 카운트 쿼리
         List<MissionCountResponse> result = userMissionRepository.countByCategory(user.getId());
+        Map<MissionCategoryEnum, Integer> countMap = result.stream()
+            .collect(Collectors.toMap(MissionCountResponse::getCategory,
+                MissionCountResponse::getCount));
+        List<MissionCountResponse> completed = Arrays.stream(MissionCategoryEnum.values())
+            .map(category -> new MissionCountResponse(category, countMap.getOrDefault(category, 0)))
+            .toList();
 
-        //카운트쿼리가 높은 미션 카테고리를 1순위 추천 대상으로 선정
-        // TODO: 갯수 산정 함수
-        int[] select = function(result);
+        Map<MissionCategoryEnum, Integer> distribution = calculateDistribution(completed);
 
-        //사용자의 감정 점수 5개를 모두 가져와서
         UserEmotion emotion = userEmotionRepository.findById(user.getId())
                 .orElseThrow(() -> new RuntimeException(""));
-
-        //가장 수치가 작은 감정을 가져옴
         UserEmotionTypeEnum minEmotion = emotion.getMinEmotion();
 
         MissionAverageResponse dailyAverage = missionRepository.findAverageScoreByCategory(MissionCategoryEnum.DAILY);
         MissionAverageResponse refreshAverage = missionRepository.findAverageScoreByCategory(MissionCategoryEnum.REFRESH);
 
-        Double avg = 0d;
+        List<Mission> dailyMissions = null;
         switch(minEmotion) {
-            case SENTIMENT -> avg = dailyAverage.getSentimentAvg();
-            case ENERGY -> avg = dailyAverage.getEnergyAvg();
-            case COGNITIVE -> avg = dailyAverage.getCognitiveAvg();
-            case RELATIONSHIP -> avg = dailyAverage.getRelationshipAvg();
-            case STRESS -> avg = dailyAverage.getStressAvg();
+            case SENTIMENT ->
+                dailyMissions = missionRepository.findByCategoryAndSentimentScoreGreaterThanEqual(
+                    MissionCategoryEnum.DAILY, dailyAverage.getSentimentAvgInt());
+            case ENERGY ->
+                dailyMissions = missionRepository.findByCategoryAndEnergyScoreGreaterThanEqual(
+                    MissionCategoryEnum.DAILY, dailyAverage.getEnergyAvgInt());
+            case COGNITIVE ->
+                dailyMissions = missionRepository.findByCategoryAndCognitiveScoreGreaterThanEqual(
+                    MissionCategoryEnum.DAILY, dailyAverage.getCognitiveAvgInt());
+            case RELATIONSHIP ->
+                dailyMissions = missionRepository.findByCategoryAndRelationshipScoreGreaterThanEqual(
+                    MissionCategoryEnum.DAILY, dailyAverage.getRelationshipAvgInt());
+            case STRESS ->
+                dailyMissions = missionRepository.findByCategoryAndStressScoreGreaterThanEqual(
+                    MissionCategoryEnum.DAILY, dailyAverage.getStressAvgInt());
         }
-        List<Mission> dailyMissions = missionRepository.findMissions(MissionCategoryEnum.DAILY.name(), minEmotion.name(), avg);
 
+        List<Mission> refreshMissions = null;
         switch(minEmotion) {
-            case SENTIMENT -> avg = refreshAverage.getSentimentAvg();
-            case ENERGY -> avg = refreshAverage.getEnergyAvg();
-            case COGNITIVE -> avg = refreshAverage.getCognitiveAvg();
-            case RELATIONSHIP -> avg = refreshAverage.getRelationshipAvg();
-            case STRESS -> avg = refreshAverage.getStressAvg();
+            case SENTIMENT ->
+                refreshMissions = missionRepository.findByCategoryAndSentimentScoreGreaterThanEqual(
+                    MissionCategoryEnum.REFRESH, refreshAverage.getSentimentAvgInt());
+            case ENERGY ->
+                refreshMissions = missionRepository.findByCategoryAndEnergyScoreGreaterThanEqual(
+                    MissionCategoryEnum.REFRESH, refreshAverage.getEnergyAvgInt());
+            case COGNITIVE ->
+                refreshMissions = missionRepository.findByCategoryAndCognitiveScoreGreaterThanEqual(
+                    MissionCategoryEnum.REFRESH, refreshAverage.getCognitiveAvgInt());
+            case RELATIONSHIP ->
+                refreshMissions = missionRepository.findByCategoryAndRelationshipScoreGreaterThanEqual(
+                    MissionCategoryEnum.REFRESH, refreshAverage.getRelationshipAvgInt());
+            case STRESS ->
+                refreshMissions = missionRepository.findByCategoryAndStressScoreGreaterThanEqual(
+                    MissionCategoryEnum.REFRESH, refreshAverage.getStressAvgInt());
         }
-        List<Mission> refreshMissions = missionRepository.findMissions(MissionCategoryEnum.REFRESH.name(), minEmotion.name(), avg);
 
-        // 추천 결과 생성
-        List<MissionResponse> response = new ArrayList<>(choose(dailyMissions, 2).stream()
+        System.out.println("일상 미션 갯수: " + dailyMissions.size());
+        System.out.println("리프레쉬 미션 갯수: " + refreshMissions.size());
+
+        List<MissionResponse> response = new ArrayList<>(
+            choose(dailyMissions, distribution.get(MissionCategoryEnum.DAILY)).stream()
                 .map(MissionResponse::new)
                 .toList());
-        response.addAll(choose(refreshMissions, 2).stream()
+        response.addAll(
+            choose(refreshMissions, distribution.get(MissionCategoryEnum.REFRESH)).stream()
+                .map(MissionResponse::new)
+                .toList());
+        List<Mission> employmentMissions = missionRepository.findAllByCategory(
+            MissionCategoryEnum.EMPLOYMENT);
+        response.addAll(
+            choose(employmentMissions, distribution.get(MissionCategoryEnum.EMPLOYMENT)).stream()
                 .map(MissionResponse::new)
                 .toList());
 
-        // TODO: 취업 미션에 대한 처리
+        return response;
     }
 
-    private int[] function(List<MissionCountResponse> result) {
-        return null;
+    private Map<MissionCategoryEnum, Integer> calculateDistribution(
+        List<MissionCountResponse> counts) {
+        int total = counts.stream().mapToInt(MissionCountResponse::getCount).sum();
+
+        if (total == 0) {
+            return defaultRecommendRate;
+        }
+        Map<MissionCategoryEnum, Integer> map = new EnumMap<>(MissionCategoryEnum.class);
+        for (MissionCountResponse c : counts) {
+            int quota = (int) Math.round((c.getCount() / (double) total) * 6);
+            map.put(c.getCategory(), quota);
+        }
+
+        int diff = 6 - map.values().stream().mapToInt(i -> i).sum();
+        if (diff != 0) {
+            MissionCategoryEnum maxCategory = counts.stream()
+                .max(Comparator.comparingInt(MissionCountResponse::getCount))
+                .map(MissionCountResponse::getCategory)
+                .orElse(MissionCategoryEnum.DAILY);
+            map.merge(maxCategory, diff, Integer::sum);
+        }
+        return map;
     }
 
     private List<Mission> choose(List<Mission> missions, int limit) {
+        if (limit == 0) {
+            return new ArrayList<>();
+        }
         Collections.shuffle(missions);
         return missions.stream()
                 .limit(limit)

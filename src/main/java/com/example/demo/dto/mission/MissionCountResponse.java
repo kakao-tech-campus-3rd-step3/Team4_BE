@@ -7,10 +7,14 @@ import lombok.Getter;
 public class MissionCountResponse {
 
     private MissionCategoryEnum category;
-    private Long count;
+    private Integer count;
 
-    public MissionCountResponse(MissionCategoryEnum category, Long count) {
+    public MissionCountResponse(MissionCategoryEnum category, Integer count) {
         this.category = category;
         this.count = count;
+    }
+
+    public MissionCountResponse(MissionCategoryEnum category, Long count) {
+        this(category, Integer.parseInt(count.toString()));
     }
 }

@@ -2,13 +2,11 @@ package com.example.demo.repository;
 
 import com.example.demo.domain.mission.Mission;
 import com.example.demo.domain.mission.MissionCategoryEnum;
-import com.example.demo.domain.userEmotion.UserEmotionTypeEnum;
 import com.example.demo.dto.mission.MissionAverageResponse;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
 
@@ -41,4 +39,22 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
             @Param("emotion") String emotion,
             @Param("avg") Double avg
     );
+
+
+    List<Mission> findByCategoryAndSentimentScoreGreaterThanEqual(MissionCategoryEnum category,
+        Integer threshold);
+
+    List<Mission> findByCategoryAndEnergyScoreGreaterThanEqual(MissionCategoryEnum category,
+        Integer threshold);
+
+    List<Mission> findByCategoryAndCognitiveScoreGreaterThanEqual(MissionCategoryEnum category,
+        Integer threshold);
+
+    List<Mission> findByCategoryAndRelationshipScoreGreaterThanEqual(MissionCategoryEnum category,
+        Integer threshold);
+
+    List<Mission> findByCategoryAndStressScoreGreaterThanEqual(MissionCategoryEnum category,
+        Integer threshold);
+
+    List<Mission> findAllByCategory(MissionCategoryEnum category);
 }

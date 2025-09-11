@@ -8,7 +8,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-
 import java.util.Map;
 
 @Entity
@@ -42,6 +41,18 @@ public class UserEmotion {
     private Integer employmentLevel;
 
     protected UserEmotion() {
+    }
+
+    public UserEmotion(User user, Integer sentimentLevel, Integer energyLevel,
+        Integer cognitiveLevel,
+        Integer relationshipLevel, Integer stressLevel, Integer employmentLevel) {
+        this.user = user;
+        this.sentimentLevel = sentimentLevel;
+        this.energyLevel = energyLevel;
+        this.cognitiveLevel = cognitiveLevel;
+        this.relationshipLevel = relationshipLevel;
+        this.stressLevel = stressLevel;
+        this.employmentLevel = employmentLevel;
     }
 
     public UserEmotionTypeEnum getMinEmotion() {
