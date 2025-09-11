@@ -3,15 +3,13 @@ package com.example.demo.dto.mission;
 import com.example.demo.domain.mission.Mission;
 import com.example.demo.domain.mission.MissionCategoryEnum;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
 public class MissionResponse {
 
-    private Long id;
-    private String content;
-    private MissionCategoryEnum category;
+    private final Long id;
+    private final String content;
+    private final MissionCategoryEnum category;
 
     public MissionResponse(Mission mission) {
         this.id = mission.getId();

@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "missions")
-@Getter
 public class Mission {
 
     @Id
@@ -55,12 +55,29 @@ public class Mission {
     private Integer completionRate;
 
     @Column(name = "mission_level", nullable = false)
-    private Integer level;
+    private Integer missionLevel;
 
     @OneToMany(mappedBy = "mission")
     private List<MissionCategoryDetail> missionCategoryDetails = new ArrayList<>();
 
     protected Mission() {
+    }
+
+    public Mission(String content, MissionCategoryEnum category, Integer sentimentScore,
+        Integer energyScore, Integer cognitiveScore, Integer relationshipScore,
+        Integer stressScore, Integer employmentScore, Integer selectionRate,
+        Integer completionRate, Integer missionLevel) {
+        this.content = content;
+        this.category = category;
+        this.sentimentScore = sentimentScore;
+        this.energyScore = energyScore;
+        this.cognitiveScore = cognitiveScore;
+        this.relationshipScore = relationshipScore;
+        this.stressScore = stressScore;
+        this.employmentScore = employmentScore;
+        this.selectionRate = selectionRate;
+        this.completionRate = completionRate;
+        this.missionLevel = missionLevel;
     }
 
 }
