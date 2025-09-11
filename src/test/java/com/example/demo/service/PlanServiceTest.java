@@ -68,12 +68,32 @@ public class PlanServiceTest {
     }
 
     @Test
-    void 동일한_미션을_계획에_중복_추가하면_예외_발생() {
+    void 완료하지_않은_동일_미션을_같은_날_중복_추가하면_예외_발생() {
         planService.addMissionToPlan(mission1.getId(), user1);
 
         assertThatThrownBy(() -> planService.addMissionToPlan(mission1.getId(), user1))
             .isInstanceOf(RuntimeException.class)
-            .hasMessage("이미 계획에 추가된 미션입니다.");
+            .hasMessage("오늘 아직 완료하지 않은 동일한 미션이 계획에 있습니다.");
+    }
+
+    @Test
+    void 완료한_미션은_같은_날이라도_다시_추가_가능() {
+        planService.addMissionToPlan(mission1.getId(), user1);
+        UserMission firstMission = userMissionRepository.findByUser(user1).get(0);
+        planService.updatePlanStatus(firstMission.getId(), true, user1);
+
+        em.flush();
+        em.clear();
+
+        planService.addMissionToPlan(mission1.getId(), user1);
+
+        List<UserMission> userMissions = userMissionRepository.findByUser(user1);
+        assertThat(userMissions.size()).isEqualTo(2);
+
+        long doneCount = userMissions.stream().filter(UserMission::getDone).count();
+        long notDoneCount = userMissions.stream().filter(um -> !um.getDone()).count();
+        assertThat(doneCount).isEqualTo(1);
+        assertThat(notDoneCount).isEqualTo(1);
     }
 
     @Test
