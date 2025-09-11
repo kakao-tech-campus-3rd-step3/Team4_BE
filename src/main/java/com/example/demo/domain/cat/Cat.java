@@ -112,4 +112,8 @@ public class Cat {
     public List<OwnedItem> getEquippedItem() {
         return equippedItem.values().stream().toList();
     }
+
+    public void rename(String name) {
+        this.name = name;
+    }
 }
