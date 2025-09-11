@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**",
                     "/oauth2/**")
                 .permitAll()
-                .requestMatchers("/api/v1/**").hasRole("USER")
+                .requestMatchers("/api/**").hasRole("USER")
                 .anyRequest().authenticated()
             )
             .exceptionHandling(exceptions -> exceptions
