@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.auth.CurrentUser;
+import com.example.demo.domain.user.User;
 import com.example.demo.dto.mission.MissionResponse;
 import com.example.demo.service.MissionService;
 import java.util.List;
@@ -17,7 +19,7 @@ public class MissionController {
     private final MissionService missionService;
 
     @GetMapping
-    public ResponseEntity<List<MissionResponse>> getRecommendedMissions() {
-        return ResponseEntity.ok(missionService.getRecommendedMissions());
+    public ResponseEntity<List<MissionResponse>> getRecommendedMissions(@CurrentUser User user) {
+        return ResponseEntity.ok(missionService.getRecommendedMissions(user));
     }
 }
