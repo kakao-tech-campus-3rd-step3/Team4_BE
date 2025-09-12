@@ -63,7 +63,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNoHandlerFoundException(NoHandlerFoundException e) {
+    public ResponseEntity<Map<String, Object>> handleNoHandlerFoundException(
+        NoHandlerFoundException e) {
         Map<String, Object> body = new HashMap<>();
         body.put("message", "정의되지 않은 API 요청입니다.");
         body.put("path", e.getRequestURL());
