@@ -23,21 +23,30 @@ public class PlanService {
     private final MissionRepository missionRepository;
 
     public void addMissionToPlan(Long missionId, User user) {
+        validateIfMissionCanBeAdded(missionId, user);
+        Mission mission = findMissionById(missionId);
+        createUserMission(user, mission);
+    }
+    
+    private void validateIfMissionCanBeAdded(Long missionId, User user) {
         LocalDate today = LocalDate.now();
-        boolean exists = userMissionRepository.existsByUserAndMissionIdAndDoneIsFalseAndCreatedAtBetween(
+        boolean isNotCompletedMissionExists = userMissionRepository.existsByUserAndMissionIdAndDoneIsFalseAndCreatedAtBetween(
             user,
             missionId,
             today.atStartOfDay(),
             today.atTime(LocalTime.MAX)
         );
-
-        if (exists) {
+        if (isNotCompletedMissionExists) {
             throw new RuntimeException("오늘 아직 완료하지 않은 동일한 미션이 계획에 있습니다.");
         }
+    }
 
-        Mission mission = missionRepository.findById(missionId)
+    private Mission findMissionById(Long missionId) {
+        return missionRepository.findById(missionId)
             .orElseThrow(() -> new RuntimeException("미션을 찾을 수 없습니다."));
+    }
 
+    private void createUserMission(User user, Mission mission) {
         UserMission userMission = new UserMission(user, mission);
         userMissionRepository.save(userMission);
     }
