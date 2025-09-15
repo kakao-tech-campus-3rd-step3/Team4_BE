@@ -5,6 +5,7 @@ import com.example.demo.domain.mission.MissionCategoryEnum;
 import com.example.demo.dto.mission.MissionAverageResponse;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -40,4 +41,17 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
             Integer threshold);
 
     List<Mission> findAllByCategory(MissionCategoryEnum category);
+
+    @Modifying
+    @Query("update Mission m set m.exposureCount = m.exposureCount + 1 where m.id = :missionId")
+    void incrementExposure(Long missionId);
+
+    @Modifying
+    @Query("update Mission m set m.selectionCount = m.selectionCount + 1 where m.id = :missionId")
+    void incrementSelection(Long missionId);
+
+    @Modifying
+    @Query("update Mission m set m.completionCount = m.completionCount + 1 where m.id = :missionId")
+    void incrementCompletion(Long missionId);
+
 }
