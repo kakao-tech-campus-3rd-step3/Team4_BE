@@ -50,9 +50,9 @@ public class PlanServiceTest {
         user2 = userRepository.save(User.of("사용자2", "user2@test.com"));
 
         mission1 = missionRepository.save(
-            new Mission("책 읽기", MissionCategoryEnum.REFRESH, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+            new Mission("책 읽기", MissionCategoryEnum.REFRESH, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
         mission2 = missionRepository.save(
-            new Mission("알고리즘 문제 풀기", MissionCategoryEnum.DAILY, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+            new Mission("알고리즘 문제 풀기", MissionCategoryEnum.DAILY, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
     }
 
     @Test
