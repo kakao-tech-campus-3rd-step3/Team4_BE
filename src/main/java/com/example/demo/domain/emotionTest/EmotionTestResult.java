@@ -32,4 +32,10 @@ public class EmotionTestResult {
 
     protected EmotionTestResult() {
     }
+
+    public EmotionTestResult(User user, EmotionTestQuestion question, Integer resultNum) {
+        this.user = user;
+        this.emotionTestQuestion = question;
+        this.resultNum = resultNum;
+    }
 }
