@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.DiaryErrorCode;
 import com.example.demo.domain.diary.Diary;
 import com.example.demo.domain.user.User;
 import com.example.demo.dto.diary.CreateDiaryResponse;
@@ -26,10 +28,10 @@ public class DiaryService {
     @Transactional(readOnly = true)
     public DiaryResponse get(Long diaryId, User user) {
         Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new RuntimeException("일기를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(DiaryErrorCode.DIARY_NOT_FOUND));
 
         if (!diary.getAuthor().getId().equals(user.getId())) {
-            throw new RuntimeException("본인의 일기만 조회할 수 있습니다.");
+            throw new BusinessException(DiaryErrorCode.DIARY_ACCESS_DENIED);
         }
         return new DiaryResponse(diary);
     }
