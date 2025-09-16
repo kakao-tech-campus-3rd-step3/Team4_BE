@@ -3,6 +3,8 @@ package com.example.demo.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.DiaryErrorCode;
 import com.example.demo.domain.diary.Diary;
 import com.example.demo.domain.diary.EmotionEnum;
 import com.example.demo.domain.user.User;
@@ -73,6 +75,10 @@ public class DiaryServiceTest {
     void 생성자_외_조회_시_실패() {
         assertThatThrownBy(
                 () -> diaryService.get(diary.getId(), user1))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(BusinessException.class)
+                .satisfies(ex -> {
+                    BusinessException e = (BusinessException) ex;
+                    assertThat(e.getErrorCode()).isEqualTo(DiaryErrorCode.DIARY_ACCESS_DENIED);
+                });
     }
 }
