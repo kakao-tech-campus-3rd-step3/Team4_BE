@@ -43,15 +43,15 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     List<Mission> findAllByCategory(MissionCategoryEnum category);
 
     @Modifying
-    @Query("update Mission m set m.exposureCount = m.exposureCount + 1 where m.id = :missionId")
-    void incrementExposure(Long missionId);
+    @Query("update Mission m set m.exposureCount = m.exposureCount + 1 where m.id in :missionIds")
+    void incrementExposure(@Param("missionIds") List<Long> missionIds);
 
     @Modifying
     @Query("update Mission m set m.selectionCount = m.selectionCount + 1 where m.id = :missionId")
-    void incrementSelection(Long missionId);
+    void incrementSelection(@Param("missionId") Long missionId);
 
     @Modifying
     @Query("update Mission m set m.completionCount = m.completionCount + 1 where m.id = :missionId")
-    void incrementCompletion(Long missionId);
+    void incrementCompletion(@Param("missionId") Long missionId);
 
 }
