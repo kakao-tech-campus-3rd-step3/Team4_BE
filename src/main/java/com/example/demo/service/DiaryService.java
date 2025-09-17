@@ -7,6 +7,7 @@ import com.example.demo.domain.user.User;
 import com.example.demo.dto.diary.CreateDiaryResponse;
 import com.example.demo.dto.diary.DiaryRequest;
 import com.example.demo.dto.diary.DiaryResponse;
+import com.example.demo.external.openai.OpenAiClient;
 import com.example.demo.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final OpenAiClient openAiClient;
 
     public CreateDiaryResponse create(DiaryRequest request, User user) {
         Diary diary = new Diary(user, request.getEmotion(), request.getContent());
+
+        String feedback = openAiClient.getDiaryFeedback(request.getContent()); // 동기 블락킹 문제
+        diary.addFeedback(feedback);
+
         diaryRepository.save(diary);
         return new CreateDiaryResponse(diary);
     }
@@ -28,9 +34,9 @@ public class DiaryService {
     @Transactional(readOnly = true)
     public DiaryResponse get(Long diaryId, User user) {
         Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new BusinessException(DiaryErrorCode.DIARY_NOT_FOUND));
+            .orElseThrow(() -> new BusinessException(DiaryErrorCode.DIARY_NOT_FOUND));
 
-        if (!diary.getAuthor().getId().equals(user.getId())) {
+        if (!diary.isOwner(user.getId())) {
             throw new BusinessException(DiaryErrorCode.DIARY_ACCESS_DENIED);
         }
         return new DiaryResponse(diary);
