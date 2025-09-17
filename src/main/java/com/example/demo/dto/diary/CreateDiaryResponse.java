@@ -18,7 +18,7 @@ public class CreateDiaryResponse {
         this.id = diary.getId();
         this.emotion = diary.getEmotion();
         this.content = diary.getContent();
-        this.feedback = diary.getContent();
+        this.feedback = diary.getFeedback().getContent();
         this.createdAt = diary.getCreatedAt();
     }
 }
