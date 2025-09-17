@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.mission;
 
 import com.example.demo.domain.mission.Mission;
 import com.example.demo.domain.mission.MissionCategoryEnum;
