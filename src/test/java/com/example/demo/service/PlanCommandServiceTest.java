@@ -84,6 +84,11 @@ public class PlanCommandServiceTest {
 
         List<UserMission> userMissions = userMissionRepository.findByUser(user1);
         assertThat(userMissions.size()).isEqualTo(2);
+
+        long doneCount = userMissions.stream().filter(UserMission::getDone).count();
+        long notDoneCount = userMissions.stream().filter(um -> !um.getDone()).count();
+        assertThat(doneCount).isEqualTo(1);
+        assertThat(notDoneCount).isEqualTo(1);
     }
 
     @Test
