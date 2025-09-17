@@ -14,6 +14,8 @@ import com.example.demo.dto.item.ShopItemResponse;
 import com.example.demo.repository.CatRepository;
 import com.example.demo.repository.ItemRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.item.ItemCommandService;
+import com.example.demo.service.item.ItemQueryService;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemServiceTest {
 
     @Autowired
-    ItemService itemService;
+    ItemCommandService itemCommandService;
+
+    @Autowired
+    ItemQueryService itemQueryService;
 
     @Autowired
     UserRepository userRepository;
@@ -62,7 +67,7 @@ public class ItemServiceTest {
     @Test
     void 사용자는_상점_아이템_목록을_불러올_수_있다() {
         //when
-        Page<ShopItemResponse> shopItemResponses = itemService.listShopItems(1,
+        Page<ShopItemResponse> shopItemResponses = itemQueryService.listShopItems(1,
                 ItemCategoryEnum.HAT, user);
 
         //then
@@ -88,7 +93,7 @@ public class ItemServiceTest {
         user.earnPoints(3000);
 
         //when
-        itemService.purchaseItem(item1.getId(), user);
+        itemCommandService.purchaseItem(item1.getId(), user);
         em.flush();
         OwnedItem ownedItem = cat.getOwnedItems().get(0);
 
@@ -104,10 +109,10 @@ public class ItemServiceTest {
         //given
         user.earnPoints(3000);
 
-        itemService.purchaseItem(item1.getId(), user);
+        itemCommandService.purchaseItem(item1.getId(), user);
 
         //when
-        assertThatThrownBy(() -> itemService.purchaseItem(item1.getId(), user)).isInstanceOf(
+        assertThatThrownBy(() -> itemCommandService.purchaseItem(item1.getId(), user)).isInstanceOf(
                 RuntimeException.class);
     }
 
@@ -117,7 +122,7 @@ public class ItemServiceTest {
         user.earnPoints(500);
 
         //when
-        assertThatThrownBy(() -> itemService.purchaseItem(item3.getId(), user)).isInstanceOf(
+        assertThatThrownBy(() -> itemCommandService.purchaseItem(item3.getId(), user)).isInstanceOf(
                 RuntimeException.class);
     }
 
@@ -125,14 +130,14 @@ public class ItemServiceTest {
     void 사용자는_소유한_아이템을_조회할_수_있다() {
         //given
         user.earnPoints(3000);
-        itemService.purchaseItem(item1.getId(), user);
-        itemService.purchaseItem(item2.getId(), user);
+        itemCommandService.purchaseItem(item1.getId(), user);
+        itemCommandService.purchaseItem(item2.getId(), user);
 
         em.flush();
         em.clear();
 
         //when
-        List<OwnedItemResponse> responses = itemService.listOwnedItems(user);
+        List<OwnedItemResponse> responses = itemQueryService.listOwnedItems(user);
 
         //then
         assertThat(responses.size()).isEqualTo(2);
@@ -142,7 +147,7 @@ public class ItemServiceTest {
     void 사용자는_소유한_아이템을_착용할_수_있다() {
         //given
         user.earnPoints(3000);
-        itemService.purchaseItem(item1.getId(), user);
+        itemCommandService.purchaseItem(item1.getId(), user);
 
         em.flush();
         em.clear();
@@ -153,7 +158,7 @@ public class ItemServiceTest {
         EquipItemRequest equipItemRequest = new EquipItemRequest();
         equipItemRequest.setIsUsed(true);
 
-        itemService.setItemEquipped(equipItemRequest, ownedItem.getId(), user);
+        itemCommandService.setItemEquipped(equipItemRequest, ownedItem.getId(), user);
 
         //then
         em.flush();
@@ -172,8 +177,8 @@ public class ItemServiceTest {
     void 사용자는_같은_카테고리의_다른_아이템을_착용중일_때_새로운_아이템을_착용하면_기존_아이템이_자동으로_해제된다() {
         //given
         user.earnPoints(5000);
-        itemService.purchaseItem(item1.getId(), user);
-        itemService.purchaseItem(item3.getId(), user);
+        itemCommandService.purchaseItem(item1.getId(), user);
+        itemCommandService.purchaseItem(item3.getId(), user);
 
         em.flush();
         em.clear();
@@ -186,10 +191,10 @@ public class ItemServiceTest {
         EquipItemRequest equipItemRequest = new EquipItemRequest();
         equipItemRequest.setIsUsed(true);
 
-        itemService.setItemEquipped(equipItemRequest, ownedItem1.getId(), user);
+        itemCommandService.setItemEquipped(equipItemRequest, ownedItem1.getId(), user);
 
         //when
-        itemService.setItemEquipped(equipItemRequest, ownedItem3.getId(), user);
+        itemCommandService.setItemEquipped(equipItemRequest, ownedItem3.getId(), user);
 
         //then
         em.flush();
@@ -218,7 +223,7 @@ public class ItemServiceTest {
     void 사용자는_착용한_아이템을_착용_해제할_수_있다() {
         //given
         user.earnPoints(3000);
-        itemService.purchaseItem(item1.getId(), user);
+        itemCommandService.purchaseItem(item1.getId(), user);
 
         em.flush();
         em.clear();
@@ -228,14 +233,14 @@ public class ItemServiceTest {
         EquipItemRequest equipItemRequest = new EquipItemRequest();
         equipItemRequest.setIsUsed(true);
 
-        itemService.setItemEquipped(equipItemRequest, ownedItem.getId(), user);
+        itemCommandService.setItemEquipped(equipItemRequest, ownedItem.getId(), user);
 
         em.flush();
         em.clear();
 
         //when
         equipItemRequest.setIsUsed(false);
-        itemService.setItemEquipped(equipItemRequest, ownedItem.getId(), user);
+        itemCommandService.setItemEquipped(equipItemRequest, ownedItem.getId(), user);
 
         //then
         em.flush();

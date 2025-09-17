@@ -12,7 +12,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "user_missions")
 public class UserMission {
@@ -47,4 +49,17 @@ public class UserMission {
         this.createdAt = LocalDateTime.now();
     }
 
+    public UserMission(User user, CustomMission customMission) {
+        this.user = user;
+        this.customMission = customMission;
+    }
+
+    public UserMission(User user, Mission mission) {
+        this.user = user;
+        this.mission = mission;
+    }
+
+    public void updateDone(Boolean done) {
+        this.done = done;
+    }
 }

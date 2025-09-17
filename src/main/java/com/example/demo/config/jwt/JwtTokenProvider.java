@@ -29,20 +29,20 @@ public class JwtTokenProvider {
         this.refreshTokenValidityInMilliseconds = refreshTokenValidity * 1000;
     }
 
-    public String createAccessToken(String userEmail) {
-        return createToken(userEmail, accessTokenValidityInMilliseconds);
+    public String createAccessToken(Long userId) {
+        return createToken(userId, accessTokenValidityInMilliseconds);
     }
 
-    public String createRefreshToken(String userEmail) {
-        return createToken(userEmail, refreshTokenValidityInMilliseconds);
+    public String createRefreshToken(Long userId) {
+        return createToken(userId, refreshTokenValidityInMilliseconds);
     }
 
-    private String createToken(String userEmail, long validityInMilliseconds) {
+    private String createToken(Long userId, long validityInMilliseconds) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-            .setSubject(userEmail)
+            .setSubject(String.valueOf(userId))
             .setIssuedAt(now)
             .setExpiration(validity)
             .signWith(key, SignatureAlgorithm.HS256)
@@ -70,8 +70,9 @@ public class JwtTokenProvider {
             userDetails.getAuthorities());
     }
 
-    public String getEmailFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody()
-            .getSubject();
+    public Long getUserIdFromToken(String token) {
+        return Long.parseLong(
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody()
+                .getSubject());
     }
 }
