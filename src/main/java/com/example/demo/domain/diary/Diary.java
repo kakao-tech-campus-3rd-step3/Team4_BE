@@ -37,6 +37,12 @@ public class Diary extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @Column
+    private Float sentimentScore;
+
+    @Column
+    private Float sentimentMagnitude;
+
     @OneToOne(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private DiaryFeedback feedback;
 
@@ -52,4 +58,10 @@ public class Diary extends BaseEntity {
     public void addFeedback(String feedbackContent) {
         this.feedback = new DiaryFeedback(this, feedbackContent);
     }
+
+    public void addSentiment(Float score, Float magnitude) {
+        this.sentimentScore = score;
+        this.sentimentMagnitude = magnitude;
+    }
+    
 }

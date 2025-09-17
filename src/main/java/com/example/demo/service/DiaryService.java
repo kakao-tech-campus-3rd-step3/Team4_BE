@@ -8,6 +8,8 @@ import com.example.demo.dto.diary.CreateDiaryResponse;
 import com.example.demo.dto.diary.DiaryRequest;
 import com.example.demo.dto.diary.DiaryResponse;
 import com.example.demo.repository.DiaryRepository;
+import com.google.cloud.language.v1.Sentiment;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,21 +20,36 @@ import org.springframework.transaction.annotation.Transactional;
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final SentimentAnalysisService sentimentAnalysisService;
 
     public CreateDiaryResponse create(DiaryRequest request, User user) {
-        Diary diary = new Diary(user, request.getEmotion(), request.getContent());
-        diaryRepository.save(diary);
+        Diary diary = saveDiary(request, user);
+        analyzeAndSaveSentiment(diary, request.getContent());
         return new CreateDiaryResponse(diary);
     }
 
     @Transactional(readOnly = true)
     public DiaryResponse get(Long diaryId, User user) {
         Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new BusinessException(DiaryErrorCode.DIARY_NOT_FOUND));
+            .orElseThrow(() -> new BusinessException(DiaryErrorCode.DIARY_NOT_FOUND));
 
         if (!diary.getAuthor().getId().equals(user.getId())) {
             throw new BusinessException(DiaryErrorCode.DIARY_ACCESS_DENIED);
         }
         return new DiaryResponse(diary);
+    }
+
+    private Diary saveDiary(DiaryRequest request, User user) {
+        Diary diary = new Diary(user, request.getEmotion(), request.getContent());
+        return diaryRepository.save(diary);
+    }
+
+    private void analyzeAndSaveSentiment(Diary diary, String content) {
+        try {
+            Sentiment sentiment = sentimentAnalysisService.analyzeSentiment(content);
+            diary.addSentiment(sentiment.getScore(), sentiment.getMagnitude());
+        } catch (IOException e) {
+            throw new RuntimeException("감정 분석에 실패했습니다.", e);
+        }
     }
 }
