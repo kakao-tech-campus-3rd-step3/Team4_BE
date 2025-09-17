@@ -33,7 +33,7 @@ public class PromptManager {
 
     private static ChatCompletionRequest.Message assistMessage(String content) {
         return ChatCompletionRequest.Message.builder()
-            .role("assist")
+            .role("assist") //
             .content(content)
             .build();
     }

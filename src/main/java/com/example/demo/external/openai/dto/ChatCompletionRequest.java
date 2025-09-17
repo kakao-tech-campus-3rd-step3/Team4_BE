@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ChatCompletionRequest {
 
     private String model;
@@ -23,7 +25,7 @@ public class ChatCompletionRequest {
     @AllArgsConstructor
     public static class Message {
 
-        private String role;    // "system" | "user" | "assistant"
+        private String role;
         private String content;
     }
 }

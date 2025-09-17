@@ -12,7 +12,7 @@ public class RestClientConfig {
     private final OpenAiProperties properties;
 
     @Bean("openAiRestClient")
-    public RestClient diaryFeedbackClient() {
+    public RestClient openAiRestClient() {
         return RestClient.builder()
             .baseUrl(properties.getBaseUrl())
             .defaultHeader("Authorization", "Bearer " + properties.getApiKey())
