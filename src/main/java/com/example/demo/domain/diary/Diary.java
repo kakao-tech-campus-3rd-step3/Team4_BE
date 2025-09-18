@@ -52,4 +52,8 @@ public class Diary extends BaseEntity {
     public void addFeedback(String feedbackContent) {
         this.feedback = new DiaryFeedback(this, feedbackContent);
     }
+
+    public boolean isOwner(Long userId) {
+        return this.author.getId().equals(userId);
+    }
 }
