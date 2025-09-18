@@ -13,7 +13,7 @@ public class PromptManager {
     private static final String DIARY_FEEDBACK_SYSTEM_PROMPT = "diary_feedback.prompt";
     private static final String DIARY_FEEDBACK_EXAMPLE_PROMPT = "diary_feedback_example.prompt";
 
-    public static final List<Message> DIARY_FEEDBACK_BASE_PROMPT = buildBasePrompt(
+    public static final List<Message> DIARY_FEEDBACK_BASE_MESSAGE = buildBasePrompt(
         DIARY_FEEDBACK_SYSTEM_PROMPT, DIARY_FEEDBACK_EXAMPLE_PROMPT);
 
     private static List<ChatCompletionRequest.Message> buildBasePrompt(String systemPromptFileName,

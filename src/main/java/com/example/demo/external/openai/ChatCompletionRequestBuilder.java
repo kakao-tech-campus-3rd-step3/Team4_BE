@@ -1,6 +1,6 @@
 package com.example.demo.external.openai;
 
-import static com.example.demo.external.openai.PromptManager.DIARY_FEEDBACK_BASE_PROMPT;
+import static com.example.demo.external.openai.PromptManager.DIARY_FEEDBACK_BASE_MESSAGE;
 
 import com.example.demo.external.openai.dto.ChatCompletionRequest;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class ChatCompletionRequestBuilder {
         ChatCompletionRequest request = new ChatCompletionRequest();
         request.setModel(MODEL);
 
-        List<ChatCompletionRequest.Message> message = new ArrayList<>(DIARY_FEEDBACK_BASE_PROMPT);
+        List<ChatCompletionRequest.Message> message = new ArrayList<>(DIARY_FEEDBACK_BASE_MESSAGE);
         message.add(userMessage(userEntry));
         request.setMessages(message);
 
