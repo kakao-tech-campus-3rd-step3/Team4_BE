@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.mission;
 
 import com.example.demo.domain.mission.Mission;
 import com.example.demo.domain.mission.MissionCategoryEnum;
@@ -8,6 +8,7 @@ import com.example.demo.domain.userEmotion.UserEmotionTypeEnum;
 import com.example.demo.dto.mission.MissionAverageResponse;
 import com.example.demo.dto.mission.MissionCountResponse;
 import com.example.demo.dto.mission.MissionResponse;
+import com.example.demo.event.mission.MissionExposureEvent;
 import com.example.demo.repository.MissionRepository;
 import com.example.demo.repository.UserEmotionRepository;
 import com.example.demo.repository.UserMissionRepository;
@@ -20,22 +21,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class MissionService {
 
     private final MissionRepository missionRepository;
     private final UserMissionRepository userMissionRepository;
     private final UserEmotionRepository userEmotionRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     private static final Integer RECOMMEND_SIZE = 6;
     private static final Map<MissionCategoryEnum, Integer> DEFAULT_RECOMMEND_RATE = Map.of(
-            MissionCategoryEnum.REFRESH, 2, MissionCategoryEnum.DAILY, 2,
-            MissionCategoryEnum.EMPLOYMENT, 2);
+        MissionCategoryEnum.REFRESH, 2, MissionCategoryEnum.DAILY, 2,
+        MissionCategoryEnum.EMPLOYMENT, 2);
 
     /**
      * 사용자의 과거 활동, 감정 상태, 카테고리 선호도 데이터를 분석하여 알맞는 미션들을 추천한다.
@@ -60,48 +62,56 @@ public class MissionService {
      * @return a list of recommended missions wrapped in {@link MissionResponse}
      * @throws RuntimeException if user emotion data cannot be found
      */
+
+    @Transactional(readOnly = true)
     public List<MissionResponse> getRecommendedMissions(User user) {
-        List<MissionCountResponse> result = userMissionRepository.countByCategory(user.getId());
-        Map<MissionCategoryEnum, Integer> countMap = result.stream()
-                .collect(Collectors.toMap(MissionCountResponse::getCategory,
-                        MissionCountResponse::getCount));
+        List<MissionCountResponse> countResponses = userMissionRepository.countByCategory(
+            user.getId());
+        Map<MissionCategoryEnum, Integer> countMap = countResponses.stream()
+            .collect(Collectors.toMap(MissionCountResponse::getCategory,
+                MissionCountResponse::getCount));
         List<MissionCountResponse> completed = Arrays.stream(MissionCategoryEnum.values())
-                .map(category -> new MissionCountResponse(category,
-                        countMap.getOrDefault(category, 0)))
-                .toList();
+            .map(category -> new MissionCountResponse(category,
+                countMap.getOrDefault(category, 0)))
+            .toList();
 
         Map<MissionCategoryEnum, Integer> distribution = calculateDistribution(completed);
 
         UserEmotion emotion = userEmotionRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException(""));
+            .orElseThrow(() -> new RuntimeException(""));
         UserEmotionTypeEnum minEmotion = emotion.getMinEmotion();
 
         MissionAverageResponse dailyAverage = missionRepository.findAverageScoreByCategory(
-                MissionCategoryEnum.DAILY);
+            MissionCategoryEnum.DAILY);
         MissionAverageResponse refreshAverage = missionRepository.findAverageScoreByCategory(
-                MissionCategoryEnum.REFRESH);
+            MissionCategoryEnum.REFRESH);
 
         List<Mission> dailyMissions = getDailyMissions(minEmotion,
-                dailyAverage);
+            dailyAverage);
         List<Mission> refreshMissions = getRefreshMissions(minEmotion,
-                refreshAverage);
+            refreshAverage);
 
         Map<MissionCategoryEnum, List<Mission>> missionsByCategory = Map.of(
-                MissionCategoryEnum.DAILY, dailyMissions,
-                MissionCategoryEnum.REFRESH, refreshMissions,
-                MissionCategoryEnum.EMPLOYMENT,
-                missionRepository.findAllByCategory(MissionCategoryEnum.EMPLOYMENT)
+            MissionCategoryEnum.DAILY, dailyMissions,
+            MissionCategoryEnum.REFRESH, refreshMissions,
+            MissionCategoryEnum.EMPLOYMENT,
+            missionRepository.findAllByCategory(MissionCategoryEnum.EMPLOYMENT)
         );
 
-        return missionsByCategory.entrySet().stream()
-                .flatMap(entry -> selectRandomMissions(entry.getValue(),
-                        distribution.get(entry.getKey())).stream())
-                .map(MissionResponse::new)
-                .toList();
+        List<MissionResponse> result = missionsByCategory.entrySet().stream()
+            .flatMap(entry -> selectRandomMissions(entry.getValue(),
+                distribution.get(entry.getKey())).stream())
+            .map(MissionResponse::new)
+            .toList();
+
+        eventPublisher.publishEvent(
+            new MissionExposureEvent(result.stream().map(MissionResponse::getId).toList()));
+
+        return result;
     }
 
     private Map<MissionCategoryEnum, Integer> calculateDistribution(
-            List<MissionCountResponse> counts) {
+        List<MissionCountResponse> counts) {
 
         int total = counts.stream().mapToInt(MissionCountResponse::getCount).sum();
 
@@ -119,9 +129,9 @@ public class MissionService {
         int diff = RECOMMEND_SIZE - map.values().stream().mapToInt(i -> i).sum();
         if (diff != 0) {
             MissionCategoryEnum maxCategory = counts.stream()
-                    .max(Comparator.comparingInt(MissionCountResponse::getCount))
-                    .map(MissionCountResponse::getCategory)
-                    .orElse(MissionCategoryEnum.DAILY);
+                .max(Comparator.comparingInt(MissionCountResponse::getCount))
+                .map(MissionCountResponse::getCategory)
+                .orElse(MissionCategoryEnum.DAILY);
             map.merge(maxCategory, diff, Integer::sum);
         }
 
@@ -129,47 +139,47 @@ public class MissionService {
     }
 
     private List<Mission> getDailyMissions(UserEmotionTypeEnum minEmotion,
-            MissionAverageResponse dailyAverage) {
+        MissionAverageResponse dailyAverage) {
         List<Mission> dailyMissions = null;
         switch (minEmotion) {
             case SENTIMENT ->
-                    dailyMissions = missionRepository.findByCategoryAndSentimentScoreGreaterThanEqual(
-                            MissionCategoryEnum.DAILY, dailyAverage.getSentimentAvgInt());
+                dailyMissions = missionRepository.findByCategoryAndSentimentScoreGreaterThanEqual(
+                    MissionCategoryEnum.DAILY, dailyAverage.getSentimentAvgInt());
             case ENERGY ->
-                    dailyMissions = missionRepository.findByCategoryAndEnergyScoreGreaterThanEqual(
-                            MissionCategoryEnum.DAILY, dailyAverage.getEnergyAvgInt());
+                dailyMissions = missionRepository.findByCategoryAndEnergyScoreGreaterThanEqual(
+                    MissionCategoryEnum.DAILY, dailyAverage.getEnergyAvgInt());
             case COGNITIVE ->
-                    dailyMissions = missionRepository.findByCategoryAndCognitiveScoreGreaterThanEqual(
-                            MissionCategoryEnum.DAILY, dailyAverage.getCognitiveAvgInt());
+                dailyMissions = missionRepository.findByCategoryAndCognitiveScoreGreaterThanEqual(
+                    MissionCategoryEnum.DAILY, dailyAverage.getCognitiveAvgInt());
             case RELATIONSHIP ->
-                    dailyMissions = missionRepository.findByCategoryAndRelationshipScoreGreaterThanEqual(
-                            MissionCategoryEnum.DAILY, dailyAverage.getRelationshipAvgInt());
+                dailyMissions = missionRepository.findByCategoryAndRelationshipScoreGreaterThanEqual(
+                    MissionCategoryEnum.DAILY, dailyAverage.getRelationshipAvgInt());
             case STRESS ->
-                    dailyMissions = missionRepository.findByCategoryAndStressScoreGreaterThanEqual(
-                            MissionCategoryEnum.DAILY, dailyAverage.getStressAvgInt());
+                dailyMissions = missionRepository.findByCategoryAndStressScoreGreaterThanEqual(
+                    MissionCategoryEnum.DAILY, dailyAverage.getStressAvgInt());
         }
         return dailyMissions;
     }
 
     private List<Mission> getRefreshMissions(UserEmotionTypeEnum minEmotion,
-            MissionAverageResponse refreshAverage) {
+        MissionAverageResponse refreshAverage) {
         List<Mission> refreshMissions = null;
         switch (minEmotion) {
             case SENTIMENT ->
-                    refreshMissions = missionRepository.findByCategoryAndSentimentScoreGreaterThanEqual(
-                            MissionCategoryEnum.REFRESH, refreshAverage.getSentimentAvgInt());
+                refreshMissions = missionRepository.findByCategoryAndSentimentScoreGreaterThanEqual(
+                    MissionCategoryEnum.REFRESH, refreshAverage.getSentimentAvgInt());
             case ENERGY ->
-                    refreshMissions = missionRepository.findByCategoryAndEnergyScoreGreaterThanEqual(
-                            MissionCategoryEnum.REFRESH, refreshAverage.getEnergyAvgInt());
+                refreshMissions = missionRepository.findByCategoryAndEnergyScoreGreaterThanEqual(
+                    MissionCategoryEnum.REFRESH, refreshAverage.getEnergyAvgInt());
             case COGNITIVE ->
-                    refreshMissions = missionRepository.findByCategoryAndCognitiveScoreGreaterThanEqual(
-                            MissionCategoryEnum.REFRESH, refreshAverage.getCognitiveAvgInt());
+                refreshMissions = missionRepository.findByCategoryAndCognitiveScoreGreaterThanEqual(
+                    MissionCategoryEnum.REFRESH, refreshAverage.getCognitiveAvgInt());
             case RELATIONSHIP ->
-                    refreshMissions = missionRepository.findByCategoryAndRelationshipScoreGreaterThanEqual(
-                            MissionCategoryEnum.REFRESH, refreshAverage.getRelationshipAvgInt());
+                refreshMissions = missionRepository.findByCategoryAndRelationshipScoreGreaterThanEqual(
+                    MissionCategoryEnum.REFRESH, refreshAverage.getRelationshipAvgInt());
             case STRESS ->
-                    refreshMissions = missionRepository.findByCategoryAndStressScoreGreaterThanEqual(
-                            MissionCategoryEnum.REFRESH, refreshAverage.getStressAvgInt());
+                refreshMissions = missionRepository.findByCategoryAndStressScoreGreaterThanEqual(
+                    MissionCategoryEnum.REFRESH, refreshAverage.getStressAvgInt());
         }
         return refreshMissions;
     }
@@ -181,8 +191,8 @@ public class MissionService {
         }
         Collections.shuffle(missions);
         return missions.stream()
-                .limit(limit)
-                .toList();
+            .limit(limit)
+            .toList();
     }
 
 }

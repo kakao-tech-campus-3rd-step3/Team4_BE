@@ -49,10 +49,13 @@ public class Mission {
     private Integer employmentScore;
 
     @Column(nullable = false)
-    private Integer selectionRate;
+    private Integer exposureCount;
 
     @Column(nullable = false)
-    private Integer completionRate;
+    private Integer selectionCount;
+
+    @Column(nullable = false)
+    private Integer completionCount;
 
     @Column(name = "mission_level", nullable = false)
     private Integer missionLevel;
@@ -64,9 +67,10 @@ public class Mission {
     }
 
     public Mission(String content, MissionCategoryEnum category, Integer sentimentScore,
-        Integer energyScore, Integer cognitiveScore, Integer relationshipScore,
-        Integer stressScore, Integer employmentScore, Integer selectionRate,
-        Integer completionRate, Integer missionLevel) {
+        Integer energyScore, Integer cognitiveScore, Integer relationshipScore, Integer stressScore,
+        Integer employmentScore, Integer exposureCount, Integer selectionCount,
+        Integer completionCount,
+        Integer missionLevel) {
         this.content = content;
         this.category = category;
         this.sentimentScore = sentimentScore;
@@ -75,9 +79,9 @@ public class Mission {
         this.relationshipScore = relationshipScore;
         this.stressScore = stressScore;
         this.employmentScore = employmentScore;
-        this.selectionRate = selectionRate;
-        this.completionRate = completionRate;
+        this.exposureCount = exposureCount;
+        this.selectionCount = selectionCount;
+        this.completionCount = completionCount;
         this.missionLevel = missionLevel;
     }
-
 }

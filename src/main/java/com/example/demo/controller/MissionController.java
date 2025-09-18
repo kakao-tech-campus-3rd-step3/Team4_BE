@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.config.auth.CurrentUser;
 import com.example.demo.domain.user.User;
 import com.example.demo.dto.mission.MissionResponse;
-import com.example.demo.service.MissionService;
+import com.example.demo.service.mission.MissionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
