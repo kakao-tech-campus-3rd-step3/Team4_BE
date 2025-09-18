@@ -8,6 +8,7 @@ import com.example.demo.dto.diary.CreateDiaryResponse;
 import com.example.demo.dto.diary.DiaryRequest;
 import com.example.demo.dto.diary.DiaryResponse;
 import com.example.demo.external.openai.OpenAiClient;
+import com.example.demo.external.openai.dto.CatMessage;
 import com.example.demo.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,8 @@ public class DiaryService {
     public CreateDiaryResponse create(DiaryRequest request, User user) {
         Diary diary = new Diary(user, request.getEmotion(), request.getContent());
 
-        String feedback = openAiClient.getDiaryFeedback(request.getContent()); // 동기 블락킹 문제
-        diary.addFeedback(feedback);
+        CatMessage message = openAiClient.getDiaryFeedback(request.getContent());
+        diary.addFeedback(message.getMessage());
 
         diaryRepository.save(diary);
         return new CreateDiaryResponse(diary);

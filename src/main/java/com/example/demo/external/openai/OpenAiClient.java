@@ -1,11 +1,10 @@
 package com.example.demo.external.openai;
 
+import com.example.demo.external.openai.dto.CatMessage;
 import com.example.demo.external.openai.dto.ChatCompletionRequest;
-import com.example.demo.external.openai.dto.ChatCompletionResponse;
-import com.example.demo.external.openai.prompt.PromptManager;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -14,13 +13,24 @@ public class OpenAiClient {
 
     private static final String CHAT_COMPLETION_URL = "/v1/chat/completions";
     private final RestClient restClient;
+    private final ChatCompletionResponseParser parser;
 
-    public OpenAiClient(@Qualifier("openAiRestClient") RestClient restClient) {
-        this.restClient = restClient;
+    public OpenAiClient(
+        @Value("${openai.clients.apikey}") String apiKey,
+        @Value("${openai.clients.baseurl}") String baseUrl,
+        ChatCompletionResponseParser parser
+    ) {
+        this.restClient = RestClient.builder()
+            .baseUrl(baseUrl)
+            .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .build();
+        this.parser = parser;
     }
 
-    public String getDiaryFeedback(String diaryEntry) {
-        ChatCompletionRequest request = PromptManager.diaryFeedback(diaryEntry);
+    public CatMessage getDiaryFeedback(String diaryEntry) {
+        ChatCompletionRequest request = ChatCompletionRequestBuilder.buildDiaryFeedbackRequest(
+            diaryEntry);
 
         String rawResponse = restClient.post()
             .uri(CHAT_COMPLETION_URL)
@@ -28,21 +38,6 @@ public class OpenAiClient {
             .retrieve()
             .body(String.class);
 
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            ChatCompletionResponse response = mapper.readValue(rawResponse,
-                ChatCompletionResponse.class);
-
-            if (response == null
-                || response.getChoices() == null
-                || response.getChoices().isEmpty()) {
-                throw new RuntimeException("OpenAI 응답이 비어있습니다.");
-            }
-            return response.getChoices().get(0).getMessage().getContent();
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("OpenAI 응답을 파싱하지 못했습니다.", e);
-        } catch (Exception e) {
-            throw new RuntimeException("OpenAI 요청 처리 중 오류 발생", e);
-        }
+        return parser.getMessage(rawResponse);
     }
 }

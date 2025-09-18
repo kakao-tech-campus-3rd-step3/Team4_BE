@@ -5,13 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
+@Setter
 public class ChatCompletionRequest {
 
     private String model;
