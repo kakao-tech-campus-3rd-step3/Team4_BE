@@ -47,7 +47,7 @@ public class PlanCommandServiceTest {
         user2 = userRepository.save(User.of("사용자2", "user2@test.com"));
 
         mission1 = missionRepository.save(
-            new Mission("책 읽기", MissionCategoryEnum.REFRESH, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+            new Mission("책 읽기", MissionCategoryEnum.REFRESH, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
     }
 
     @Test
@@ -84,6 +84,11 @@ public class PlanCommandServiceTest {
 
         List<UserMission> userMissions = userMissionRepository.findByUser(user1);
         assertThat(userMissions.size()).isEqualTo(2);
+
+        long doneCount = userMissions.stream().filter(UserMission::getDone).count();
+        long notDoneCount = userMissions.stream().filter(um -> !um.getDone()).count();
+        assertThat(doneCount).isEqualTo(1);
+        assertThat(notDoneCount).isEqualTo(1);
     }
 
     @Test
