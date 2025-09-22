@@ -1,6 +1,7 @@
 package com.example.demo.domain.user;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,15 +33,23 @@ public class User {
     @Column(nullable = false)
     private String refreshToken;
 
+    @Embedded
+    private Emotion emotion;
+
     private User(String name, String email, Integer point, String refreshToken) {
         this.name = name;
         this.email = email;
         this.point = point;
         this.refreshToken = refreshToken;
+        emotion = new Emotion();
     }
 
     public static User of(String name, String email) {
         return new User(name, email, 0, "");
+    }
+
+    public void applyEmotionTestResult(EmotionInputVo result) {
+        this.emotion = new Emotion(result);
     }
 
     public User update(String name) {

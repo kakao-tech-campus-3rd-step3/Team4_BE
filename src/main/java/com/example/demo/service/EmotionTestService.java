@@ -1,12 +1,13 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.emotionTest.EmotionTestQuestion;
-import com.example.demo.domain.emotionTest.EmotionTestResult;
+import com.example.demo.common.converter.EmotionInputConverter;
+import com.example.demo.domain.emotion.test.EmotionTestQuestion;
+import com.example.demo.domain.user.EmotionInputVo;
 import com.example.demo.domain.user.User;
 import com.example.demo.dto.emotionTest.EmotionTestAnswersRequest;
 import com.example.demo.dto.emotionTest.EmotionTestQuestionResponse;
 import com.example.demo.repository.EmotionTestQuestionRepository;
-import com.example.demo.repository.EmotionTestResultRepository;
+import com.example.demo.repository.UserRepository;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class EmotionTestService {
 
-    private final EmotionTestResultRepository resultRepository;
     private final EmotionTestQuestionRepository questionRepository;
-
     private volatile Map<Long, EmotionTestQuestion> cachedQuestionsMap;
 
     private Map<Long, EmotionTestQuestion> getQuestionsMap() {
@@ -52,10 +51,11 @@ public class EmotionTestService {
     }
 
     public void applyResult(User user, List<EmotionTestAnswersRequest> answers) {
-        if (resultRepository.existsByUser(user)) {
+        if (user.getEmotion().isInitialized()) {
             throw new RuntimeException("이미 감정 테스트를 수행했음");
         }
 
+        // validate answers
         Set<Long> allQuestionIds = getQuestionsMap().keySet();
         Set<Long> receivedIds = answers.stream()
             .map(EmotionTestAnswersRequest::getQuestionId)
@@ -64,13 +64,7 @@ public class EmotionTestService {
             throw new RuntimeException("모든 질문에 답변이 있어야함");
         }
 
-        List<EmotionTestResult> results = answers.stream()
-            .map(answer -> {
-                EmotionTestQuestion found = getQuestionsMap().get(answer.getQuestionId());
-                return new EmotionTestResult(user, found, answer.getChoiceIndex());
-            })
-            .toList();
-
-        resultRepository.saveAll(results);
+        EmotionInputVo result = EmotionInputConverter.convert(answers);
+        user.applyEmotionTestResult(result);
     }
 }

@@ -2,14 +2,12 @@ package com.example.demo.service;
 
 import com.example.demo.domain.mission.Mission;
 import com.example.demo.domain.mission.MissionCategoryEnum;
+import com.example.demo.domain.user.EmotionType;
 import com.example.demo.domain.user.User;
-import com.example.demo.domain.userEmotion.UserEmotion;
-import com.example.demo.domain.userEmotion.UserEmotionTypeEnum;
 import com.example.demo.dto.mission.MissionAverageResponse;
 import com.example.demo.dto.mission.MissionCountResponse;
 import com.example.demo.dto.mission.MissionResponse;
 import com.example.demo.repository.MissionRepository;
-import com.example.demo.repository.UserEmotionRepository;
 import com.example.demo.repository.UserMissionRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +28,6 @@ public class MissionService {
 
     private final MissionRepository missionRepository;
     private final UserMissionRepository userMissionRepository;
-    private final UserEmotionRepository userEmotionRepository;
 
     private static final Integer RECOMMEND_SIZE = 6;
     private static final Map<MissionCategoryEnum, Integer> DEFAULT_RECOMMEND_RATE = Map.of(
@@ -72,9 +69,7 @@ public class MissionService {
 
         Map<MissionCategoryEnum, Integer> distribution = calculateDistribution(completed);
 
-        UserEmotion emotion = userEmotionRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException(""));
-        UserEmotionTypeEnum minEmotion = emotion.getMinEmotion();
+        EmotionType minEmotion = user.getEmotion().getMinEmotion();
 
         MissionAverageResponse dailyAverage = missionRepository.findAverageScoreByCategory(
                 MissionCategoryEnum.DAILY);
@@ -128,7 +123,7 @@ public class MissionService {
         return map;
     }
 
-    private List<Mission> getDailyMissions(UserEmotionTypeEnum minEmotion,
+    private List<Mission> getDailyMissions(EmotionType minEmotion,
             MissionAverageResponse dailyAverage) {
         List<Mission> dailyMissions = null;
         switch (minEmotion) {
@@ -151,7 +146,7 @@ public class MissionService {
         return dailyMissions;
     }
 
-    private List<Mission> getRefreshMissions(UserEmotionTypeEnum minEmotion,
+    private List<Mission> getRefreshMissions(EmotionType minEmotion,
             MissionAverageResponse refreshAverage) {
         List<Mission> refreshMissions = null;
         switch (minEmotion) {

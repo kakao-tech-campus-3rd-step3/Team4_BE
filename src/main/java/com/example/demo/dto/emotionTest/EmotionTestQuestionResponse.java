@@ -1,6 +1,6 @@
 package com.example.demo.dto.emotionTest;
 
-import com.example.demo.domain.emotionTest.EmotionTestQuestion;
+import com.example.demo.domain.emotion.test.EmotionTestQuestion;
 import java.util.List;
 import lombok.Getter;
 
