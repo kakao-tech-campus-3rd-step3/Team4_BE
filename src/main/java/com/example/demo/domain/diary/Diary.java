@@ -15,8 +15,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name = "diary")
 public class Diary extends BaseEntity {
 
@@ -49,5 +51,9 @@ public class Diary extends BaseEntity {
 
     public void addFeedback(String feedbackContent) {
         this.feedback = new DiaryFeedback(this, feedbackContent);
+    }
+
+    public boolean isOwner(Long userId) {
+        return this.author.getId().equals(userId);
     }
 }

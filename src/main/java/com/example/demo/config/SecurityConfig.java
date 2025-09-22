@@ -35,8 +35,9 @@ public class SecurityConfig {
             .sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
+                // '/api/auth/reissue' 경로를 permitAll 목록에 추가
                 .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**",
-                    "/oauth2/**")
+                    "/oauth2/**", "/api/auth/reissue")
                 .permitAll()
                 .requestMatchers("/api/**").hasRole("USER")
                 .anyRequest().authenticated()

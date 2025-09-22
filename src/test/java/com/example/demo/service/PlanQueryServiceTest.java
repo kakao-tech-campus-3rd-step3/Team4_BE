@@ -45,9 +45,9 @@ public class PlanQueryServiceTest {
         user1 = userRepository.save(User.of("사용자1", "user1@test.com"));
 
         mission1 = missionRepository.save(
-            new Mission("책 읽기", MissionCategoryEnum.REFRESH, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+            new Mission("책 읽기", MissionCategoryEnum.REFRESH, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
         mission2 = missionRepository.save(
-            new Mission("알고리즘 문제 풀기", MissionCategoryEnum.DAILY, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+            new Mission("알고리즘 문제 풀기", MissionCategoryEnum.DAILY, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
     }
 
     @Test
