@@ -43,23 +43,14 @@ public class ItemEntity extends BaseEntity {
     private Long productId;
 
     @Column(nullable = false)
-    private String name;
-
-    //이건 뭐람
-    @Column(nullable = false)
-    private EquipSlot slot;
-
-    @Column(nullable = false)
     private boolean equipped;
 
     protected ItemEntity() {
     }
 
-    private ItemEntity(Long id, Long productId, String name, EquipSlot slot, boolean equipped) {
+    private ItemEntity(Long id, Long productId, boolean equipped) {
         this.id = id;
         this.productId = productId;
-        this.name = name;
-        this.slot = slot;
         this.equipped = equipped;
     }
 

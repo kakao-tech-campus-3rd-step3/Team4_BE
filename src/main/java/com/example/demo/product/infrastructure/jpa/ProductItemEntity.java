@@ -1,6 +1,5 @@
 package com.example.demo.product.infrastructure.jpa;
 
-import com.example.demo.cat.infrastructure.jpa.DisplayImage;
 import com.example.demo.cat.domain.EquipSlot;
 import com.example.demo.product.domain.ProductItem;
 import jakarta.persistence.Column;
@@ -33,9 +32,9 @@ public class ProductItemEntity {
     private EquipSlot category;
 
     @Embedded
-    private DisplayImage displayImage;
+    private DisplayImageEmbeddable displayImage;
 
     public ProductItem toDomain() {
-        return new ProductItem(id, name, price, category, displayImage);
+        return new ProductItem(id, name, price, category, displayImage.toModel());
     }
 }

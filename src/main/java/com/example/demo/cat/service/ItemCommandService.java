@@ -3,7 +3,7 @@ package com.example.demo.cat.service;
 import com.example.demo.cat.controller.dto.EquipItemRequest;
 import com.example.demo.cat.domain.Cat;
 import com.example.demo.product.domain.ProductItem;
-import com.example.demo.product.infrastructure.ProductItemRepository;
+import com.example.demo.product.infrastructure.ProductItemJpaRepository;
 import com.example.demo.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ItemCommandService {
 
-    private final ProductItemRepository productRepository;
+    private final ProductItemJpaRepository productRepository;
     private final CatRepository catRepository;
 
     public void purchaseItem(Long productId, User user) {
