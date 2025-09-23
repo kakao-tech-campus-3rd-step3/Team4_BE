@@ -1,6 +1,5 @@
 package com.example.demo.cat.infrastructure;
 
-import com.example.demo.cat.controller.dto.CatResponse;
 import com.example.demo.cat.domain.Cat;
 import com.example.demo.cat.infrastructure.jpa.CatEntity;
 import com.example.demo.cat.infrastructure.jpa.CatJpaRepository;

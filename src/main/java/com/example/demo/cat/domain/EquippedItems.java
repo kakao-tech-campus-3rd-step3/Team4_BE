@@ -31,7 +31,4 @@ public class EquippedItems {
         remove.equip(false);
     }
 
-    public List<Item> getEquippedItems() {
-        return equippedItems.values().stream().toList();
-    }
 }
