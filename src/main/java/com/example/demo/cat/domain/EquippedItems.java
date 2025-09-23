@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-//domain service? policy?
 public class EquippedItems {
 
     private final Map<EquipSlot, Item> equippedItems;

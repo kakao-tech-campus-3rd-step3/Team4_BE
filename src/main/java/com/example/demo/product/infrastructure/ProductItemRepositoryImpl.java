@@ -7,6 +7,7 @@ import com.example.demo.product.controller.dto.ProductItemResponse;
 import com.example.demo.product.domain.ProductItem;
 import com.example.demo.product.infrastructure.jpa.ProductItemEntity;
 import com.example.demo.product.service.ProductItemRepository;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +23,18 @@ public class ProductItemRepositoryImpl implements ProductItemRepository {
 
     @Override
     public Page<ProductItemResponse> findAllByCategoryOrderByIdAsc(Pageable pageable,
-            EquipSlot category, Cat cat) {
+        EquipSlot category, Cat cat) {
         Page<ProductItem> products = productItemJpaRepository.findAllByCategoryOrderById(pageable,
-                category).map(
-                ProductItemEntity::toDomain);
+            category).map(
+            ProductItemEntity::toDomain);
 
         Set<Long> ids = cat.getItems().stream().map(Item::getProductId).collect(Collectors.toSet());
 
         return products.map(p -> new ProductItemResponse(p, ids.contains(p.getId())));
+    }
+
+    @Override
+    public Optional<ProductItem> findById(Long id) {
+        return productItemJpaRepository.findById(id).map(ProductItemEntity::toDomain);
     }
 }

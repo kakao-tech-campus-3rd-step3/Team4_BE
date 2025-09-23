@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class DisplayImage {
 
-    private String imageUrl;
-    private Float offsetX;
-    private Float offsetY;
+    private final String imageUrl;
+    private final Float offsetX;
+    private final Float offsetY;
 
     public DisplayImage(String imageUrl, Float offsetX, Float offsetY) {
         this.imageUrl = imageUrl;

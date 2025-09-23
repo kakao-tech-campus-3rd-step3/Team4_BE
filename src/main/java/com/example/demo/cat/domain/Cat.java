@@ -2,9 +2,8 @@ package com.example.demo.cat.domain;
 
 import com.example.demo.product.domain.ProductItem;
 import com.example.demo.user.domain.User;
-import lombok.Getter;
-
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 public class Cat {
@@ -24,7 +23,7 @@ public class Cat {
     }
 
     public void purchaseItem(ProductItem productItem) {
-        Item item = new Item(productItem.getId(), productItem.getName(), productItem.getSlot(), false);
+        Item item = new Item(productItem.getId(), productItem.getSlot(), false);
         items.add(item);
     }
 

@@ -24,6 +24,7 @@ public class ItemService {
 
     private final ProductItemRepository productItemRepository;
     private final CatRepository catRepository;
+    private final ItemQueryRepository itemQueryRepository;
 
     public void purchaseItem(Long productId, User user) {
         Cat cat = getCatById(user.getId());
@@ -43,24 +44,23 @@ public class ItemService {
 
     @Transactional(readOnly = true)
     public Page<ProductItemResponse> listProductItems(Integer page, EquipSlot category,
-            User user) {
+        User user) {
         return productItemRepository.findAllByCategoryOrderByIdAsc(
-                PageRequest.of(page - 1, SHOP_ITEM_PAGE_SIZE), category, getCatById(user.getId()));
+            PageRequest.of(page - 1, SHOP_ITEM_PAGE_SIZE), category, getCatById(user.getId()));
     }
 
     @Transactional(readOnly = true)
     public List<ItemResponse> listItems(User user) {
-        Cat cat = getCatById(user.getId());
-        return cat.getOwnedItems().stream().map(ItemResponse::new).toList();
+        return itemQueryRepository.findAllByUserId(user.getId());
     }
 
     private Cat getCatById(Long id) {
         return catRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("고양이를 찾는데 실패하였습니다."));
+            .orElseThrow(() -> new RuntimeException("고양이를 찾는데 실패하였습니다."));
     }
 
     private ProductItem getProductById(Long id) {
         return productItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("아이템을 찾는데 실패하였습니다.")).toDomain();
+            .orElseThrow(() -> new RuntimeException("아이템을 찾는데 실패하였습니다."));
     }
 }
