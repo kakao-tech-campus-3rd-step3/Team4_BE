@@ -1,21 +1,30 @@
 package com.example.demo.cat.service;
 
 import com.example.demo.cat.controller.dto.EquipItemRequest;
+import com.example.demo.cat.controller.dto.ItemResponse;
 import com.example.demo.cat.domain.Cat;
+import com.example.demo.cat.domain.EquipSlot;
+import com.example.demo.product.controller.dto.ProductItemResponse;
 import com.example.demo.product.domain.ProductItem;
-import com.example.demo.product.infrastructure.ProductItemRepository;
+import com.example.demo.product.service.ProductItemRepository;
 import com.example.demo.user.domain.User;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ItemCommandService {
+public class ItemService {
 
-    private final ProductItemRepository productRepository;
+    private static final Integer SHOP_ITEM_PAGE_SIZE = 6;
+
+    private final ProductItemRepository productItemRepository;
     private final CatRepository catRepository;
+    private final ItemQueryRepository itemQueryRepository;
 
     public void purchaseItem(Long productId, User user) {
         Cat cat = getCatById(user.getId());
@@ -33,13 +42,25 @@ public class ItemCommandService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public Page<ProductItemResponse> listProductItems(Integer page, EquipSlot category,
+        User user) {
+        return productItemRepository.findAllByCategoryOrderByIdAsc(
+            PageRequest.of(page - 1, SHOP_ITEM_PAGE_SIZE), category, getCatById(user.getId()));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ItemResponse> listItems(User user) {
+        return itemQueryRepository.findAllByUserId(user.getId());
+    }
+
     private Cat getCatById(Long id) {
         return catRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("고양이를 찾는데 실패하였습니다."));
     }
 
     private ProductItem getProductById(Long id) {
-        return productRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("아이템을 찾는데 실패하였습니다.")).toDomain();
+        return productItemRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("아이템을 찾는데 실패하였습니다."));
     }
 }
