@@ -2,6 +2,7 @@ package com.example.demo.cat.domain;
 
 import com.example.demo.product.domain.ProductItem;
 import com.example.demo.user.domain.User;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
@@ -22,6 +23,10 @@ public class Cat {
         this.equippedItems = equippedItems;
     }
 
+    public Cat(User owner, String name) {
+        this(null, owner, name, new ArrayList<>(), new EquippedItems());
+    }
+
     public void purchaseItem(ProductItem productItem) {
         Item item = new Item(productItem.getId(), productItem.getSlot(), false);
         items.add(item);
@@ -35,6 +40,10 @@ public class Cat {
     public void unEquip(Long itemId) {
         Item item = getItem(itemId);
         equippedItems.unEquip(item);
+    }
+
+    public void rename(String catName) {
+        this.name = catName;
     }
 
     private Item getItem(Long itemId) {

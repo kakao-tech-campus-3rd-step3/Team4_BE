@@ -7,11 +7,14 @@ import java.util.stream.Collectors;
 
 public class EquippedItems {
 
-    private final Map<EquipSlot, Item> equippedItems;
+    private Map<EquipSlot, Item> equippedItems;
 
     public EquippedItems(List<Item> items) {
         this.equippedItems = items.stream().filter(Item::isEquipped)
             .collect(Collectors.toMap(Item::getSlot, Function.identity()));
+    }
+
+    public EquippedItems() {
     }
 
     public void equip(Item item) {
