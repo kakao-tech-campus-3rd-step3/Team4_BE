@@ -1,14 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.common.converter.EmotionInputConverter;
-import com.example.demo.domain.emotion.test.EmotionTestQuestion;
+import com.example.demo.domain.emotion.test.EmotionTestQuestions;
+import com.example.demo.domain.emotion.test.EmotionTestQuestions.EmotionTestQuestion;
 import com.example.demo.domain.user.EmotionInputVo;
 import com.example.demo.domain.user.User;
 import com.example.demo.dto.emotionTest.EmotionTestAnswersRequest;
 import com.example.demo.dto.emotionTest.EmotionTestQuestionResponse;
-import com.example.demo.repository.EmotionTestQuestionRepository;
-import com.example.demo.repository.UserRepository;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,28 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class EmotionTestService {
 
-    private final EmotionTestQuestionRepository questionRepository;
-    private volatile Map<Long, EmotionTestQuestion> cachedQuestionsMap;
-
-    private Map<Long, EmotionTestQuestion> getQuestionsMap() {
-        if (cachedQuestionsMap == null) {
-            Map<Long, EmotionTestQuestion> ready = questionRepository.findAll().stream()
-                .collect(Collectors.toUnmodifiableMap(
-                    EmotionTestQuestion::getId,
-                    Function.identity()
-                ));
-            synchronized (this) {
-                if (cachedQuestionsMap == null) {
-                    cachedQuestionsMap = ready;
-                }
-            }
-        }
-        return cachedQuestionsMap;
-    }
+    private EmotionTestQuestions questions = new EmotionTestQuestions();
 
     @Transactional(readOnly = true)
     public List<EmotionTestQuestionResponse> getAll() {
-        return getQuestionsMap().values().stream()
+        return questions.getQuestions().stream()
             .sorted(Comparator.comparing(EmotionTestQuestion::getId))
             .map(EmotionTestQuestionResponse::new)
             .toList();
@@ -56,7 +39,7 @@ public class EmotionTestService {
         }
 
         // validate answers
-        Set<Long> allQuestionIds = getQuestionsMap().keySet();
+        Set<Long> allQuestionIds = new HashSet<>(List.of(1L, 2L, 3L, 4L, 5L, 6L));
         Set<Long> receivedIds = answers.stream()
             .map(EmotionTestAnswersRequest::getQuestionId)
             .collect(Collectors.toSet());
