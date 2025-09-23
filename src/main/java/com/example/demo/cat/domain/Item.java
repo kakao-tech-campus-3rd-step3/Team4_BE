@@ -5,22 +5,21 @@ import lombok.Getter;
 
 @Getter
 public class Item {
+
     private Long id;
     private Long productId;
-    private String name;
     private EquipSlot slot;
     private boolean equipped;
 
-    public Item(Long id, Long productId, String name, EquipSlot slot, boolean equipped) {
+    public Item(Long id, Long productId, EquipSlot slot, boolean equipped) {
         this.id = id;
         this.productId = productId;
-        this.name = name;
         this.slot = slot;
         this.equipped = equipped;
     }
 
-    public Item(Long productId,  String name, EquipSlot slot, boolean equipped) {
-        this(null, productId, name, slot, equipped);
+    public Item(Long productId, EquipSlot slot, boolean equipped) {
+        this(null, productId, slot, equipped);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.example.demo.product.domain;
 
-import com.example.demo.cat.infrastructure.jpa.DisplayImage;
 import com.example.demo.cat.domain.EquipSlot;
 import lombok.Getter;
 

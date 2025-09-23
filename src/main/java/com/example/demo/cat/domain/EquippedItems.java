@@ -5,14 +5,16 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-//domain service? policy?
 public class EquippedItems {
 
-    private final Map<EquipSlot, Item> equippedItems;
+    private Map<EquipSlot, Item> equippedItems;
 
     public EquippedItems(List<Item> items) {
         this.equippedItems = items.stream().filter(Item::isEquipped)
             .collect(Collectors.toMap(Item::getSlot, Function.identity()));
+    }
+
+    public EquippedItems() {
     }
 
     public void equip(Item item) {
@@ -29,7 +31,4 @@ public class EquippedItems {
         remove.equip(false);
     }
 
-    public List<Item> getEquippedItems() {
-        return equippedItems.values().stream().toList();
-    }
 }
