@@ -1,6 +1,9 @@
 package com.example.demo.domain.emotion.test;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,23 +24,30 @@ public class EmotionTestQuestions {
     }
 
     private void load() {
-        try {
-            ClassPathResource emotionTestPath = new ClassPathResource("data/emotion_test.txt");
-            StringTokenizer st = new StringTokenizer(Files.readString(emotionTestPath.getFile().toPath()), "\n");
+        ClassPathResource emotionTestPath = new ClassPathResource("data/emotion_test.txt");
 
-            for (int i=0; i<6; i++) {
+        try (InputStream is = emotionTestPath.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+
+            List<String> lines = reader.lines().toList();
+
+            StringTokenizer st = new StringTokenizer(String.join("\n", lines), "\n");
+
+            for (int i = 0; i < 6; i++) {
                 String question = st.nextToken().trim();
                 List<String> answers = new ArrayList<>();
-                for (int j=0; j<4; j++) {
+                for (int j = 0; j < 4; j++) {
                     answers.add(st.nextToken().trim());
                 }
                 String imageUrl = st.nextToken().trim();
-                questions.add(new EmotionTestQuestion((long) i+1, question, answers, imageUrl));
+                questions.add(new EmotionTestQuestion((long) i + 1, question, answers, imageUrl));
             }
+
         } catch (IOException e) {
-            throw new RuntimeException("파일을 찾을 수 없습니다.", e);
+            throw new RuntimeException("리소스를 읽는 중 오류 발생", e);
         }
     }
+
 
     @Getter
     @AllArgsConstructor
