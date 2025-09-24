@@ -7,6 +7,8 @@ import com.example.demo.cat.domain.Cat;
 import com.example.demo.cat.domain.EquipSlot;
 import com.example.demo.cat.domain.EquippedItems;
 import com.example.demo.cat.domain.Item;
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.ItemErrorCode;
 import com.example.demo.product.domain.DisplayImage;
 import com.example.demo.product.domain.ProductItem;
 import com.example.demo.user.domain.User;
@@ -67,8 +69,14 @@ public class CatTest {
         ProductItem product = CatTestFixture.createProductItem1();
         cat.purchaseItem(product);
 
-        assertThatThrownBy(() -> cat.purchaseItem(product)).isInstanceOf(
-            RuntimeException.class);
+        assertThatThrownBy(
+            () -> cat.purchaseItem(product)
+        ).satisfies(
+            ex -> {
+                BusinessException e = (BusinessException) ex;
+                assertThat(e.getErrorCode()).isEqualTo(ItemErrorCode.ITEM_ALREADY_EXIST);
+            }
+        ).isInstanceOf(BusinessException.class);
     }
 
     @Test
@@ -96,7 +104,14 @@ public class CatTest {
         Item item = new Item(1L, product.getId(), EquipSlot.HEAD, false);
 
         //when
-        assertThatThrownBy(() -> cat.equip(item.getId())).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(
+            () -> cat.equip(item.getId())
+        ).satisfies(
+            ex -> {
+                BusinessException e = (BusinessException) ex;
+                assertThat(e.getErrorCode()).isEqualTo(ItemErrorCode.ITEM_NOT_EXIST);
+            }
+        ).isInstanceOf(BusinessException.class);
     }
 
     @Test
@@ -131,6 +146,7 @@ public class CatTest {
 
 
     public static class CatTestFixture {
+
         public static User createUser() {
             return new User(1L, "test@test.com", "카테캠", 10000, "");
         }

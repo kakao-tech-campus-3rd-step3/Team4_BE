@@ -3,6 +3,8 @@ package com.example.demo.domain.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.UserErrorCode;
 import com.example.demo.domain.cat.CatTest.CatTestFixture;
 import com.example.demo.user.domain.User;
 import org.junit.jupiter.api.Test;
@@ -52,6 +54,13 @@ public class UserTest {
         User user = CatTestFixture.createUser();
 
         //when
-        assertThatThrownBy(() -> user.spendPoints(100000)).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(
+            () -> user.spendPoints(100000)
+        ).satisfies(
+            ex -> {
+                BusinessException e = (BusinessException) ex;
+                assertThat(e.getErrorCode()).isEqualTo(UserErrorCode.NOT_ENOUGH_POINTS);
+            }
+        ).isInstanceOf(BusinessException.class);
     }
 }

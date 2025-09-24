@@ -1,5 +1,7 @@
 package com.example.demo.cat.domain;
 
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.ItemErrorCode;
 import com.example.demo.product.domain.ProductItem;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +48,13 @@ public class Cat {
 
     private Item getItem(Long itemId) {
         return items.stream().filter(i -> i.getId().equals(itemId)).findAny()
-            .orElseThrow(() -> new RuntimeException("아이템을 소유하고 있지 않습니다."));
+            .orElseThrow(() -> new BusinessException(ItemErrorCode.ITEM_NOT_EXIST));
     }
 
     private void validateItemExist(ProductItem productItem) {
         Long id = productItem.getId();
         if (items.stream().anyMatch(i -> i.getProductId().equals(id))) {
-            throw new RuntimeException("이미 소유중인 상품입니다.");
+            throw new BusinessException(ItemErrorCode.ITEM_ALREADY_EXIST);
         }
     }
 }
