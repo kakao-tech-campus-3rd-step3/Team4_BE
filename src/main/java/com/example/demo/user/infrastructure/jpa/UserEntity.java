@@ -30,7 +30,6 @@ public class UserEntity {
     @Column(nullable = false)
     private Integer point;
 
-    @Column(nullable = false)
     private String refreshToken;
 
     private UserEntity(Long id, String name, String email, Integer point, String refreshToken) {
