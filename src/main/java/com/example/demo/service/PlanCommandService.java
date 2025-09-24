@@ -3,11 +3,14 @@ package com.example.demo.service;
 import com.example.demo.domain.mission.Mission;
 import com.example.demo.domain.mission.UserMission;
 import com.example.demo.domain.user.User;
+import com.example.demo.event.mission.MissionCompletionEvent;
+import com.example.demo.event.mission.MissionSelectionEvent;
 import com.example.demo.repository.MissionRepository;
 import com.example.demo.repository.UserMissionRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +21,13 @@ public class PlanCommandService {
 
     private final UserMissionRepository userMissionRepository;
     private final MissionRepository missionRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public void addMissionToPlan(Long missionId, User user) {
         validateIfMissionCanBeAdded(missionId, user);
         Mission mission = findMissionById(missionId);
         createUserMission(user, mission);
+        eventPublisher.publishEvent(new MissionSelectionEvent(mission.getId()));
     }
 
     private void validateIfMissionCanBeAdded(Long missionId, User user) {
@@ -52,6 +57,11 @@ public class PlanCommandService {
         UserMission userMission = findUserMissionById(planId);
         validateUserOwnership(userMission, user);
         userMission.updateDone(isDone);
+
+        if (isDone) {
+            eventPublisher.publishEvent(
+                new MissionCompletionEvent(userMission.getMission().getId()));
+        }
     }
 
     public void deletePlan(Long planId, User user) {
