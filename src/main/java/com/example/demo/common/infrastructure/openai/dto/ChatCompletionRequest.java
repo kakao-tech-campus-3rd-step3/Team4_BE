@@ -4,10 +4,12 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ChatCompletionRequest {
     private String model;
     private List<Message> messages;
@@ -17,6 +19,7 @@ public class ChatCompletionRequest {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @ToString
     public static class Message {
 
         private String role;

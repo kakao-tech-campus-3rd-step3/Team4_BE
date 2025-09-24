@@ -18,7 +18,7 @@ public class YamlResourceLoader {
         try (InputStream inputStream = new ClassPathResource(resourcePath).getInputStream()) {
             return objectMapper.readValue(inputStream, clazz);
         } catch (IOException e) {
-            throw new RuntimeException("리소스를 불러오는 중 오류 발생: " + resourcePath, e);
+            throw new ResourceLoaderException("파일이 존재하지 않거나 역직렬화에 실패했습니다: " + resourcePath + " -> " + clazz.toString());
         }
     }
 
@@ -26,7 +26,7 @@ public class YamlResourceLoader {
         try (InputStream inputStream = new ClassPathResource(resourcePath).getInputStream()) {
             return objectMapper.readValue(inputStream, typeReference);
         } catch (IOException e) {
-            throw new RuntimeException("리소스를 불러오는 중 오류 발생: " + resourcePath, e);
+            throw new ResourceLoaderException("파일이 존재하지 않거나 역직렬화에 실패했습니다: " + resourcePath + " -> " + typeReference.toString());
         }
     }
 }
