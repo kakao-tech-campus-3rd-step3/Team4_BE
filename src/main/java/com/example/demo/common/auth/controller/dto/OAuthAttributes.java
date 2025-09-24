@@ -1,4 +1,4 @@
-package com.example.demo.common.auth.dto;
+package com.example.demo.common.auth.controller.dto;
 
 import java.util.Map;
 import lombok.Builder;

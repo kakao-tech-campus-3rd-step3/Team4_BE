@@ -1,6 +1,6 @@
 package com.example.demo.common.auth.service;
 
-import com.example.demo.common.auth.jwt.JwtTokenProvider;
+import com.example.demo.common.auth.infrastructure.jwt.JwtTokenProvider;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.example.demo.common.auth.resolver;
+package com.example.demo.common.auth.infrastructure.resolver;
 
 import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserRepository;

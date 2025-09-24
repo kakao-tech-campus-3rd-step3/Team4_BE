@@ -1,7 +1,7 @@
 package com.example.demo.common.config;
 
-import com.example.demo.common.auth.jwt.JwtAuthenticationFilter;
-import com.example.demo.common.auth.jwt.JwtTokenProvider;
+import com.example.demo.common.auth.infrastructure.jwt.JwtAuthenticationFilter;
+import com.example.demo.common.auth.infrastructure.jwt.JwtTokenProvider;
 import com.example.demo.common.auth.service.CustomOAuth2UserService;
 import com.example.demo.common.auth.service.OAuth2SuccessHandler;
 import jakarta.servlet.http.HttpServletResponse;

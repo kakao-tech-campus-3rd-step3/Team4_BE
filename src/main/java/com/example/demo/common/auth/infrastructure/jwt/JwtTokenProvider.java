@@ -1,4 +1,4 @@
-package com.example.demo.common.auth.jwt;
+package com.example.demo.common.auth.infrastructure.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

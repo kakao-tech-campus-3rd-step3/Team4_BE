@@ -1,6 +1,6 @@
 package com.example.demo.common.auth.service;
 
-import com.example.demo.common.auth.dto.OAuthAttributes;
+import com.example.demo.common.auth.controller.dto.OAuthAttributes;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserRepository;
 import java.util.Collections;
