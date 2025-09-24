@@ -4,6 +4,9 @@ import com.example.demo.cat.controller.dto.EquipItemRequest;
 import com.example.demo.cat.controller.dto.ItemResponse;
 import com.example.demo.cat.domain.Cat;
 import com.example.demo.cat.domain.EquipSlot;
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.CatErrorCode;
+import com.example.demo.common.exception.errorcode.ItemErrorCode;
 import com.example.demo.product.controller.dto.ProductItemResponse;
 import com.example.demo.product.domain.ProductItem;
 import com.example.demo.product.service.ProductItemRepository;
@@ -64,11 +67,11 @@ public class ItemService {
 
     private Cat getCatById(Long id) {
         return catRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("고양이를 찾는데 실패하였습니다."));
+            .orElseThrow(() -> new BusinessException(CatErrorCode.CAT_NOT_FOUND));
     }
 
     private ProductItem getProductById(Long id) {
         return productItemRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("아이템을 찾는데 실패하였습니다."));
+            .orElseThrow(() -> new BusinessException(ItemErrorCode.PRODUCT_NOT_FOUND));
     }
 }

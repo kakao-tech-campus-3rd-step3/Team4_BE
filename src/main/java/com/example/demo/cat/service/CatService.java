@@ -2,6 +2,8 @@ package com.example.demo.cat.service;
 
 import com.example.demo.cat.controller.dto.CatResponse;
 import com.example.demo.cat.domain.Cat;
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.CatErrorCode;
 import com.example.demo.product.domain.DisplayImage;
 import com.example.demo.user.domain.User;
 import java.util.List;
@@ -19,7 +21,7 @@ public class CatService {
 
     public Cat createCat(User user, String catName) {
         if (catRepository.findById(user.getId()).isPresent()) {
-            throw new RuntimeException("이미 고양이가 생성되어있습니다.");
+            throw new BusinessException(CatErrorCode.CAT_ALREADY_EXIST);
         }
         Cat cat = new Cat(user.getId(), catName);
         return catRepository.save(cat);
@@ -42,7 +44,7 @@ public class CatService {
 
     private Cat getCatById(Long id) {
         return catRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("고양이를 찾을 수 없습니다."));
+            .orElseThrow(() -> new BusinessException(CatErrorCode.CAT_NOT_FOUND));
     }
 
 
