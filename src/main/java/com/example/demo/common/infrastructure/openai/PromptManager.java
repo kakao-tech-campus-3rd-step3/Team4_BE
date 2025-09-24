@@ -15,7 +15,6 @@ public class PromptManager {
     private static final String DIARY_FEEDBACK_SYSTEM_PATH = "prompts/diary_feedback_system.yml";
     private static final String DIARY_FEEDBACK_EXAMPLE_PATH = "prompts/diary_feedback_example.yml";
     private static final String MY_CAT_CHAT_SYSTEM_PATH = "prompts/my_cat_chat_system.yml";
-    private static final String MY_CAT_CHAT_EXAMPLE_PATH = "prompts/my_cat_chat_example.yml";
 
     private List<Message> diaryFeedbackBaseMessages;
     private List<Message> myCatChatBaseMessages;
@@ -26,8 +25,7 @@ public class PromptManager {
         diaryFeedbackBaseMessages = buildBaseMessages(system, examples);
 
         system = YamlResourceLoader.load(MY_CAT_CHAT_SYSTEM_PATH, SystemPrompt.class);
-        examples = YamlResourceLoader.loadList(MY_CAT_CHAT_EXAMPLE_PATH, new TypeReference<List<ExamplePrompt>>() {});
-        myCatChatBaseMessages = buildBaseMessages(system, examples);
+        myCatChatBaseMessages = buildBaseMessages(system, new ArrayList<>());
     }
 
     public List<Message> getDiaryFeedbackBaseMessages() {
