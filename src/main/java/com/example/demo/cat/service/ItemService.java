@@ -8,6 +8,7 @@ import com.example.demo.product.controller.dto.ProductItemResponse;
 import com.example.demo.product.domain.ProductItem;
 import com.example.demo.product.service.ProductItemRepository;
 import com.example.demo.user.domain.User;
+import com.example.demo.user.service.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,11 +26,16 @@ public class ItemService {
     private final ProductItemRepository productItemRepository;
     private final CatRepository catRepository;
     private final ItemQueryRepository itemQueryRepository;
+    private final UserRepository userRepository;
 
     public void purchaseItem(Long productId, User user) {
         Cat cat = getCatById(user.getId());
         ProductItem product = getProductById(productId);
         cat.purchaseItem(product);
+        user.spendPoints(product.getPrice());
+
+        userRepository.save(user);
+        catRepository.save(cat);
     }
 
     public void setItemEquipped(EquipItemRequest request, Long itemId, User user) {
@@ -40,6 +46,8 @@ public class ItemService {
         } else {
             cat.unEquip(itemId);
         }
+
+        catRepository.save(cat);
     }
 
     @Transactional(readOnly = true)
