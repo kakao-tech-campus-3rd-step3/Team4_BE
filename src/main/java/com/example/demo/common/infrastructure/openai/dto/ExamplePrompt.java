@@ -1,8 +1,10 @@
 package com.example.demo.common.infrastructure.openai.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class ExamplePrompt {
 
     private String user;

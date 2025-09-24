@@ -3,10 +3,8 @@ package com.example.demo.common.infrastructure.openai.dto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +14,6 @@ public class ChatCompletionRequest {
     private Double temperature;
     private Integer max_tokens;
 
-    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
