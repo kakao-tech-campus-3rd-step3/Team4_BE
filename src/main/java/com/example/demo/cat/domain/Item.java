@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class Item {
 
-    private Long id;
-    private Long productId;
-    private EquipSlot slot;
+    private final Long id;
+    private final Long productId;
+    private final EquipSlot slot;
     private boolean equipped;
 
     public Item(Long id, Long productId, EquipSlot slot, boolean equipped) {

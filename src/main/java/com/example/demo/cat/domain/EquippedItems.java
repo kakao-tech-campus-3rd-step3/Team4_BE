@@ -1,5 +1,7 @@
 package com.example.demo.cat.domain;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -15,6 +17,7 @@ public class EquippedItems {
     }
 
     public EquippedItems() {
+        this.equippedItems = new HashMap<>();
     }
 
     public void equip(Item item) {
@@ -31,4 +34,7 @@ public class EquippedItems {
         remove.equip(false);
     }
 
+    public List<Item> getEquippedItems() {
+        return new ArrayList<>(equippedItems.values());
+    }
 }

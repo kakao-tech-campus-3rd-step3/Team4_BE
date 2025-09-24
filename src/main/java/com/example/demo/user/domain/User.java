@@ -17,4 +17,15 @@ public class User {
         this.point = point;
         this.refreshToken = refreshToken;
     }
+
+    public void spendPoints(Integer point) {
+        if (point > this.point) {
+            throw new RuntimeException("포인트가 부족합니다.");
+        }
+        this.point -= point;
+    }
+
+    public void earnPoints(Integer point) {
+        this.point += point;
+    }
 }
