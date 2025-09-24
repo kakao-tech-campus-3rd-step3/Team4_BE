@@ -21,7 +21,7 @@ public class CatService {
         if (catRepository.findById(user.getId()).isPresent()) {
             throw new RuntimeException("이미 고양이가 생성되어있습니다.");
         }
-        Cat cat = new Cat(user, catName);
+        Cat cat = new Cat(user.getId(), catName);
         return catRepository.save(cat);
     }
 
