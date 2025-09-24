@@ -1,5 +1,7 @@
 package com.example.demo.user.domain;
 
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.UserErrorCode;
 import lombok.Getter;
 
 @Getter
@@ -20,7 +22,7 @@ public class User {
 
     public void spendPoints(Integer point) {
         if (point > this.point) {
-            throw new RuntimeException("포인트가 부족합니다.");
+            throw new BusinessException(UserErrorCode.NOT_ENOUGH_POINTS);
         }
         this.point -= point;
     }
