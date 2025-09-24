@@ -23,7 +23,7 @@ public interface ItemQueryJpaRepository extends JpaRepository<ItemEntity, Long> 
         from CatEntity c
         join c.itemEntities i
         join ProductItemEntity p on i.productId = p.id
-        where c.userEntity.id = :userId
+        where c.userId = :userId
         """)
     List<ItemView> findItemViewByUserId(@Param("userId") Long userId);
 }
