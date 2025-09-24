@@ -1,7 +1,6 @@
 package com.example.demo.cat.domain;
 
 import com.example.demo.product.domain.ProductItem;
-import com.example.demo.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -9,25 +8,24 @@ import lombok.Getter;
 @Getter
 public class Cat {
 
-    private Long id;
-    private User owner;
+    private final Long userId;
     private String name;
     private List<Item> items;
     private EquippedItems equippedItems;
 
-    public Cat(Long id, User owner, String name, List<Item> items, EquippedItems equippedItems) {
-        this.id = id;
-        this.owner = owner;
+    public Cat(Long userId, String name, List<Item> items, EquippedItems equippedItems) {
+        this.userId = userId;
         this.name = name;
         this.items = items;
         this.equippedItems = equippedItems;
     }
 
-    public Cat(User owner, String name) {
-        this(null, owner, name, new ArrayList<>(), new EquippedItems());
+    public Cat(Long userId, String name) {
+        this(userId, name, new ArrayList<>(), new EquippedItems());
     }
 
     public void purchaseItem(ProductItem productItem) {
+        validateItemExist(productItem);
         Item item = new Item(productItem.getId(), productItem.getSlot(), false);
         items.add(item);
     }
@@ -49,5 +47,12 @@ public class Cat {
     private Item getItem(Long itemId) {
         return items.stream().filter(i -> i.getId().equals(itemId)).findAny()
             .orElseThrow(() -> new RuntimeException("아이템을 소유하고 있지 않습니다."));
+    }
+
+    private void validateItemExist(ProductItem productItem) {
+        Long id = productItem.getId();
+        if (items.stream().anyMatch(i -> i.getProductId().equals(id))) {
+            throw new RuntimeException("이미 소유중인 상품입니다.");
+        }
     }
 }
