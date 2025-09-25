@@ -17,6 +17,8 @@ public class EmotionTestDto {
     private List<String> answers;
     private String imageUrl;
 
+    protected EmotionTestDto() {}
+
     public EmotionTest toModel() {
         return new EmotionTest(id, question, answers, imageUrl);
     }
