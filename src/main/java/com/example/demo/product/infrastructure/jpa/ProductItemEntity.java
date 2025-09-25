@@ -34,7 +34,19 @@ public class ProductItemEntity {
     @Embedded
     private DisplayImageEmbeddable displayImage;
 
-    public ProductItem toDomain() {
+    protected ProductItemEntity() {
+    }
+
+    public ProductItemEntity(Long id, String name, Integer price, EquipSlot category,
+        DisplayImageEmbeddable displayImage) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.category = category;
+        this.displayImage = displayImage;
+    }
+
+    public ProductItem toModel() {
         return new ProductItem(id, name, price, category, displayImage.toModel());
     }
 }
