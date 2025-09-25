@@ -20,6 +20,21 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
+    protected User() {
+    }
+
+    public User(String email, String name) {
+        this(null, email, name, 0, null);
+    }
+
+    public void rename(String name) {
+        this.name = name;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
     public void spendPoints(Integer point) {
         if (point > this.point) {
             throw new BusinessException(UserErrorCode.NOT_ENOUGH_POINTS);

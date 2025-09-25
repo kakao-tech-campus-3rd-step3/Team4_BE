@@ -63,4 +63,28 @@ public class UserTest {
             }
         ).isInstanceOf(BusinessException.class);
     }
+
+    @Test
+    void 유저는_이름을_변경할_수_있다() {
+        //given
+        User user = CatTestFixture.createUser();
+
+        //when
+        user.rename("상욱");
+
+        //then
+        assertThat(user.getName()).isEqualTo("상욱");
+    }
+
+    @Test
+    void 유저는_리프레시_토큰을_갱신할_수_있다() {
+        //given
+        User user = CatTestFixture.createUser();
+
+        //when
+        user.updateRefreshToken("tokentoken");
+
+        //then
+        assertThat(user.getRefreshToken()).isEqualTo("tokentoken");
+    }
 }

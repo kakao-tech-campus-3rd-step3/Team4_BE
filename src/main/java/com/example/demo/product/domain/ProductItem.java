@@ -18,4 +18,8 @@ public class ProductItem {
         this.slot = slot;
         this.image = image;
     }
+
+    public ProductItem(String name, Integer price, EquipSlot slot, DisplayImage image) {
+        this(null, name, price, slot, image);
+    }
 }

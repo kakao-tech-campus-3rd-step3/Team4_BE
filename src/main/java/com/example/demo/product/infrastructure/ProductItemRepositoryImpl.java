@@ -5,6 +5,7 @@ import com.example.demo.cat.domain.EquipSlot;
 import com.example.demo.cat.domain.Item;
 import com.example.demo.product.controller.dto.ProductItemResponse;
 import com.example.demo.product.domain.ProductItem;
+import com.example.demo.product.infrastructure.jpa.DisplayImageEmbeddable;
 import com.example.demo.product.infrastructure.jpa.ProductItemEntity;
 import com.example.demo.product.service.ProductItemRepository;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class ProductItemRepositoryImpl implements ProductItemRepository {
         EquipSlot category, Cat cat) {
         Page<ProductItem> products = productItemJpaRepository.findAllByCategoryOrderById(pageable,
             category).map(
-            ProductItemEntity::toDomain);
+            ProductItemEntity::toModel);
 
         Set<Long> ids = cat.getItems().stream().map(Item::getProductId).collect(Collectors.toSet());
 
@@ -35,6 +36,13 @@ public class ProductItemRepositoryImpl implements ProductItemRepository {
 
     @Override
     public Optional<ProductItem> findById(Long id) {
-        return productItemJpaRepository.findById(id).map(ProductItemEntity::toDomain);
+        return productItemJpaRepository.findById(id).map(ProductItemEntity::toModel);
+    }
+
+    @Override
+    public void save(ProductItem productItem) {
+        productItemJpaRepository.save(new ProductItemEntity(null, productItem.getName(), productItem.getPrice(),
+            productItem.getSlot(), new DisplayImageEmbeddable(productItem.getImage().getImageUrl(),
+            productItem.getImage().getOffsetX(), productItem.getImage().getOffsetY())));
     }
 }

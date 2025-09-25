@@ -15,4 +15,5 @@ public interface ProductItemRepository {
 
     Optional<ProductItem> findById(Long id);
 
+    void save(ProductItem product);
 }
