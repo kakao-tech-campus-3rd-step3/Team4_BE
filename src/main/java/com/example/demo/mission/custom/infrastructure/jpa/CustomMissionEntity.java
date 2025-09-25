@@ -3,17 +3,13 @@ package com.example.demo.mission.custom.infrastructure.jpa;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.domain.CustomMission;
 import com.example.demo.mission.custom.domain.CustomMissionStateEnum;
-import com.example.demo.user.infrastructure.jpa.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
@@ -29,9 +25,8 @@ public class CustomMissionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity author;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @Column(nullable = false)
     private String content;
@@ -47,22 +42,22 @@ public class CustomMissionEntity {
     protected CustomMissionEntity() {
     }
 
-    private CustomMissionEntity(Long id, UserEntity author, String content,
+    private CustomMissionEntity(Long id, Long userId, String content,
         MissionCategoryEnum category, CustomMissionStateEnum state) {
         this.id = id;
-        this.author = author;
+        this.userId = userId;
         this.content = content;
         this.category = category;
         this.state = state;
     }
 
-    public static CustomMissionEntity fromModel(CustomMission customMission, UserEntity user) {
-        return new CustomMissionEntity(customMission.getId(), user, customMission.getContent(),
-            customMission.getCategory(), customMission.getState());
+    public static CustomMissionEntity fromModel(CustomMission customMission) {
+        return new CustomMissionEntity(customMission.getId(), customMission.getUserId(),
+            customMission.getContent(), customMission.getCategory(), customMission.getState());
     }
 
     public CustomMission toModel() {
-        return new CustomMission(id, content, category, author.getId(), state);
+        return new CustomMission(id, content, category, userId, state);
     }
 
 }
