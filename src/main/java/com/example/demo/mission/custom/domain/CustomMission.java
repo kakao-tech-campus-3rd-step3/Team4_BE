@@ -4,7 +4,6 @@ import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.plan.domain.MissionType;
 import com.example.demo.plan.domain.Plan;
-import com.example.demo.user.domain.User;
 import lombok.Getter;
 
 @Getter
@@ -14,7 +13,7 @@ public class CustomMission implements Mission {
 
     private String content;
     private MissionCategoryEnum category;
-    private User author;
+    private final Long userId;
 
     private CustomMissionStateEnum state;
 
@@ -28,12 +27,28 @@ public class CustomMission implements Mission {
         return MissionType.CUSTOM;
     }
 
-    public CustomMission(Long id, String content, MissionCategoryEnum category, User author,
+    public CustomMission(Long id, String content, MissionCategoryEnum category, Long userId,
         CustomMissionStateEnum state) {
         this.id = id;
         this.content = content;
         this.category = category;
-        this.author = author;
+        this.userId = userId;
         this.state = state;
     }
+
+    public CustomMission(String content, MissionCategoryEnum category, Long userId) {
+        this(null, content, category, userId, CustomMissionStateEnum.WAITING);
+    }
+
+    public void update(String content, MissionCategoryEnum category) {
+        this.content = content;
+        this.category = category;
+    }
+
+    public void validateUser(Long userId) {
+        if (!this.userId.equals(userId)) {
+            throw new RuntimeException("미션을 수정하거나 삭제할 권한이 없습니다.");
+        }
+    }
+
 }
