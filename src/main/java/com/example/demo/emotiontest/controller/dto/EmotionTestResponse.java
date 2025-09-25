@@ -1,10 +1,11 @@
 package com.example.demo.emotiontest.controller.dto;
 
 import com.example.demo.emotiontest.domain.EmotionTest;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public class EmotionTestResponse {
 
