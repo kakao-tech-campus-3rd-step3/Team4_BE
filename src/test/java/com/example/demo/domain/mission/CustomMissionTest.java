@@ -20,7 +20,7 @@ class CustomMissionTest {
         MissionCategoryEnum category = MissionCategoryEnum.DAILY;
 
         // when
-        CustomMission mission = CustomMission.create(content, category, authorId);
+        CustomMission mission = new CustomMission(content, category, authorId);
 
         // then
         assertThat(mission.getContent()).isEqualTo(content);
@@ -34,7 +34,7 @@ class CustomMissionTest {
     @DisplayName("미션의 내용과 카테고리를 수정할 수 있다.")
     void 미션_수정() {
         // given
-        CustomMission mission = CustomMission.create("기존 내용", MissionCategoryEnum.DAILY, 1L);
+        CustomMission mission = new CustomMission("기존 내용", MissionCategoryEnum.DAILY, 1L);
         String newContent = "새로운 내용으로 수정";
         MissionCategoryEnum newCategory = MissionCategoryEnum.EMPLOYMENT;
 
@@ -51,7 +51,7 @@ class CustomMissionTest {
     void 미션_작성자_검증_성공() {
         // given
         Long authorId = 1L;
-        CustomMission mission = CustomMission.create("내용", MissionCategoryEnum.REFRESH, authorId);
+        CustomMission mission = new CustomMission("내용", MissionCategoryEnum.REFRESH, authorId);
 
         // when & then
         // 예외가 발생하지 않아야 함
@@ -64,7 +64,7 @@ class CustomMissionTest {
         // given
         Long authorId = 1L;
         Long otherUserId = 2L;
-        CustomMission mission = CustomMission.create("내용", MissionCategoryEnum.REFRESH, authorId);
+        CustomMission mission = new CustomMission("내용", MissionCategoryEnum.REFRESH, authorId);
 
         // when & then
         assertThatThrownBy(() -> mission.validateUser(otherUserId))

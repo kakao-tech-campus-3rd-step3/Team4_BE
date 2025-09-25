@@ -36,14 +36,8 @@ public class CustomMission implements Mission {
         this.state = state;
     }
 
-    public static CustomMission create(String content, MissionCategoryEnum category, Long userId) {
-        return new CustomMission(
-            null,
-            content,
-            category,
-            userId,
-            CustomMissionStateEnum.WAITING
-        );
+    public CustomMission(String content, MissionCategoryEnum category, Long userId) {
+        this(null, content, category, userId, CustomMissionStateEnum.WAITING);
     }
 
     public void update(String content, MissionCategoryEnum category) {

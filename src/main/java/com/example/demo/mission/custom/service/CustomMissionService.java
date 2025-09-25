@@ -3,8 +3,6 @@ package com.example.demo.mission.custom.service;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.domain.CustomMission;
 import com.example.demo.user.domain.User;
-import com.example.demo.user.infrastructure.jpa.UserEntity;
-import com.example.demo.user.service.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomMissionService {
 
     private final CustomMissionRepository customMissionRepository;
-    private final UserRepository userRepository;
 
     public CustomMission create(String content, MissionCategoryEnum category, User user) {
-        CustomMission customMission = CustomMission.create(content, category, user.getId());
-        UserEntity userEntity = UserEntity.fromModel(user);
-        return customMissionRepository.save(customMission, userEntity);
+        CustomMission customMission = new CustomMission(content, category, user.getId());
+        return customMissionRepository.save(customMission);
     }
 
     public CustomMission update(Long missionId, String content, MissionCategoryEnum category,
@@ -31,8 +27,7 @@ public class CustomMissionService {
         mission.validateUser(user.getId());
         mission.update(content, category);
 
-        UserEntity userEntity = UserEntity.fromModel(user);
-        return customMissionRepository.save(mission, userEntity);
+        return customMissionRepository.save(mission);
     }
 
 }
