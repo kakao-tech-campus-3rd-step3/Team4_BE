@@ -6,7 +6,6 @@ import com.example.demo.plan.infrastructure.jpa.PlanEntity;
 import com.example.demo.plan.infrastructure.jpa.PlanJpaRepository;
 import com.example.demo.plan.service.PlanRepository;
 import com.example.demo.user.domain.User;
-import com.example.demo.user.infrastructure.jpa.UserEntity;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -24,9 +23,9 @@ public class PlanRepositoryImpl implements PlanRepository {
     public TodayPlans findTodayPlans(User user) {
         LocalDate today = LocalDate.now();
         return new TodayPlans(
-            user,
-            planJpaRepository.findByUserEntityAndCreatedAtBetween(
-                    UserEntity.fromModel(user),
+            user.getId(),
+            planJpaRepository.findByUserIdAndCreatedAtBetween(
+                    user.getId(),
                     today.atStartOfDay(),
                     today.atTime(LocalTime.MAX)).stream().map(PlanEntity::toModel)
                 .toList());

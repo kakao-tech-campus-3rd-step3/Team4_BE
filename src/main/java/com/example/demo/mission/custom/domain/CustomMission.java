@@ -9,6 +9,7 @@ import lombok.Getter;
 
 @Getter
 public class CustomMission implements Mission {
+
     private Long id;
 
     private String content;
@@ -18,8 +19,8 @@ public class CustomMission implements Mission {
     private CustomMissionStateEnum state;
 
     @Override
-    public Plan toPlan(User user) {
-        return new Plan(this, user);
+    public Plan toPlan(Long userId) {
+        return new Plan(this, userId);
     }
 
     @Override
@@ -27,7 +28,8 @@ public class CustomMission implements Mission {
         return MissionType.CUSTOM;
     }
 
-    public CustomMission(Long id, String content, MissionCategoryEnum category, User author, CustomMissionStateEnum state) {
+    public CustomMission(Long id, String content, MissionCategoryEnum category, User author,
+        CustomMissionStateEnum state) {
         this.id = id;
         this.content = content;
         this.category = category;
