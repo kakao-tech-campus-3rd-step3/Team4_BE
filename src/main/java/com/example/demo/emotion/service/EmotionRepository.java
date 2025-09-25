@@ -1,7 +1,6 @@
 package com.example.demo.emotion.service;
 
 import com.example.demo.emotion.domain.Emotion;
-import com.example.demo.user.domain.User;
 import java.util.Optional;
 
 public interface EmotionRepository {
@@ -11,4 +10,6 @@ public interface EmotionRepository {
     Optional<Emotion> findById(Long userId);
 
     Optional<Emotion> update(Emotion emotion);
+
+    boolean existById(Long userId);
 }

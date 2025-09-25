@@ -32,4 +32,9 @@ public class EmotionRepositoryImpl implements EmotionRepository {
                 return entity.toModel();
             });
     }
+
+    @Override
+    public boolean existById(Long userId) {
+        return jpaRepository.existsById(userId);
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.demo.emotion.controller.dto;
+package com.example.demo.emotiontest.controller.dto;
 
 import lombok.Getter;
 import lombok.Setter;

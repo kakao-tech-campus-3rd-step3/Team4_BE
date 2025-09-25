@@ -1,5 +1,7 @@
 package com.example.demo.emotion.domain;
 
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.EmotionTestErrorCode;
 import lombok.Getter;
 
 @Getter
@@ -18,6 +20,6 @@ public enum EmotionType {
                 return type;
             }
         }
-        throw new IllegalArgumentException("Invalid questionId: " + questionId);
+        throw new BusinessException(EmotionTestErrorCode.UNDEFINED_QUESTION_ID);
     }
 }

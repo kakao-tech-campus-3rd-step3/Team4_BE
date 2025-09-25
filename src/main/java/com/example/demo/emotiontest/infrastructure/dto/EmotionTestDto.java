@@ -1,7 +1,6 @@
 package com.example.demo.emotiontest.infrastructure.dto;
 
 import com.example.demo.emotiontest.domain.EmotionTest;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
