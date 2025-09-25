@@ -1,8 +1,8 @@
 package com.example.demo.mission.custom.infrastructure.jpa;
 
+import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.domain.CustomMission;
 import com.example.demo.mission.custom.domain.CustomMissionStateEnum;
-import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.user.infrastructure.jpa.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,7 +47,8 @@ public class CustomMissionEntity {
     protected CustomMissionEntity() {
     }
 
-    private CustomMissionEntity(Long id, UserEntity author, String content, MissionCategoryEnum category, CustomMissionStateEnum state) {
+    private CustomMissionEntity(Long id, UserEntity author, String content,
+        MissionCategoryEnum category, CustomMissionStateEnum state) {
         this.id = id;
         this.author = author;
         this.content = content;
@@ -55,12 +56,13 @@ public class CustomMissionEntity {
         this.state = state;
     }
 
-    public static CustomMissionEntity fromModel(CustomMission customMission) {
-        return new CustomMissionEntity(customMission.getId(), UserEntity.fromModel(customMission.getAuthor()), customMission.getContent(), customMission.getCategory(), customMission.getState());
+    public static CustomMissionEntity fromModel(CustomMission customMission, UserEntity user) {
+        return new CustomMissionEntity(customMission.getId(), user, customMission.getContent(),
+            customMission.getCategory(), customMission.getState());
     }
 
     public CustomMission toModel() {
-        return new CustomMission(id, content, category, author.toModel(), state);
+        return new CustomMission(id, content, category, author.getId(), state);
     }
 
 }
