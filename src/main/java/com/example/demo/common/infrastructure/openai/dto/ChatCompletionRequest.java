@@ -3,20 +3,24 @@ package com.example.demo.common.infrastructure.openai.dto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class ChatCompletionRequest {
+
     private String model;
     private List<Message> messages;
     private Double temperature;
     private Integer max_tokens;
 
     @Builder
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
