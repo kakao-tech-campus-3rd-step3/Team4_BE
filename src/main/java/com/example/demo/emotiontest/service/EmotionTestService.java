@@ -16,9 +16,4 @@ public class EmotionTestService {
             .map(EmotionTestResponse::from)
             .toList();
     }
-
-    public void applyResult() {
-        // OpenAiClient 분석 결과 필요
-        // 테스트 결과 -> 감정 반영
-    }
 }
