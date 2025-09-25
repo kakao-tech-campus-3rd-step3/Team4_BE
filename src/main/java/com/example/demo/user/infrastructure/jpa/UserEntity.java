@@ -30,7 +30,6 @@ public class UserEntity {
     @Column(nullable = false)
     private Integer point;
 
-    @Column(nullable = false)
     private String refreshToken;
 
     private UserEntity(Long id, String name, String email, Integer point, String refreshToken) {
@@ -41,13 +40,20 @@ public class UserEntity {
         this.refreshToken = refreshToken;
     }
 
+    private UserEntity(Long id) {
+        this.id = id;
+    }
+
     public User toModel() {
-        return new User(id,  email, name, point, refreshToken);
+        return new User(id, email, name, point, refreshToken);
     }
 
     public static UserEntity fromModel(User user) {
         return new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPoint(),
             user.getRefreshToken());
     }
-    
+
+    public static UserEntity fromId(Long userId) {
+        return new UserEntity(userId);
+    }
 }

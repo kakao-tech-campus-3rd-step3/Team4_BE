@@ -2,9 +2,8 @@ package com.example.demo.plan.domain;
 
 import com.example.demo.mission.Mission;
 import com.example.demo.user.domain.User;
-import lombok.Getter;
-
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 public class TodayPlans {
@@ -19,7 +18,7 @@ public class TodayPlans {
 
     public void addMission(Mission mission) {
         validateMissionExist(mission);
-        plans.add(mission.toPlan(user));
+        plans.add(mission.toPlan(user.getId()));
     }
 
     public void updateDone(Long planId, boolean isDone) {

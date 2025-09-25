@@ -5,7 +5,17 @@ import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.plan.domain.MissionType;
 import com.example.demo.plan.domain.Plan;
 import com.example.demo.user.infrastructure.jpa.UserEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 
 @Getter
@@ -43,7 +53,8 @@ public class PlanEntity extends BaseEntity {
     protected PlanEntity() {
     }
 
-    public PlanEntity(Long id, MissionType missionType, UserEntity userEntity, Long missionId, String content, MissionCategoryEnum category, Boolean isDone) {
+    public PlanEntity(Long id, MissionType missionType, UserEntity userEntity, Long missionId,
+        String content, MissionCategoryEnum category, Boolean isDone) {
         this.id = id;
         this.missionType = missionType;
         this.userEntity = userEntity;
@@ -54,13 +65,27 @@ public class PlanEntity extends BaseEntity {
     }
 
     public static PlanEntity fromModel(Plan plan) {
-        return new PlanEntity(plan.getId(), plan.getMissionType(), UserEntity.fromModel(plan.getUser()),
-            plan.getMissionId(), plan.getContent(),
-            plan.getCategory(), plan.isDone());
+        return new PlanEntity(
+            plan.getId(),
+            plan.getMissionType(),
+            UserEntity.fromId(plan.getUserId()),
+            plan.getMissionId(),
+            plan.getContent(),
+            plan.getCategory(),
+            plan.isDone()
+        );
     }
 
     public Plan toModel() {
-        return new Plan(id, missionType, userEntity.toModel(), missionId, content, category, isDone);
+        return new Plan(
+            id,
+            missionType,
+            userEntity.getId(),
+            missionId,
+            content,
+            category,
+            isDone
+        );
     }
 
     public void updateDone(Boolean done) {
