@@ -4,13 +4,12 @@ import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.plan.domain.MissionType;
 import com.example.demo.plan.domain.Plan;
-import com.example.demo.user.domain.User;
-import lombok.Getter;
-
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 public class RegularMission implements Mission {
+
     private Long id;
     private String content;
     private MissionCategoryEnum category;
@@ -19,7 +18,9 @@ public class RegularMission implements Mission {
     private MissionCount missionCount;
     private List<MissionTag> tags;
 
-    public RegularMission(Long id, String content, MissionCategoryEnum category, Integer missionLevel, MissionScore missionScore, MissionCount missionCount, List<MissionTag> tags) {
+    public RegularMission(Long id, String content, MissionCategoryEnum category,
+        Integer missionLevel, MissionScore missionScore, MissionCount missionCount,
+        List<MissionTag> tags) {
         this.id = id;
         this.content = content;
         this.category = category;
@@ -35,7 +36,7 @@ public class RegularMission implements Mission {
     }
 
     @Override
-    public Plan toPlan(User user) {
-        return new Plan(this, user);
+    public Plan toPlan(Long userId) {
+        return new Plan(this, userId);
     }
 }

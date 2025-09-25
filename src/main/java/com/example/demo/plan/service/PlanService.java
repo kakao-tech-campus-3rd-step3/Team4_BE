@@ -18,7 +18,8 @@ public class PlanService {
     private final MissionRepository missionRepository;
 
     public void addMissionToPlan(PlanCreateRequest request, User user) {
-        Mission mission = missionRepository.findByIdAndType(request.getMissionId(), request.getMissionType()).orElseThrow(() -> new RuntimeException("Mission Not Found"));
+        Mission mission = missionRepository.findByIdAndType(request.getMissionId(),
+            request.getMissionType()).orElseThrow(() -> new RuntimeException("Mission Not Found"));
         TodayPlans todayPlans = planRepository.findTodayPlans(user);
         todayPlans.addMission(mission);
         planRepository.saveAll(todayPlans.getPlans());
