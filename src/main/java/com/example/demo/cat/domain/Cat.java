@@ -18,7 +18,7 @@ public class Cat {
     public Cat(Long userId, String name, List<Item> items, EquippedItems equippedItems) {
         this.userId = userId;
         this.name = name;
-        this.items = items;
+        this.items = new ArrayList<>(items);
         this.equippedItems = equippedItems;
     }
 

@@ -18,6 +18,15 @@ public class DisplayImageEmbeddable {
     @Column(nullable = false)
     private Float offsetY;
 
+    protected DisplayImageEmbeddable() {
+    }
+
+    public DisplayImageEmbeddable(String imageUrl, Float offsetX, Float offsetY) {
+        this.imageUrl = imageUrl;
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+    }
+
     public DisplayImage toModel() {
         return new DisplayImage(imageUrl, offsetX, offsetY);
     }
