@@ -20,6 +20,9 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
+    protected User() {
+    }
+
     public User(String email, String name) {
         this(null, email, name, 0, null);
     }
