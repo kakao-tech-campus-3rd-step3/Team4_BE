@@ -20,9 +20,10 @@ public class TodayPlans {
         plans.add(mission.toPlan(userId));
     }
 
-    public void updateDone(Long planId, boolean isDone) {
+    public Long updateDone(Long planId, boolean isDone) {
         Plan plan = getPlan(planId);
         plan.updateDone(isDone);
+        return plan.getMissionId();
     }
 
     public void deletePlan(Long planId) {
