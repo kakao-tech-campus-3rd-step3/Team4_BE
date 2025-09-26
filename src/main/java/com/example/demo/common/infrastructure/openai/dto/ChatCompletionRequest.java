@@ -9,10 +9,12 @@ import lombok.ToString;
 
 @Getter
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class ChatCompletionRequest {
+
     private String model;
     private List<Message> messages;
     private Double temperature;
@@ -20,6 +22,7 @@ public class ChatCompletionRequest {
 
     @Getter
     @Builder
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString

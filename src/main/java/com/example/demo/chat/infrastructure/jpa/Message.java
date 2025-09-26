@@ -1,5 +1,6 @@
 package com.example.demo.chat.infrastructure.jpa;
 
+import com.example.demo.chat.domain.Chat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,5 +36,43 @@ public class Message {
     private Integer dangerScore;
 
     protected Message() {
+    }
+
+    private Message(
+            Long id,
+            Long userId,
+            Sender sender,
+            String content,
+            LocalDateTime createdAt,
+            Integer dangerScore
+    ) {
+        this.id = id;
+        this.userId = userId;
+        this.sender = sender;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.dangerScore = dangerScore;
+    }
+
+    public Chat toModel() {
+        return new Chat(
+                id,
+                userId,
+                sender,
+                content,
+                createdAt,
+                dangerScore
+        );
+    }
+
+    public static Message fromModel(Chat chat) {
+        return new Message(
+                chat.getId(),
+                chat.getUserId(),
+                chat.getSender(),
+                chat.getContent(),
+                chat.getCreatedAt(),
+                chat.getDangerScore()
+        );
     }
 }
