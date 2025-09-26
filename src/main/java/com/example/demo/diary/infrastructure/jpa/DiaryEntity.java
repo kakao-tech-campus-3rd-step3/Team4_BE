@@ -59,6 +59,6 @@ public class DiaryEntity extends BaseEntity {
 
     public static DiaryEntity fromModel(Diary diary) {
         return new DiaryEntity(diary.getId(), UserEntity.fromModel(diary.getAuthor()), diary.getEmotion(),
-            diary.getContent(), diary.getFeedback().getAsString());
+            diary.getContent(), diary.getFeedback().getContent());
     }
 }
