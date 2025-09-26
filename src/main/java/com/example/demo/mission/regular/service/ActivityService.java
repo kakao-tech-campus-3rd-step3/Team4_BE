@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MissionTrackingService {
+public class ActivityService {
 
     private final PlanInternalService planInternalService;
     private final MissionCounterService missionCounterService;
