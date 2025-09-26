@@ -1,5 +1,6 @@
 package com.example.demo.plan.service;
 
+import com.example.demo.mission.controller.dto.MissionCompletionCount;
 import com.example.demo.plan.domain.Plan;
 import com.example.demo.plan.domain.TodayPlans;
 import com.example.demo.user.domain.User;
@@ -16,4 +17,5 @@ public interface PlanRepository {
 
     Optional<Plan> findById(Long planId);
 
+    List<MissionCompletionCount> findCompletedMissionCount(Long id);
 }
