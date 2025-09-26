@@ -1,4 +1,4 @@
-package com.example.demo.diary.controller.diary;
+package com.example.demo.diary.controller.dto;
 
 import com.example.demo.diary.domain.EmotionEnum;
 import lombok.Getter;

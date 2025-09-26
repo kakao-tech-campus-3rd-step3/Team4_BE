@@ -1,14 +1,13 @@
 package com.example.demo.diary.domain;
 
+import lombok.Getter;
+
+@Getter
 public class Feedback {
 
-    private String feedback;
+    private String content;
 
     public Feedback(String feedback) {
-        this.feedback = feedback;
-    }
-
-    public String getAsString() {
-        return feedback;
+        this.content = feedback;
     }
 }

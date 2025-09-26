@@ -27,10 +27,8 @@ public class Diary {
         this(null, user, emotion, content, null, null);
     }
 
-    public void validateAuthor(User user) {
-        if (!user.equals(author)) {
-            throw new RuntimeException("다른 사용자의 일기는 볼 수 없어요.");
-        }
+    public boolean isAuthor(Long userId) {
+        return author.getId().equals(userId);
     }
 
     public void addFeedback(String feedback) {
