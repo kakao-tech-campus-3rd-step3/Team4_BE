@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 public class AcceptanceTest {
 
     private static final String ALLOWED_METHOD_NAMES = "GET,POST,PUT,DELETE,PATCH,OPTIONS";
+
     @Autowired
     private MockMvc mockMvc;
 
