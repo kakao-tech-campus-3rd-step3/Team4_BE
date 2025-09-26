@@ -1,29 +1,55 @@
 package com.example.demo.mission.regular.service;
 
+import com.example.demo.mission.controller.dto.MissionResponse;
 import com.example.demo.mission.regular.service.counter.MissionCounterService;
+import com.example.demo.mission.regular.service.recommend.MissionRecommendService;
 import com.example.demo.plan.controller.dto.PlanCreateRequest;
 import com.example.demo.plan.service.PlanInternalService;
 import com.example.demo.user.domain.User;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ActivityService {
 
+    private final MissionRecommendService missionRecommendService;
     private final PlanInternalService planInternalService;
     private final MissionCounterService missionCounterService;
 
     public void addMissionToPlan(PlanCreateRequest request, User user) {
         Long missionId = planInternalService.addMissionToPlan(request, user);
-        missionCounterService.addSelectionDelta(missionId);
+        try {
+            missionCounterService.addSelectionDelta(missionId);
+        } catch (Exception e) {
+            log.error("Selection delta update failed for missionId: {}", missionId, e);
+        }
     }
 
     public void updatePlanStatus(Long planId, boolean isDone, User user) {
         Long missionId = planInternalService.updatePlanStatus(planId, isDone, user);
         if (isDone) {
-            missionCounterService.addCompletionDelta(missionId);
+            try {
+                missionCounterService.addCompletionDelta(missionId);
+            } catch (Exception e) {
+                log.error("Completion delta update failed for missionId: {}", missionId, e);
+            }
         }
+    }
+
+    public List<MissionResponse> getRecommendedMissions(User user) {
+        List<MissionResponse> recommend = missionRecommendService.getRecommendedMissions(
+            user);
+        List<Long> ids = recommend.stream().map(MissionResponse::getId).toList();
+        try {
+            missionCounterService.addExposureDelta(ids);
+        } catch (Exception e) {
+            log.error("Exposure delta update failed for missions: {}", ids, e);
+        }
+        return recommend;
     }
 
 }
