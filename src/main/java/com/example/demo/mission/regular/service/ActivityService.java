@@ -22,13 +22,21 @@ public class ActivityService {
 
     public void addMissionToPlan(PlanCreateRequest request, User user) {
         Long missionId = planInternalService.addMissionToPlan(request, user);
-        missionCounterService.addSelectionDelta(missionId);
+        try {
+            missionCounterService.addSelectionDelta(missionId);
+        } catch (Exception e) {
+            log.error("Selection delta update failed for missionId: {}", missionId, e);
+        }
     }
 
     public void updatePlanStatus(Long planId, boolean isDone, User user) {
         Long missionId = planInternalService.updatePlanStatus(planId, isDone, user);
         if (isDone) {
-            missionCounterService.addCompletionDelta(missionId);
+            try {
+                missionCounterService.addCompletionDelta(missionId);
+            } catch (Exception e) {
+                log.error("Completion delta update failed for missionId: {}", missionId, e);
+            }
         }
     }
 
