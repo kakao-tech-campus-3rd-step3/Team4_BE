@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 class CustomMissionTest {
 
     @Test
-    @DisplayName("정적 팩토리 메서드로 CustomMission을 생성할 수 있다.")
+    @DisplayName("CustomMission을 생성할 수 있다.")
     void 미션_생성() {
         // given
         Long authorId = 1L;
