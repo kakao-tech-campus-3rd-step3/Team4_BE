@@ -35,29 +35,20 @@ class RegularMissionTest {
         RegularMission mission = new RegularMission(
             1L,
             "아침 7시에 일어나기",
-            MissionCategoryEnum.DAILY,
-            1,
-            missionScore,
-            missionCount,
-            tags
+            MissionCategoryEnum.DAILY
         );
 
         // then
         assertThat(mission.getId()).isEqualTo(1L);
         assertThat(mission.getContent()).isEqualTo("아침 7시에 일어나기");
         assertThat(mission.getCategory()).isEqualTo(MissionCategoryEnum.DAILY);
-        assertThat(mission.getMissionLevel()).isEqualTo(1);
-        assertThat(mission.getMissionScore()).isEqualTo(missionScore);
-        assertThat(mission.getMissionCount()).isEqualTo(missionCount);
-        assertThat(mission.getTags()).hasSize(2).containsAll(tags);
     }
 
     @Test
     @DisplayName("미션 타입을 'REGULAR'로 올바르게 반환한다.")
     void 미션_타입_올바르게_반환() {
         // given
-        RegularMission mission = new RegularMission(1L, "내용", MissionCategoryEnum.DAILY, 1,
-            missionScore, missionCount, tags);
+        RegularMission mission = new RegularMission(1L, "내용", MissionCategoryEnum.DAILY);
 
         // when
         MissionType missionType = mission.getMissionType();
@@ -74,11 +65,7 @@ class RegularMissionTest {
         RegularMission mission = new RegularMission(
             1L,
             "운동하기",
-            MissionCategoryEnum.REFRESH,
-            2,
-            missionScore,
-            missionCount,
-            tags
+            MissionCategoryEnum.REFRESH
         );
 
         // when
