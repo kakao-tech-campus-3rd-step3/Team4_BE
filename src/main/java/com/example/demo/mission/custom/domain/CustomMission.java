@@ -9,13 +9,11 @@ import lombok.Getter;
 @Getter
 public class CustomMission implements Mission {
 
-    private Long id;
+    private final Long id;
 
     private String content;
     private MissionCategoryEnum category;
     private final Long userId;
-
-    private CustomMissionStateEnum state;
 
     @Override
     public Plan toPlan(Long userId) {
@@ -27,17 +25,15 @@ public class CustomMission implements Mission {
         return MissionType.CUSTOM;
     }
 
-    public CustomMission(Long id, String content, MissionCategoryEnum category, Long userId,
-        CustomMissionStateEnum state) {
+    public CustomMission(Long id, String content, MissionCategoryEnum category, Long userId) {
         this.id = id;
         this.content = content;
         this.category = category;
         this.userId = userId;
-        this.state = state;
     }
 
     public CustomMission(String content, MissionCategoryEnum category, Long userId) {
-        this(null, content, category, userId, CustomMissionStateEnum.WAITING);
+        this(null, content, category, userId);
     }
 
     public void update(String content, MissionCategoryEnum category) {
