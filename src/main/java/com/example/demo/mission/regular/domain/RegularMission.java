@@ -4,30 +4,19 @@ import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.plan.domain.MissionType;
 import com.example.demo.plan.domain.Plan;
-import java.util.List;
 import lombok.Getter;
 
 @Getter
 public class RegularMission implements Mission {
 
-    private Long id;
-    private String content;
-    private MissionCategoryEnum category;
-    private Integer missionLevel;
-    private MissionScore missionScore;
-    private MissionCount missionCount;
-    private List<MissionTag> tags;
+    private final Long id;
+    private final String content;
+    private final MissionCategoryEnum category;
 
-    public RegularMission(Long id, String content, MissionCategoryEnum category,
-        Integer missionLevel, MissionScore missionScore, MissionCount missionCount,
-        List<MissionTag> tags) {
+    public RegularMission(Long id, String content, MissionCategoryEnum category) {
         this.id = id;
         this.content = content;
         this.category = category;
-        this.missionLevel = missionLevel;
-        this.missionScore = missionScore;
-        this.missionCount = missionCount;
-        this.tags = tags;
     }
 
     @Override
