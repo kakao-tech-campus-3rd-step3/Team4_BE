@@ -3,12 +3,15 @@ package com.example.demo.common.exception;
 import com.example.demo.common.exception.errorcode.ErrorCode;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -52,6 +55,19 @@ public class GlobalExceptionHandler {
         }
 
         return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.from(e));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
+        MethodArgumentNotValidException e) {
+        List<FieldError> fieldErrors = e.getFieldErrors();
+        StringBuilder sb = new StringBuilder();
+        for (FieldError fieldError : fieldErrors) {
+            sb.append(fieldError.getDefaultMessage()).append('\n');
+        }
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+            "INVALID_REQUEST", sb.toString());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
