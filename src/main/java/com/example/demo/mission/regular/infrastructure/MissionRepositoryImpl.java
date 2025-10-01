@@ -3,6 +3,7 @@ package com.example.demo.mission.regular.infrastructure;
 import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionEntity;
 import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionJpaRepository;
 import com.example.demo.mission.Mission;
+import com.example.demo.mission.regular.domain.MissionScore;
 import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionEntity;
 import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionJpaRepository;
 import com.example.demo.mission.regular.service.MissionRepository;
@@ -27,5 +28,10 @@ public class MissionRepositoryImpl implements MissionRepository {
         else {
             return customMissionJpaRepository.findById(missionId).map(CustomMissionEntity::toModel);
         }
+    }
+
+    @Override
+    public MissionScore findMissionScoreByMissionId(Long missionId) {
+        return null;
     }
 }
