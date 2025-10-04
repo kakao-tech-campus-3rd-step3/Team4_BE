@@ -26,7 +26,7 @@ public class ChatController {
     @PostMapping
     public ResponseEntity<ChatResponse> postMessage(@RequestBody ChatRequest request,
         @CurrentUser User user) {
-        return ResponseEntity.ok(chatService.postMessage(request.getMessage(), user));
+        return ResponseEntity.ok(chatService.postMessage(request.getMessage(), user.getId()));
     }
 
     @GetMapping
@@ -35,6 +35,6 @@ public class ChatController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
-        return ResponseEntity.ok(chatService.getMessages(user, page, size));
+        return ResponseEntity.ok(chatService.getMessages(user.getId(), page, size));
     }
 }
