@@ -1,7 +1,6 @@
 package com.example.demo.mission.regular.infrastructure;
 
 import com.example.demo.mission.Mission;
-import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionEntity;
 import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionJpaRepository;
@@ -10,8 +9,8 @@ import com.example.demo.mission.regular.domain.RegularMission;
 import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionEntity;
 import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionJpaRepository;
 import com.example.demo.mission.regular.service.MissionRepository;
+import com.example.demo.mission.regular.service.score.MissionScoreMinMax;
 import com.example.demo.plan.domain.MissionType;
-import java.util.Optional;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -36,43 +35,48 @@ public class MissionRepositoryImpl implements MissionRepository {
 
     @Override
     public List<RegularMission> findSentimentMissionsAboveAverageByCategory(
-        MissionCategoryEnum category) {
+            MissionCategoryEnum category) {
         return regularMissionJpaRepository.findSentimentMissionsAboveAverageByCategory(category)
-            .stream().map(RegularMissionEntity::toModel).toList();
+                .stream().map(RegularMissionEntity::toModel).toList();
     }
 
     @Override
     public List<RegularMission> findEnergyMissionsAboveAverageByCategory(
-        MissionCategoryEnum category) {
+            MissionCategoryEnum category) {
         return regularMissionJpaRepository.findEnergyMissionsAboveAverageByCategory(category)
-            .stream().map(RegularMissionEntity::toModel).toList();
+                .stream().map(RegularMissionEntity::toModel).toList();
     }
 
     @Override
     public List<RegularMission> findCognitiveMissionsAboveAverageByCategory(
-        MissionCategoryEnum category) {
+            MissionCategoryEnum category) {
         return regularMissionJpaRepository.findCognitiveMissionsAboveAverageByCategory(category)
-            .stream().map(RegularMissionEntity::toModel).toList();
+                .stream().map(RegularMissionEntity::toModel).toList();
     }
 
     @Override
     public List<RegularMission> findRelationshipMissionsAboveAverageByCategory(
-        MissionCategoryEnum category) {
+            MissionCategoryEnum category) {
         return regularMissionJpaRepository.findRelationshipMissionsAboveAverageByCategory(category)
-            .stream().map(RegularMissionEntity::toModel).toList();
+                .stream().map(RegularMissionEntity::toModel).toList();
     }
 
     @Override
     public List<RegularMission> findStressMissionsAboveAverageByCategory(
-        MissionCategoryEnum category) {
+            MissionCategoryEnum category) {
         return regularMissionJpaRepository.findStressMissionsAboveAverageByCategory(category)
-            .stream().map(RegularMissionEntity::toModel).toList();
+                .stream().map(RegularMissionEntity::toModel).toList();
     }
 
     @Override
     public List<RegularMission> findAllByCategory(MissionCategoryEnum category) {
         return regularMissionJpaRepository.findAllByCategory(category).stream()
-            .map(RegularMissionEntity::toModel).toList();
+                .map(RegularMissionEntity::toModel).toList();
+    }
+
+    @Override
+    public Optional<MissionScoreMinMax> calculateMissionScoreMinMax() {
+        return regularMissionJpaRepository.calculateMissionScoreMinMax();
     }
 
     @Override

@@ -1,17 +1,22 @@
 package com.example.demo.mission.regular.service.score;
 
-import com.example.demo.emotion.domain.EmotionType;
-import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public class MissionScoreMinMax {
-    private static Map<EmotionType, Integer> minimum;
-    private static Map<EmotionType, Integer> maximum;
 
-    public static Integer getMin(EmotionType emotionType) {
-        return minimum.get(emotionType);
-    }
-
-    public static Integer getMax(EmotionType emotionType) {
-        return maximum.get(emotionType);
-    }
+    private final Integer sentimentMin;
+    private final Integer sentimentMax;
+    private final Integer energyMin;
+    private final Integer energyMax;
+    private final Integer cognitiveMin;
+    private final Integer cognitiveMax;
+    private final Integer relationshipMin;
+    private final Integer relationshipMax;
+    private final Integer stressMin;
+    private final Integer stressMax;
+    private final Integer employmentMin;
+    private final Integer employmentMax;
 }
