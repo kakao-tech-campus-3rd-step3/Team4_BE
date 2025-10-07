@@ -1,5 +1,7 @@
 package com.example.demo.mission.regular.service.score;
 
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.MissionErrorCode;
 import com.example.demo.emotion.domain.EmotionType;
 import com.example.demo.mission.regular.domain.MissionScore;
 import com.example.demo.mission.regular.service.MissionRepository;
@@ -20,7 +22,8 @@ public class MissionNormalizationService {
     public Map<EmotionType, MinMaxValue> getAllMinMaxData() {
 
         MissionScoreMinMax missionScoreMinMax = missionRepository.calculateMissionScoreMinMax()
-                .orElseThrow(() -> new IllegalStateException("Not Found"));
+                .orElseThrow(() -> new BusinessException(
+                        MissionErrorCode.NORMALIZATION_BASELINE_MISSING));
 
         return mapResultToCache(missionScoreMinMax);
     }
