@@ -1,8 +1,7 @@
-package com.example.demo.diary.service;
+package com.example.demo.emotion.service;
 
 import com.example.demo.emotion.domain.Emotion;
 import com.example.demo.emotion.domain.EmotionType;
-import com.example.demo.emotion.service.EmotionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,28 +13,33 @@ public class EmotionService {
 
     private final EmotionRepository emotionRepository;
 
-    private static final Float ALPHA = 0.5f; //조정 강도
-
     public void adjustSentimentEmotion(Integer score, Long userId) {
         if (score.equals(0)) {
             return;
         }
 
         Emotion emotion = emotionRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException());
+            .orElseThrow(RuntimeException::new);
 
-        float normalized = normalize(score);
-        int delta = calculate(normalized);
+        int delta = calculateDelta(emotion.getSentimentLevel(), score);
 
         emotion.adjust(EmotionType.SENTIMENT, delta);
         emotionRepository.save(emotion);
     }
 
-    public int calculate(float normalized) {
-        return 0;
+    public int calculateDelta(Integer score, Integer input) {
+        double a = 0.3;   // 최소 반영 비율 (30%)
+        double b = 0.7;   // 감쇠 비율
+        double k = 100.0; // 감쇠 강도
+
+        double factor = a + b / Math.sqrt(1 + (double) score / k);
+        int delta = (int) Math.round(input * factor);
+
+        if (score + delta < 0) {
+            delta = -score;
+        }
+
+        return delta;
     }
 
-    private float normalize(Integer score) {
-        return score / 10f;
-    }
 }

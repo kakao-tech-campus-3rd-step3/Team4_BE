@@ -6,6 +6,7 @@ import com.example.demo.diary.controller.dto.DiaryRequest;
 import com.example.demo.diary.controller.dto.DiaryResponse;
 import com.example.demo.diary.controller.dto.FeedbackResult;
 import com.example.demo.diary.domain.Diary;
+import com.example.demo.emotion.service.EmotionService;
 import com.example.demo.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

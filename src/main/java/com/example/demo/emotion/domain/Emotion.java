@@ -1,6 +1,5 @@
 package com.example.demo.emotion.domain;
 
-import com.example.demo.user.domain.User;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
