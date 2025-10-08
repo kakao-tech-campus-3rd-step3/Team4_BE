@@ -37,13 +37,13 @@ public class ActivityService {
         if (isDone) {
             try {
                 missionCounterService.addCompletionDelta(plan.getMissionId());
-                if (plan.getMissionType() == MissionType.REGULAR) {
-                    missionCompletionEmotionService.updateEmotionOnMissionComplete(user,
-                            plan.getMissionId());
-                }
             } catch (Exception e) {
                 log.error("Completion delta update failed for missionId: {}", plan.getMissionId(),
                         e);
+            }
+            if (plan.getMissionType() == MissionType.REGULAR) {
+                missionCompletionEmotionService.updateEmotionOnMissionComplete(user,
+                    plan.getMissionId());
             }
         }
     }

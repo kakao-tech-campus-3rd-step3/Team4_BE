@@ -4,7 +4,7 @@ import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionEntity;
 import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionJpaRepository;
-import com.example.demo.mission.regular.domain.MissionScore;
+import com.example.demo.mission.regular.domain.score.MissionScores;
 import com.example.demo.mission.regular.domain.RegularMission;
 import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionEntity;
 import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionJpaRepository;
@@ -80,7 +80,7 @@ public class MissionRepositoryImpl implements MissionRepository {
     }
 
     @Override
-    public MissionScore findMissionScoreByMissionId(Long missionId) {
+    public MissionScores findMissionScoreByMissionId(Long missionId) {
         return null;
     }
 }

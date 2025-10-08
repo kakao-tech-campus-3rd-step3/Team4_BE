@@ -1,6 +1,6 @@
 package com.example.demo.mission.regular.infrastructure.jpa;
 
-import com.example.demo.mission.regular.domain.MissionScore;
+import com.example.demo.mission.regular.domain.score.MissionScores;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -38,12 +38,12 @@ public class MissionScoreEmbeddable {
 
     protected MissionScoreEmbeddable() {}
 
-    public MissionScore toModel() {
-        return new MissionScore(sentimentScore, energyScore, cognitiveScore, relationshipScore, stressScore, employmentScore);
+    public MissionScores toModel() {
+        return new MissionScores(sentimentScore, energyScore, cognitiveScore, relationshipScore, stressScore, employmentScore);
     }
 
-    public static MissionScoreEmbeddable fromModel(MissionScore missionScore) {
-        return new MissionScoreEmbeddable(missionScore.getSentimentScore(), missionScore.getEnergyScore(), missionScore.getCognitiveScore(), missionScore.getRelationshipScore(), missionScore.getStressScore(), missionScore.getEmploymentScore());
+    public static MissionScoreEmbeddable fromModel(MissionScores missionScores) {
+        return new MissionScoreEmbeddable(missionScores.getSentimentScore(), missionScores.getEnergyScore(), missionScores.getCognitiveScore(), missionScores.getRelationshipScore(), missionScores.getStressScore(), missionScores.getEmploymentScore());
     }
 
 }

@@ -2,7 +2,7 @@ package com.example.demo.mission.regular.service;
 
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
-import com.example.demo.mission.regular.domain.MissionScore;
+import com.example.demo.mission.regular.domain.score.MissionScores;
 import com.example.demo.mission.regular.domain.RegularMission;
 import com.example.demo.mission.regular.service.score.MissionScoreMinMax;
 import com.example.demo.plan.domain.MissionType;
@@ -13,7 +13,7 @@ public interface MissionRepository {
 
     Optional<Mission> findByIdAndType(Long missionId, MissionType missionType);
 
-    MissionScore findMissionScoreByMissionId(Long missionId);
+    MissionScores findMissionScoreByMissionId(Long missionId);
 
     List<RegularMission> findSentimentMissionsAboveAverageByCategory(MissionCategoryEnum category);
 
