@@ -9,7 +9,6 @@ import com.example.demo.mission.regular.domain.RegularMission;
 import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionEntity;
 import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionJpaRepository;
 import com.example.demo.mission.regular.service.MissionRepository;
-import com.example.demo.mission.regular.service.score.MissionScoreMinMax;
 import com.example.demo.plan.domain.MissionType;
 import java.util.List;
 import java.util.Optional;

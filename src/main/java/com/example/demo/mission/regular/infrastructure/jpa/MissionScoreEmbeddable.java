@@ -27,7 +27,9 @@ public class MissionScoreEmbeddable {
     @Column(nullable = false)
     private Integer employmentScore;
 
-    private MissionScoreEmbeddable(Integer sentimentScore, Integer energyScore, Integer cognitiveScore, Integer relationshipScore, Integer stressScore, Integer employmentScore) {
+    private MissionScoreEmbeddable(Integer sentimentScore, Integer energyScore,
+        Integer cognitiveScore, Integer relationshipScore, Integer stressScore,
+        Integer employmentScore) {
         this.sentimentScore = sentimentScore;
         this.energyScore = energyScore;
         this.cognitiveScore = cognitiveScore;
@@ -36,14 +38,12 @@ public class MissionScoreEmbeddable {
         this.employmentScore = employmentScore;
     }
 
-    protected MissionScoreEmbeddable() {}
-
-    public MissionScores toModel() {
-        return new MissionScores(sentimentScore, energyScore, cognitiveScore, relationshipScore, stressScore, employmentScore);
+    protected MissionScoreEmbeddable() {
     }
 
-    public static MissionScoreEmbeddable fromModel(MissionScores missionScores) {
-        return new MissionScoreEmbeddable(missionScores.getSentimentScore(), missionScores.getEnergyScore(), missionScores.getCognitiveScore(), missionScores.getRelationshipScore(), missionScores.getStressScore(), missionScores.getEmploymentScore());
+    public MissionScores toModel() {
+        return new MissionScores(sentimentScore, energyScore, cognitiveScore, relationshipScore,
+            stressScore, employmentScore);
     }
 
 }

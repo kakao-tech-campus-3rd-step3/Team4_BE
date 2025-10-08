@@ -2,14 +2,14 @@ package com.example.demo.mission.regular.domain.score;
 
 import com.example.demo.emotion.domain.EmotionType;
 
-public class SentimentScore extends MissionScore {
+public class EnergyScore extends MissionScore {
 
-    public SentimentScore(Integer score) {
+    public EnergyScore(Integer score) {
         super(score);
     }
 
     @Override
     public EmotionType getEmotionType() {
-        return EmotionType.SENTIMENT;
+        return EmotionType.ENERGY;
     }
 }
