@@ -1,0 +1,19 @@
+package com.example.demo.plan.service;
+
+import com.example.demo.plan.domain.Plan;
+import com.example.demo.plan.domain.TodayPlans;
+import com.example.demo.user.domain.User;
+import java.util.List;
+import java.util.Optional;
+
+public interface PlanRepository {
+
+    TodayPlans findTodayPlans(User user);
+
+    void saveAll(List<Plan> plans);
+
+    Plan save(Plan plan);
+
+    Optional<Plan> findById(Long planId);
+
+}

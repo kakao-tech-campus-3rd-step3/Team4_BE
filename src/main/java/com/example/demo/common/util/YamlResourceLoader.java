@@ -1,0 +1,36 @@
+package com.example.demo.common.util;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
+
+@Slf4j
+public class YamlResourceLoader {
+
+    private static final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+
+    private YamlResourceLoader() {}
+
+    public static <T> T load(String resourcePath, Class<T> clazz) {
+        try (InputStream inputStream = new ClassPathResource(resourcePath).getInputStream()) {
+            return objectMapper.readValue(inputStream, clazz);
+        } catch (IOException e) {
+            log.error("", e);
+            throw new ResourceLoaderException("파일이 존재하지 않거나 역직렬화에 실패했습니다: " + resourcePath + " -> " + clazz.toString());
+        }
+    }
+
+    public static <T> List<T> loadList(String resourcePath, TypeReference<List<T>> typeReference) {
+        try (InputStream inputStream = new ClassPathResource(resourcePath).getInputStream()) {
+            return objectMapper.readValue(inputStream, typeReference);
+        } catch (IOException e) {
+            log.error("", e);
+            throw new ResourceLoaderException("파일이 존재하지 않거나 역직렬화에 실패했습니다: " + resourcePath + " -> " + typeReference.toString());
+        }
+    }
+}

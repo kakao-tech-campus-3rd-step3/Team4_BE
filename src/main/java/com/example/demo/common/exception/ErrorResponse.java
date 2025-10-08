@@ -24,7 +24,7 @@ public class ErrorResponse {
 
     public static ErrorResponse internal() {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "INTERNAL_SERVER_ERROR",
-                "Unexpected error occurred. Please try again later.");
+            "INTERNAL_SERVER_ERROR",
+            "Unexpected error occurred. Please try again later.");
     }
 }
