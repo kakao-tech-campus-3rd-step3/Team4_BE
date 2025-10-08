@@ -37,18 +37,9 @@ public class Emotion {
     }
 
     public void updateAllUserEmotionScores(MissionNormalization missionNormalization) {
-        this.updateUserEmotionScore(missionNormalization.getSentimentNormalization(),
-                EmotionType.SENTIMENT);
-        this.updateUserEmotionScore(missionNormalization.getEnergyNormalization(),
-                EmotionType.ENERGY);
-        this.updateUserEmotionScore(missionNormalization.getCognitiveNormalization(),
-                EmotionType.COGNITIVE);
-        this.updateUserEmotionScore(missionNormalization.getRelationshipNormalization(),
-                EmotionType.RELATIONSHIP);
-        this.updateUserEmotionScore(missionNormalization.getStressNormalization(),
-                EmotionType.STRESS);
-        this.updateUserEmotionScore(missionNormalization.getEmploymentNormalization(),
-                EmotionType.EMPLOYMENT);
+        for (EmotionType emotionType : EmotionType.values()) {
+            this.updateUserEmotionScore(missionNormalization.get(emotionType), emotionType);
+        }
     }
 
     private void updateUserEmotionScore(Integer normalizedScore, EmotionType emotionType) {

@@ -1,26 +1,18 @@
 package com.example.demo.mission.regular.service.score;
 
-import lombok.Getter;
+import com.example.demo.emotion.domain.EmotionType;
+import java.util.EnumMap;
+import java.util.Map;
 
-@Getter
 public class MissionNormalization {
 
-    private final Integer sentimentNormalization;
-    private final Integer energyNormalization;
-    private final Integer cognitiveNormalization;
-    private final Integer relationshipNormalization;
-    private final Integer stressNormalization;
-    private final Integer employmentNormalization;
+    private final Map<EmotionType, Integer> normalizedScores;
 
-    public MissionNormalization(Integer sentimentNormalization, Integer energyNormalization,
-            Integer cognitiveNormalization,
-            Integer relationshipNormalization, Integer stressNormalization,
-            Integer employmentNormalization) {
-        this.sentimentNormalization = sentimentNormalization;
-        this.energyNormalization = energyNormalization;
-        this.cognitiveNormalization = cognitiveNormalization;
-        this.relationshipNormalization = relationshipNormalization;
-        this.stressNormalization = stressNormalization;
-        this.employmentNormalization = employmentNormalization;
+    public MissionNormalization(Map<EmotionType, Integer> normalizedScores) {
+        this.normalizedScores = new EnumMap<>(normalizedScores);
+    }
+
+    public Integer get(EmotionType type) {
+        return normalizedScores.get(type);
     }
 }
