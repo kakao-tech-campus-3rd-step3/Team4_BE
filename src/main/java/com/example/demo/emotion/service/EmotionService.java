@@ -1,5 +1,7 @@
 package com.example.demo.emotion.service;
 
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.EmotionErrorCode;
 import com.example.demo.emotion.domain.Emotion;
 import com.example.demo.emotion.domain.EmotionType;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,7 @@ public class EmotionService {
         }
 
         Emotion emotion = emotionRepository.findById(userId)
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_ERROR_CODE));
 
         int delta = calculateDelta(emotion.getSentimentLevel(), score);
 

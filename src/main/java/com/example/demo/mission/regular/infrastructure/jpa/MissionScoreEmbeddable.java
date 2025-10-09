@@ -27,17 +27,6 @@ public class MissionScoreEmbeddable {
     @Column(nullable = false)
     private Integer employmentScore;
 
-    private MissionScoreEmbeddable(Integer sentimentScore, Integer energyScore,
-        Integer cognitiveScore, Integer relationshipScore, Integer stressScore,
-        Integer employmentScore) {
-        this.sentimentScore = sentimentScore;
-        this.energyScore = energyScore;
-        this.cognitiveScore = cognitiveScore;
-        this.relationshipScore = relationshipScore;
-        this.stressScore = stressScore;
-        this.employmentScore = employmentScore;
-    }
-
     protected MissionScoreEmbeddable() {
     }
 
