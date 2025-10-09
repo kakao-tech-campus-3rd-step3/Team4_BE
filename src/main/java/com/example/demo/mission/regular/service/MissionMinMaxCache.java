@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.mission.regular.service;
 
 import com.example.demo.mission.regular.infrastructure.MissionScoreMinMax;
 import lombok.Getter;

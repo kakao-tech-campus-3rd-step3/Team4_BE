@@ -1,6 +1,5 @@
 package com.example.demo.mission.regular.service;
 
-import com.example.demo.MissionMinMaxCache;
 import com.example.demo.common.exception.BusinessException;
 import com.example.demo.common.exception.errorcode.EmotionErrorCode;
 import com.example.demo.emotion.domain.Emotion;

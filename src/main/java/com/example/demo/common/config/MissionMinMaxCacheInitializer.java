@@ -1,7 +1,8 @@
-package com.example.demo;
+package com.example.demo.common.config;
 
 import com.example.demo.common.exception.CachingFailedException;
 import com.example.demo.mission.regular.infrastructure.MissionScoreMinMax;
+import com.example.demo.mission.regular.service.MissionMinMaxCache;
 import com.example.demo.mission.regular.service.MissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
