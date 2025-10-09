@@ -148,8 +148,10 @@ public class MissionRecommendService {
         if (limit == 0) {
             return new ArrayList<>();
         }
-        Collections.shuffle(missions);
-        return missions.stream()
+        List<RegularMission> shuffled = new ArrayList<>(missions);
+        Collections.shuffle(shuffled);
+
+        return shuffled.stream()
             .limit(limit)
             .toList();
     }
