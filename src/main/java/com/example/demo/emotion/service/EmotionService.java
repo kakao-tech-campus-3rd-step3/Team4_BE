@@ -4,6 +4,12 @@ import com.example.demo.common.exception.BusinessException;
 import com.example.demo.common.exception.errorcode.EmotionErrorCode;
 import com.example.demo.emotion.domain.Emotion;
 import com.example.demo.emotion.domain.EmotionType;
+import com.example.demo.mission.regular.domain.score.MissionScores;
+import com.example.demo.mission.regular.infrastructure.MissionScoreMinMax;
+import com.example.demo.mission.regular.service.MissionMinMaxCache;
+import com.example.demo.mission.regular.service.MissionRepository;
+import com.example.demo.mission.regular.service.score.MissionNormalization;
+import com.example.demo.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EmotionService {
 
     private final EmotionRepository emotionRepository;
+    private final MissionRepository missionRepository;
 
     public void adjustSentimentEmotion(Integer score, Long userId) {
         if (score.equals(0)) {
@@ -23,9 +30,25 @@ public class EmotionService {
         Emotion emotion = emotionRepository.findById(userId)
             .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_ERROR_CODE));
 
-        int delta = calculateDelta(emotion.getSentimentLevel(), score);
+        int delta = calculateDelta(emotion.getLevel(EmotionType.SENTIMENT), score);
 
         emotion.adjust(EmotionType.SENTIMENT, delta);
+        emotionRepository.save(emotion);
+    }
+
+    public void updateEmotionOnMissionComplete(User user, Long missionId) {
+        MissionScores missionScores = missionRepository.findMissionScoreByMissionId(missionId);
+        MissionScoreMinMax missionScoreMinMax = MissionMinMaxCache.getMissionScoreMinMax();
+
+        MissionNormalization normalized = missionScores.normalize(missionScoreMinMax.toMap());
+
+        Emotion emotion = emotionRepository.findById(user.getId())
+            .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_ERROR_CODE));
+
+        for (EmotionType value : EmotionType.values()) {
+            int delta = calculateDelta(emotion.getLevel(value), normalized.get(value));
+            emotion.adjust(value, delta);
+        }
         emotionRepository.save(emotion);
     }
 

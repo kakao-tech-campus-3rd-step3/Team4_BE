@@ -1,5 +1,12 @@
 package com.example.demo.emotion.infrastructure.jpa;
 
+import static com.example.demo.emotion.domain.EmotionType.COGNITIVE;
+import static com.example.demo.emotion.domain.EmotionType.EMPLOYMENT;
+import static com.example.demo.emotion.domain.EmotionType.ENERGY;
+import static com.example.demo.emotion.domain.EmotionType.RELATIONSHIP;
+import static com.example.demo.emotion.domain.EmotionType.SENTIMENT;
+import static com.example.demo.emotion.domain.EmotionType.STRESS;
+
 import com.example.demo.emotion.domain.Emotion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,12 +56,12 @@ public class EmotionEntity {
     public static EmotionEntity fromModel(Emotion model) {
         return new EmotionEntity(
             model.getUserId(),
-            model.getSentimentLevel(),
-            model.getEnergyLevel(),
-            model.getCognitiveLevel(),
-            model.getRelationShipLevel(),
-            model.getStressLevel(),
-            model.getEmploymentLevel()
+            model.getLevel(SENTIMENT),
+            model.getLevel(ENERGY),
+            model.getLevel(COGNITIVE),
+            model.getLevel(RELATIONSHIP),
+            model.getLevel(STRESS),
+            model.getLevel(EMPLOYMENT)
         );
     }
 
@@ -63,11 +70,11 @@ public class EmotionEntity {
     }
 
     public void updateFromModel(Emotion model) {
-        this.sentimentLevel = model.getSentimentLevel();
-        this.energyLevel = model.getEnergyLevel();
-        this.cognitiveLevel = model.getCognitiveLevel();
-        this.relationshipLevel = model.getRelationShipLevel();
-        this.stressLevel = model.getStressLevel();
-        this.employmentLevel = model.getEmploymentLevel();
+        this.sentimentLevel = model.getLevel(SENTIMENT);
+        this.energyLevel = model.getLevel(ENERGY);
+        this.cognitiveLevel = model.getLevel(COGNITIVE);
+        this.relationshipLevel = model.getLevel(RELATIONSHIP);
+        this.stressLevel = model.getLevel(STRESS);
+        this.employmentLevel = model.getLevel(EMPLOYMENT);
     }
 }
