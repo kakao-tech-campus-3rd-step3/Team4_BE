@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 
-@Getter
 public class Emotion {
 
+    @Getter
     private Long userId;
     private Map<EmotionType, Integer> emotions = new HashMap<>();
 
