@@ -8,4 +8,14 @@ import lombok.Setter;
 public class SystemPrompt {
 
     private String system;
+
+    protected  SystemPrompt() {}
+
+    public SystemPrompt(String prompt) {
+        system = prompt;
+    }
+
+    public void appendLongTermMemory(String memory) {
+        system += "# Long Term Memory\n" + memory;
+    }
 }
