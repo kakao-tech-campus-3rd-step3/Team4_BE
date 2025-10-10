@@ -40,10 +40,16 @@ public class EmotionEntity {
     @Column(nullable = false)
     private Integer employmentLevel;
 
+    @Column(nullable = false)
+    private Double avgDangerLevel;
+
+    @Column(nullable = false)
+    private Double recentDangerLevel;
+
     protected EmotionEntity() {}
 
     public EmotionEntity(Long userId, Integer sentimentLevel, Integer energyLevel, Integer cognitiveLevel,
-        Integer relationshipLevel, Integer stressLevel, Integer employmentLevel) {
+        Integer relationshipLevel, Integer stressLevel, Integer employmentLevel, Double avgDangerLevel, Double recentDangerLevel) {
         this.userId = userId;
         this.sentimentLevel = sentimentLevel;
         this.energyLevel = energyLevel;
@@ -51,6 +57,8 @@ public class EmotionEntity {
         this.relationshipLevel = relationshipLevel;
         this.stressLevel = stressLevel;
         this.employmentLevel = employmentLevel;
+        this.avgDangerLevel = avgDangerLevel;
+        this.recentDangerLevel = recentDangerLevel;
     }
 
     public static EmotionEntity fromModel(Emotion model) {
@@ -61,12 +69,14 @@ public class EmotionEntity {
             model.getLevel(COGNITIVE),
             model.getLevel(RELATIONSHIP),
             model.getLevel(STRESS),
-            model.getLevel(EMPLOYMENT)
+            model.getLevel(EMPLOYMENT),
+            model.getAvgDangerLevel(),
+            model.getRecentDangerLevel()
         );
     }
 
     public Emotion toModel() {
-        return new Emotion(userId, sentimentLevel, employmentLevel, cognitiveLevel, relationshipLevel, stressLevel, employmentLevel);
+        return new Emotion(userId, sentimentLevel, employmentLevel, cognitiveLevel, relationshipLevel, stressLevel, employmentLevel, avgDangerLevel, recentDangerLevel);
     }
 
     public void updateFromModel(Emotion model) {

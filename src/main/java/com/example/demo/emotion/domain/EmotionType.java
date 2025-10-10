@@ -6,8 +6,8 @@ import lombok.Getter;
 
 @Getter
 public enum EmotionType {
-    SENTIMENT(1), ENERGY(2), COGNITIVE(3), RELATIONSHIP(4), STRESS(5), EMPLOYMENT(6);
-
+    SENTIMENT(1), ENERGY(2), COGNITIVE(3),
+    RELATIONSHIP(4), STRESS(5), EMPLOYMENT(6);
     private long questionId;
 
     EmotionType(long questionId) {

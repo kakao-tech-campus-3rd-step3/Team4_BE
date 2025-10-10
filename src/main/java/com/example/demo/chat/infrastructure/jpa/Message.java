@@ -9,9 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
 @Entity
 @Table(name = "message")
+@Getter
 public class Message {
 
     @Id
@@ -35,5 +37,13 @@ public class Message {
     private Integer dangerScore;
 
     protected Message() {
+    }
+
+    public Message(Long userId, Sender sender, String content, Integer dangerScore, LocalDateTime createdAt) {
+        this.userId = userId;
+        this.sender = sender;
+        this.content = content;
+        this.dangerScore = dangerScore;
+        this.createdAt = createdAt;
     }
 }

@@ -32,10 +32,10 @@ public class ChatCompletionRequestFactory {
         return singleEntry(promptManager.getDiaryFeedbackBaseMessages(), entry);
     }
 
-    public ChatCompletionRequest buildMyCatChatRequest(String entry, List<String> context) {
+    public ChatCompletionRequest buildMyCatChatRequest(String entry, List<String> context, String memory) {
         List<String> entries = new ArrayList<>(context);
         entries.add(entry);
-        return multiEntry(promptManager.getMyCatChatBaseMessages(), entries);
+        return multiEntry(promptManager.getMyCatChatBaseMessages(memory), entries);
     }
 
     private ChatCompletionRequest singleEntry(List<Message> baseMessages, String entry) {

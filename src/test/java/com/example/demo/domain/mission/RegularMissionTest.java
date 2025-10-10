@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.regular.domain.MissionCount;
-import com.example.demo.mission.regular.domain.score.MissionScores;
 import com.example.demo.mission.regular.domain.MissionTag;
 import com.example.demo.mission.regular.domain.RegularMission;
+import com.example.demo.mission.regular.domain.score.MissionScores;
 import com.example.demo.plan.domain.MissionType;
 import com.example.demo.plan.domain.Plan;
 import java.util.List;

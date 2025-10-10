@@ -2,8 +2,8 @@ package com.example.demo.mission.regular.service;
 
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
-import com.example.demo.mission.regular.domain.score.MissionScores;
 import com.example.demo.mission.regular.domain.RegularMission;
+import com.example.demo.mission.regular.domain.score.MissionScores;
 import com.example.demo.mission.regular.infrastructure.MissionScoreMinMax;
 import com.example.demo.plan.domain.MissionType;
 import java.util.List;
