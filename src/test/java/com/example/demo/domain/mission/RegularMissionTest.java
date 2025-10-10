@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.regular.domain.MissionCount;
-import com.example.demo.mission.regular.domain.MissionScore;
 import com.example.demo.mission.regular.domain.MissionTag;
 import com.example.demo.mission.regular.domain.RegularMission;
+import com.example.demo.mission.regular.domain.score.MissionScores;
 import com.example.demo.plan.domain.MissionType;
 import com.example.demo.plan.domain.Plan;
 import java.util.List;
@@ -16,14 +16,14 @@ import org.junit.jupiter.api.Test;
 
 class RegularMissionTest {
 
-    private MissionScore missionScore;
+    private MissionScores missionScores;
     private MissionCount missionCount;
     private List<MissionTag> tags;
 
     @BeforeEach
     void setUp() {
         // given: 테스트에 사용할 공통 객체 설정
-        missionScore = new MissionScore(1, 2, 3, 4, 5, 6);
+        missionScores = new MissionScores(1, 2, 3, 4, 5, 6);
         missionCount = new MissionCount(10, 5, 3);
         tags = List.of(new MissionTag(1L, "건강"), new MissionTag(2L, "루틴"));
     }

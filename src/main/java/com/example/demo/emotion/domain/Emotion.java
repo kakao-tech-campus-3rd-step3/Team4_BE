@@ -1,5 +1,7 @@
 package com.example.demo.emotion.domain;
 
+
+import com.example.demo.mission.regular.service.score.MissionNormalization;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
@@ -13,8 +15,7 @@ public class Emotion {
     private static final double HIGH_THRESHOLD = 8.0D;
     private static final double MID_THRESHOLD = 5.0D;
     private static final double CHANGE_RATE_THRESHOLD = 0.3D;
-
-
+    
     private Long userId;
     private Map<EmotionType, Integer> emotions = new HashMap<>();
     private double avgDangerLevel;
@@ -71,11 +72,35 @@ public class Emotion {
         }
     }
 
+    public void updateAllUserEmotionScores(MissionNormalization missionNormalization) {
+        for (EmotionType emotionType : EmotionType.values()) {
+            this.updateUserEmotionScore(missionNormalization.get(emotionType), emotionType);
+        }
+    }
+
+    private void updateUserEmotionScore(Integer normalizedScore, EmotionType emotionType) {
+        Integer currentEmotionValue = emotions.get(emotionType);
+        double a = 0.3;   // 최소 반영 비율 (30%)
+        double b = 0.7;   // 감쇠 비율
+        double k = 100.0; // 감쇠 강도
+
+        // 점수가 높을수록 반영률 감소
+        double factor = a + b / Math.sqrt(1 + (double) currentEmotionValue / k);
+        int delta = (int) Math.round(normalizedScore * factor);
+
+        // score가 0 이상이 되도록 하한 적용
+        if (currentEmotionValue + delta < 0) {
+            delta = -currentEmotionValue;  // 최소 0 보장
+        }
+
+        adjust(emotionType, delta);
+    }
+
     public EmotionType getMinEmotion() {
         return emotions.entrySet().stream()
-            .min(Map.Entry.comparingByValue())
-            .map(Map.Entry::getKey)
-            .orElse(null);
+                .min(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
     }
 
     public Integer getSentimentLevel() {

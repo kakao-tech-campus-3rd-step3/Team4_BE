@@ -4,6 +4,8 @@ import com.example.demo.mission.controller.dto.MissionResponse;
 import com.example.demo.mission.regular.service.counter.MissionCounterService;
 import com.example.demo.mission.regular.service.recommend.MissionRecommendService;
 import com.example.demo.plan.controller.dto.PlanCreateRequest;
+import com.example.demo.plan.domain.MissionType;
+import com.example.demo.plan.domain.Plan;
 import com.example.demo.plan.service.PlanInternalService;
 import com.example.demo.user.domain.User;
 import java.util.List;
@@ -19,6 +21,7 @@ public class ActivityService {
     private final MissionRecommendService missionRecommendService;
     private final PlanInternalService planInternalService;
     private final MissionCounterService missionCounterService;
+    private final MissionCompletionEmotionService missionCompletionEmotionService;
 
     public void addMissionToPlan(PlanCreateRequest request, User user) {
         Long missionId = planInternalService.addMissionToPlan(request, user);
@@ -30,19 +33,24 @@ public class ActivityService {
     }
 
     public void updatePlanStatus(Long planId, boolean isDone, User user) {
-        Long missionId = planInternalService.updatePlanStatus(planId, isDone, user);
+        Plan plan = planInternalService.updatePlanStatus(planId, isDone, user);
         if (isDone) {
             try {
-                missionCounterService.addCompletionDelta(missionId);
+                missionCounterService.addCompletionDelta(plan.getMissionId());
             } catch (Exception e) {
-                log.error("Completion delta update failed for missionId: {}", missionId, e);
+                log.error("Completion delta update failed for missionId: {}", plan.getMissionId(),
+                        e);
+            }
+            if (plan.getMissionType() == MissionType.REGULAR) {
+                missionCompletionEmotionService.updateEmotionOnMissionComplete(user,
+                    plan.getMissionId());
             }
         }
     }
 
     public List<MissionResponse> getRecommendedMissions(User user) {
         List<MissionResponse> recommend = missionRecommendService.getRecommendedMissions(
-            user);
+                user);
         List<Long> ids = recommend.stream().map(MissionResponse::getId).toList();
         try {
             missionCounterService.addExposureDelta(ids);
