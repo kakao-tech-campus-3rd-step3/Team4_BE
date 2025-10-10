@@ -38,7 +38,8 @@ public class SecurityConfig {
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**",
-                    "/oauth2/**", "/api/auth/reissue")
+                    "/oauth2/**", "/api/auth/reissue", "/api/login/oauth2/code/*",
+                    "/api/oauth2/authorization/*")
                 .permitAll()
                 .requestMatchers("/api/**").hasRole("USER")
                 .anyRequest().authenticated()
@@ -53,6 +54,12 @@ public class SecurityConfig {
             .formLogin(AbstractHttpConfigurer::disable)
             .logout(AbstractHttpConfigurer::disable)
             .oauth2Login(oauth2 -> oauth2
+                .authorizationEndpoint(endpoint -> endpoint
+                    .baseUri("/api/oauth2/authorization")
+                )
+                .redirectionEndpoint(endpoint -> endpoint
+                    .baseUri("/api/login/oauth2/code/*")
+                )
                 .userInfoEndpoint(userInfo -> userInfo
                     .userService(customOAuth2UserService)
                 )
