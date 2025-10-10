@@ -39,10 +39,11 @@ public class Message {
     protected Message() {
     }
 
-    public Message(Long userId, Sender sender, String content, LocalDateTime createdAt) {
+    public Message(Long userId, Sender sender, String content, Integer dangerScore, LocalDateTime createdAt) {
         this.userId = userId;
         this.sender = sender;
         this.content = content;
+        this.dangerScore = dangerScore;
         this.createdAt = createdAt;
     }
 }
