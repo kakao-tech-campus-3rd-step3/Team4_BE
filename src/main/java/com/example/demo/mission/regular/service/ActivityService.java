@@ -1,5 +1,6 @@
 package com.example.demo.mission.regular.service;
 
+import com.example.demo.emotion.service.EmotionService;
 import com.example.demo.mission.controller.dto.MissionResponse;
 import com.example.demo.mission.regular.service.counter.MissionCounterService;
 import com.example.demo.mission.regular.service.recommend.MissionRecommendService;
@@ -21,7 +22,7 @@ public class ActivityService {
     private final MissionRecommendService missionRecommendService;
     private final PlanInternalService planInternalService;
     private final MissionCounterService missionCounterService;
-    private final MissionCompletionEmotionService missionCompletionEmotionService;
+    private final EmotionService emotionService;
 
     public void addMissionToPlan(PlanCreateRequest request, User user) {
         Long missionId = planInternalService.addMissionToPlan(request, user);
@@ -42,7 +43,7 @@ public class ActivityService {
                         e);
             }
             if (plan.getMissionType() == MissionType.REGULAR) {
-                missionCompletionEmotionService.updateEmotionOnMissionComplete(user,
+                emotionService.updateEmotionOnMissionComplete(user,
                     plan.getMissionId());
             }
         }
