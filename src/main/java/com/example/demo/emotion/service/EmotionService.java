@@ -28,7 +28,7 @@ public class EmotionService {
         }
 
         Emotion emotion = emotionRepository.findById(userId)
-            .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_ERROR_CODE));
+            .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_NOT_FOUND));
 
         int delta = calculateDelta(emotion.getLevel(EmotionType.SENTIMENT), score);
 
@@ -43,7 +43,7 @@ public class EmotionService {
         MissionNormalization normalized = missionScores.normalize(missionScoreMinMax.toMap());
 
         Emotion emotion = emotionRepository.findById(user.getId())
-            .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_ERROR_CODE));
+            .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_NOT_FOUND));
 
         for (EmotionType value : EmotionType.values()) {
             int delta = calculateDelta(emotion.getLevel(value), normalized.get(value));

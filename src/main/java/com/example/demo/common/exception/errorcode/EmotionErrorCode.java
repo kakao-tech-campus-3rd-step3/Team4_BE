@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public enum EmotionErrorCode implements ErrorCode {
 
-    EMOTION_ERROR_CODE(HttpStatus.BAD_REQUEST, "EMOTION_NOT_FOUND", "유저 감정을 찾을 수 없어요.");
+    EMOTION_NOT_FOUND(HttpStatus.BAD_REQUEST, "EMOTION_NOT_FOUND", "유저 감정을 찾을 수 없어요.");
 
     private final HttpStatus status;
     private final String code;
