@@ -46,8 +46,8 @@ public class OpenAiClient {
         return OpenAiResponseConverter.convert(response);
     }
 
-    public OpenAiResponse getChatResponse(String chatEntry, List<String> context) {
-        ChatCompletionRequest request = requestFactory.buildMyCatChatRequest(chatEntry, context);
+    public OpenAiResponse getChatResponse(String chatEntry, List<String> context, String memory) {
+        ChatCompletionRequest request = requestFactory.buildMyCatChatRequest(chatEntry, context, memory);
         ChatCompletionResponse response = sendRequest(request);
         return OpenAiResponseConverter.convert(response);
     }

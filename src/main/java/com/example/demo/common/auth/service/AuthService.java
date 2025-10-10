@@ -37,6 +37,7 @@ public class AuthService {
         String newRefreshToken = jwtTokenProvider.createRefreshToken(userId);
 
         user.updateRefreshToken(newRefreshToken);
+        userRepository.save(user);
 
         return new TokenResponse(newAccessToken, newRefreshToken);
     }

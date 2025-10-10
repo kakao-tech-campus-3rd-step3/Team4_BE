@@ -8,11 +8,11 @@ import lombok.Getter;
 @Getter
 public class DiaryResponse {
 
-    private Long id;
-    private EmotionEnum emotion;
-    private String content;
-    private String feedback;
-    private LocalDateTime createdAt;
+    private final Long id;
+    private final EmotionEnum emotion;
+    private final String content;
+    private final String feedback;
+    private final LocalDateTime createdAt;
 
     public DiaryResponse(Diary diary) {
         this.id = diary.getId();

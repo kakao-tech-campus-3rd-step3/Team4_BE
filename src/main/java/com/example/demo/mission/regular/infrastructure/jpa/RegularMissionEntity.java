@@ -60,14 +60,7 @@ public class RegularMissionEntity {
         this.missionTagEntities = missionTagEntities;
     }
 
-    public static RegularMissionEntity fromModel(RegularMission regularMission) {
-        return new RegularMissionEntity(regularMission.getId(), regularMission.getContent(), regularMission.getCategory(),
-            regularMission.getMissionLevel(), MissionScoreEmbeddable.fromModel(regularMission.getMissionScore()), MissionCountEmbeddable.fromModel(regularMission.getMissionCount()),
-            regularMission.getTags().stream().map(MissionTagEntity::fromModel).toList());
-    }
-
     public RegularMission toModel() {
-        return new RegularMission(id, content, category, missionLevel, missionScoreEmbeddable.toModel(), missionCountEmbeddable.toModel(),
-                missionTagEntities.stream().map(MissionTagEntity::toModel).toList());
+        return new RegularMission(id, content, category);
     }
 }

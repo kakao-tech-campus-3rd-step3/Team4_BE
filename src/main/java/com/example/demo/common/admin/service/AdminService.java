@@ -17,12 +17,13 @@ public class AdminService {
 
     public void registerItem(CreateProductItemRequest request) {
         ProductItem product = new ProductItem(
-            request.getName(),
-            request.getPrice(),
-            request.getCategory(),
-            new DisplayImage(request.getImageUrl(), request.getOffsetX(), request.getOffsetY())
+                request.getName(),
+                request.getPrice(),
+                request.getCategory(),
+                new DisplayImage(request.getImageUrl(), request.getOffsetX(), request.getOffsetY())
         );
 
         productItemRepository.save(product);
     }
+
 }

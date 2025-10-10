@@ -3,11 +3,9 @@ package com.example.demo.mission.custom.infrastructure.jpa;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 
 @Entity
@@ -19,16 +17,24 @@ public class CustomMissionStatus {
     @Id
     private Long customMissionId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "custom_mission_id")
-    private CustomMissionEntity customMissionEntity;
-
     @Embedded
     private CustomMissionScore missionScore;
 
     @Column(nullable = false)
     private Integer level;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CustomMissionStateEnum state;
 
+    public CustomMissionStatus(Long customMissionId, CustomMissionScore missionScore, Integer level,
+        CustomMissionStateEnum state) {
+        this.customMissionId = customMissionId;
+        this.missionScore = missionScore;
+        this.level = level;
+        this.state = state;
+    }
+
+    protected CustomMissionStatus() {
+    }
 }

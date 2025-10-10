@@ -17,23 +17,24 @@ public class PromptManager {
     private static final String MY_CAT_CHAT_SYSTEM_PATH = "prompts/my_cat_chat_system.yml";
 
     private List<Message> diaryFeedbackBaseMessages;
-    private List<Message> myCatChatBaseMessages;
+    private SystemPrompt myCatChatSystemPrompt;
 
     public PromptManager() {
         SystemPrompt system = YamlResourceLoader.load(DIARY_FEEDBACK_SYSTEM_PATH, SystemPrompt.class);
         List<ExamplePrompt> examples = YamlResourceLoader.loadList(DIARY_FEEDBACK_EXAMPLE_PATH, new TypeReference<List<ExamplePrompt>>() {});
         diaryFeedbackBaseMessages = buildBaseMessages(system, examples);
 
-        system = YamlResourceLoader.load(MY_CAT_CHAT_SYSTEM_PATH, SystemPrompt.class);
-        myCatChatBaseMessages = buildBaseMessages(system, new ArrayList<>());
+        myCatChatSystemPrompt = YamlResourceLoader.load(MY_CAT_CHAT_SYSTEM_PATH, SystemPrompt.class);
     }
 
     public List<Message> getDiaryFeedbackBaseMessages() {
         return new ArrayList<>(diaryFeedbackBaseMessages);
     }
 
-    public List<Message> getMyCatChatBaseMessages() {
-        return new ArrayList<>(myCatChatBaseMessages);
+    public List<Message> getMyCatChatBaseMessages(String memory) {
+        SystemPrompt copy = new SystemPrompt(myCatChatSystemPrompt.getSystem());
+        copy.appendLongTermMemory(memory);
+        return buildBaseMessages(copy, new ArrayList<>());
     }
 
     private List<Message> buildBaseMessages(SystemPrompt system, List<ExamplePrompt> examples) {
