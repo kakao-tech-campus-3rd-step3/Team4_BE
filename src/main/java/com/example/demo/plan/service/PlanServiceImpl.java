@@ -3,6 +3,7 @@ package com.example.demo.plan.service;
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.regular.service.MissionRepository;
 import com.example.demo.plan.controller.dto.PlanCreateRequest;
+import com.example.demo.plan.controller.dto.TodayPlansResponse;
 import com.example.demo.plan.domain.Plan;
 import com.example.demo.plan.domain.TodayPlans;
 import com.example.demo.user.domain.User;
@@ -42,8 +43,9 @@ public class PlanServiceImpl implements PlanService, PlanInternalService {
 
     @Override
     @Transactional(readOnly = true)
-    public TodayPlans getTodayPlans(User user) {
-        return planRepository.findTodayPlans(user);
+    public TodayPlansResponse getTodayPlans(User user) {
+        TodayPlans todayPlans = planRepository.findTodayPlans(user);
+        return new TodayPlansResponse(todayPlans);
     }
 
 }
