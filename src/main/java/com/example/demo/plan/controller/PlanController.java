@@ -1,11 +1,10 @@
 package com.example.demo.plan.controller;
 
 import com.example.demo.common.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.mission.regular.service.ActivityService;
 import com.example.demo.plan.controller.dto.PlanCreateRequest;
 import com.example.demo.plan.controller.dto.PlanUpdateRequest;
 import com.example.demo.plan.controller.dto.TodayPlansResponse;
-import com.example.demo.plan.domain.TodayPlans;
-import com.example.demo.plan.service.PlanInternalService;
 import com.example.demo.plan.service.PlanService;
 import com.example.demo.user.domain.User;
 import java.net.URI;
@@ -26,23 +25,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlanController {
 
     private final PlanService planService;
-    private final PlanInternalService planInternalService;
+    private final ActivityService activityService;
 
     @PostMapping
     public ResponseEntity<Void> addMissionToPlan(
         @RequestBody PlanCreateRequest request,
         @CurrentUser User user
     ) {
-        Long planId = planInternalService.addMissionToPlan(request, user);
-        return ResponseEntity.created(URI.create("/api/plans/" + planId)).build();
+        activityService.addMissionToPlan(request, user);
+        return ResponseEntity.created(URI.create("/api/plans")).build();
     }
 
     @GetMapping
     public ResponseEntity<TodayPlansResponse> getTodayPlans(
         @CurrentUser User user
     ) {
-        TodayPlans todayPlans = planService.getTodayPlans(user);
-        return ResponseEntity.ok(new TodayPlansResponse(todayPlans));
+        TodayPlansResponse response = planService.getTodayPlans(user);
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{id}")
@@ -51,7 +50,7 @@ public class PlanController {
         @RequestBody PlanUpdateRequest request,
         @CurrentUser User user
     ) {
-        planInternalService.updatePlanStatus(id, request.getIsDone(), user);
+        activityService.updatePlanStatus(id, request.getIsDone(), user);
         return ResponseEntity.ok().build();
     }
 
