@@ -37,7 +37,13 @@ public class PlanServiceImpl implements PlanService, PlanInternalService {
     public void deletePlan(Long planId, User user) {
         TodayPlans todayPlans = planRepository.findTodayPlans(user);
         todayPlans.deletePlan(planId);
-        planRepository.saveAll(todayPlans.getPlans());
+        planRepository.deleteById(planId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TodayPlans getTodayPlans(User user) {
+        return planRepository.findTodayPlans(user);
     }
 
 }
