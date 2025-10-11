@@ -47,6 +47,11 @@ public class PlanRepositoryImpl implements PlanRepository {
     }
 
     @Override
+    public void deleteById(Long planId) {
+        planJpaRepository.deleteById(planId);
+    }
+
+    @Override
     public Optional<Plan> findById(Long planId) {
         return planJpaRepository.findById(planId).map(PlanEntity::toModel);
     }
