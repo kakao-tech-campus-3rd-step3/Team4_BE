@@ -15,6 +15,8 @@ public interface PlanRepository {
 
     Plan save(Plan plan);
 
+    void deleteById(Long planId);
+
     Optional<Plan> findById(Long planId);
 
     List<MissionCompletionCount> findCompletedMissionCount(Long id);
