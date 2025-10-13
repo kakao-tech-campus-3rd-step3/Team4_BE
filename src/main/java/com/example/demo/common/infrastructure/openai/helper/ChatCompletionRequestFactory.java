@@ -38,6 +38,11 @@ public class ChatCompletionRequestFactory {
         return multiEntry(promptManager.getMyCatChatBaseMessages(memory), entries);
     }
 
+    public ChatCompletionRequest buildCustomMissionEvaluateRequest(String entry) {
+        promptManager.getCustomMissionEvaluateBaseMessages();
+        return singleEntry(promptManager.getCustomMissionEvaluateBaseMessages(), entry);
+    }
+
     private ChatCompletionRequest singleEntry(List<Message> baseMessages, String entry) {
         baseMessages.add(
             Message.builder()
