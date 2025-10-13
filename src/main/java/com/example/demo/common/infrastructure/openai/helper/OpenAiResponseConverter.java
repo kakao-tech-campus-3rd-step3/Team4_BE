@@ -8,7 +8,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class OpenAiResponseConverter {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -23,7 +25,8 @@ public class OpenAiResponseConverter {
         try {
             return MAPPER.readValue(content, OpenAiMissionScoreResponse.class);
         } catch (JsonProcessingException e) {
-            throw new OpenAiException("[OpenAi] OpenAi 커스텀 미션 점수 역직렬화에 실패했습니다", e);
+            log.error("", e);
+            return OpenAiMissionScoreResponse.zero();
         }
     }
 
