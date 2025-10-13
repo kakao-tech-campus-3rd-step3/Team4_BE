@@ -1,10 +1,8 @@
 package com.example.demo.common.exception;
 
 import com.example.demo.common.exception.errorcode.ErrorCode;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,12 +59,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
         MethodArgumentNotValidException e) {
         List<FieldError> fieldErrors = e.getFieldErrors();
-        StringBuilder sb = new StringBuilder();
+        List<String> messages = new ArrayList<>();
         for (FieldError fieldError : fieldErrors) {
-            sb.append(fieldError.getDefaultMessage()).append('\n');
+            messages.add(fieldError.getDefaultMessage());
         }
         ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
-            "INVALID_REQUEST", sb.toString());
+            "INVALID_REQUEST", messages);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
