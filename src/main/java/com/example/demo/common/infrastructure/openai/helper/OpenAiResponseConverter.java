@@ -25,8 +25,7 @@ public class OpenAiResponseConverter {
         try {
             return MAPPER.readValue(content, OpenAiMissionScoreResponse.class);
         } catch (JsonProcessingException e) {
-            log.error("", e);
-            return OpenAiMissionScoreResponse.zero();
+            throw new OpenAiException("[OpenAi] OpenAi 커스텀 미션 점수 역직렬화에 실패했습니다", e);
         }
     }
 
