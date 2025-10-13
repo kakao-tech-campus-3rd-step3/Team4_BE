@@ -13,14 +13,19 @@ public class ScoreEvaluateResponse {
     private final Integer level;
 
     public ScoreEvaluateResponse(Integer sentimentScore, Integer energyScore,
-        Integer cognitiveScore,
-        Integer relationshipScore, Integer stressScore, Integer employmentScore, Integer level) {
-        this.sentimentScore = sentimentScore;
-        this.energyScore = energyScore;
-        this.cognitiveScore = cognitiveScore;
-        this.relationshipScore = relationshipScore;
-        this.stressScore = stressScore;
-        this.employmentScore = employmentScore;
-        this.level = level;
+        Integer cognitiveScore, Integer relationshipScore,
+        Integer stressScore, Integer employmentScore, Integer level) {
+        this.sentimentScore = clamp(sentimentScore);
+        this.energyScore = clamp(energyScore);
+        this.cognitiveScore = clamp(cognitiveScore);
+        this.relationshipScore = clamp(relationshipScore);
+        this.stressScore = clamp(stressScore);
+        this.employmentScore = clamp(employmentScore);
+        this.level = clamp(level);
+    }
+
+    private Integer clamp(Integer value) {
+        if (value == null) return 0;
+        return Math.max(0, Math.min(10, value));
     }
 }
