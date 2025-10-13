@@ -39,7 +39,6 @@ public class ChatCompletionRequestFactory {
     }
 
     public ChatCompletionRequest buildCustomMissionEvaluateRequest(String entry) {
-        promptManager.getCustomMissionEvaluateBaseMessages();
         return singleEntry(promptManager.getCustomMissionEvaluateBaseMessages(), entry);
     }
 
