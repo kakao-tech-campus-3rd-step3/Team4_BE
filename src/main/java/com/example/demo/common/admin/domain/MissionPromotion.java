@@ -1,7 +1,7 @@
 package com.example.demo.common.admin.domain;
 
 import com.example.demo.mission.MissionCategoryEnum;
-import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionStateEnum;
+import com.example.demo.mission.custom.domain.CustomMissionStateEnum;
 import lombok.Getter;
 
 @Getter
