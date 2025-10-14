@@ -38,30 +38,6 @@ public class MissionRecommendService {
         REFRESH, 2, DAILY, 2,
         EMPLOYMENT, 2);
 
-    /**
-     * 사용자의 과거 활동, 감정 상태, 카테고리 선호도 데이터를 분석하여 알맞는 미션들을 추천한다.
-     *
-     * <p>동작 흐름:
-     * <ol>
-     *   <li>해당 사용자가 완료한 미션 수를 카테고리별로 집계한다.</li>
-     *   <li>집계된 데이터로 카테고리별 추천 비율(distribution)을 계산한다.
-     *       <ul>
-     *         <li>완료한 미션 수가 0이면 DEFAULT_RECOMMEND_RATE을 사용한다.</li>
-     *         <li>총합이 6이 되도록 비율을 조정하며, 남는/부족한 수치는 가장 많이 수행된 카테고리에 반영한다.</li>
-     *         <li>각 카테고리별로 최소 1개 이상 추천이 보장된다.</li>
-     *       </ul>
-     *   </li>
-     *   <li>사용자의 감정(UserEmotion) 데이터를 조회하여 가장 낮은 감정(minEmotion)을 찾는다.</li>
-     *   <li>minEmotion에 따라 DAILY / REFRESH 카테고리에서 평균 이상 점수를 가진 미션들을 조회한다.</li>
-     *   <li>EMPLOYMENT 카테고리는 전체 미션을 가져온다.</li>
-     *   <li>카테고리별로 분배된 개수만큼 무작위 선택(shuffle 후 limit)하여 최종 추천 목록을 만든다.</li>
-     * </ol>
-     *
-     * @param user the user for whom to generate mission recommendations
-     * @return a list of recommended missions wrapped in {@link MissionResponse}
-     * @throws RuntimeException if user emotion data cannot be found
-     */
-
     @Transactional(readOnly = true)
     public List<MissionResponse> getRecommendedMissions(User user) {
         List<MissionCompletionCount> completed = planRepository.findCompletedMissionCount(
