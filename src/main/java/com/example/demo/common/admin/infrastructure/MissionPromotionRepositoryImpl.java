@@ -12,18 +12,18 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class MissionPromotionRepositoryImpl implements MissionPromotionRepository {
 
-    private final MissionPromotionJpaRepository regularMissionFactoryJpaRepository;
+    private final MissionPromotionJpaRepository missionPromotionJpaRepository;
 
     @Override
     public List<MissionPromotion> findAll() {
-        return regularMissionFactoryJpaRepository.findAll().stream()
+        return missionPromotionJpaRepository.findAll().stream()
                 .map(MissionPromotionEntity::toModel)
                 .toList();
     }
 
     @Override
     public MissionPromotion save(MissionPromotion adminCustomMission) {
-        return regularMissionFactoryJpaRepository.save(
+        return missionPromotionJpaRepository.save(
                 MissionPromotionEntity.fromModel(adminCustomMission)
         ).toModel();
     }

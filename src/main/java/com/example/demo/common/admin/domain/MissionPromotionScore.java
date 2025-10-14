@@ -16,9 +16,9 @@ public class MissionPromotionScore {
             Integer cognitiveScore, Integer relationshipScore, Integer stressScore,
             Integer employmentScore) {
         this.sentimentScore = sentimentScore;
-        this.relationshipScore = relationshipScore;
         this.energyScore = energyScore;
         this.cognitiveScore = cognitiveScore;
+        this.relationshipScore = relationshipScore;
         this.stressScore = stressScore;
         this.employmentScore = employmentScore;
     }
