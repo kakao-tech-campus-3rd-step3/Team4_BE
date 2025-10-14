@@ -38,7 +38,7 @@ public class CustomMissionEntity {
     }
 
     private CustomMissionEntity(Long id, Long userId, String content,
-        MissionCategoryEnum category) {
+            MissionCategoryEnum category) {
         this.id = id;
         this.userId = userId;
         this.content = content;
@@ -47,7 +47,7 @@ public class CustomMissionEntity {
 
     public static CustomMissionEntity fromModel(CustomMission customMission) {
         return new CustomMissionEntity(customMission.getId(), customMission.getUserId(),
-            customMission.getContent(), customMission.getCategory());
+                customMission.getContent(), customMission.getCategory());
     }
 
     public CustomMission toModel() {
