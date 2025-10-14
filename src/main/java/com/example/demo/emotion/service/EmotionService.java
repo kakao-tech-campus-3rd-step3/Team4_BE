@@ -2,6 +2,7 @@ package com.example.demo.emotion.service;
 
 import com.example.demo.common.exception.BusinessException;
 import com.example.demo.common.exception.errorcode.EmotionErrorCode;
+import com.example.demo.emotion.domain.DangerState;
 import com.example.demo.emotion.domain.Emotion;
 import com.example.demo.emotion.domain.EmotionType;
 import com.example.demo.mission.regular.domain.score.MissionScores;
@@ -65,6 +66,19 @@ public class EmotionService {
         }
 
         return delta;
+    }
+
+    public DangerState applyAndGetDangerState(Long userId, int dangerLevel) {
+        Emotion emotion = emotionRepository.findById(userId)
+            .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_NOT_FOUND));
+        emotion.applyDangerLevel(dangerLevel);
+        emotionRepository.save(emotion);
+        return emotion.getDangerState();
+    }
+
+    public Emotion getEmotion(Long userId) {
+        return emotionRepository.findById(userId)
+            .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_NOT_FOUND));
     }
 
 }

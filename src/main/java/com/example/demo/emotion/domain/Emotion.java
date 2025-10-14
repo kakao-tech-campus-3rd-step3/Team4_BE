@@ -14,6 +14,8 @@ public class Emotion {
     private static final double MID_THRESHOLD = 5.0D;
     private static final double CHANGE_RATE_THRESHOLD = 0.3D;
 
+    private static final double INIT_DANGER_LEVEL = 3;
+
     private Long userId;
     private Map<EmotionType, Integer> emotions = new HashMap<>();
 
@@ -28,8 +30,8 @@ public class Emotion {
         emotions.put(EmotionType.RELATIONSHIP, 0);
         emotions.put(EmotionType.STRESS, 0);
         emotions.put(EmotionType.EMPLOYMENT, 0);
-        avgDangerLevel = 10;
-        recentDangerLevel = 10;
+        avgDangerLevel = INIT_DANGER_LEVEL;
+        recentDangerLevel = INIT_DANGER_LEVEL;
     }
 
     public Emotion(Long userId, Integer sentimentLevel, Integer energyLevel, Integer cognitiveLevel,
@@ -63,7 +65,6 @@ public class Emotion {
             return DangerState.BURST;
         }
         else if (avgDangerLevel > MID_THRESHOLD) {
-            // avgDangerLevel의 지속적 증가 검사로 개선의 여지가 있음
             return DangerState.CHRONIC;
         }
         else {

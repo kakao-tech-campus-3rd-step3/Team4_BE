@@ -9,12 +9,10 @@ import com.example.demo.chat.infrastructure.jpa.Sender;
 import com.example.demo.common.infrastructure.openai.OpenAiClient;
 import com.example.demo.common.infrastructure.openai.dto.OpenAiResponse;
 import com.example.demo.emotion.domain.DangerState;
-import com.example.demo.emotion.domain.Emotion;
-import com.example.demo.emotion.service.EmotionRepository;
+import com.example.demo.emotion.service.EmotionService;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +28,7 @@ public class ChatService {
 
     private final OpenAiClient openAiClient;
     private final MessageRepository messageRepository;
-    private final EmotionRepository emotionRepository;
+    private final EmotionService emotionService;
     private final LongTermMemoryJpaRepository longTermMemoryJpaRepository;
 
     public ChatResponse postMessage(String messageContent, Long userId) {
@@ -38,25 +36,17 @@ public class ChatService {
         LongTermMemory longTermMemory = fetchLongTermMemory(userId);
         OpenAiResponse openAiResponse = openAiClient.getChatResponse(messageContent, context, longTermMemory.getMemory());
 
-        Optional<Integer> dangerScore = openAiResponse.getDangerScore();
-        Optional<Emotion> emotion = emotionRepository.findById(userId);
-        if (dangerScore.isPresent() && emotion.isPresent()) {
-            emotion.get().applyDangerLevel(dangerScore.get());
-            DangerState state = emotion.get().getDangerState();
-            switch (state) {
-                case HIGH_DANGER -> longTermMemory.appendHighDangerMessage();
-                case BURST -> longTermMemory.appendBurstDangerMessage();
-                case CHRONIC -> longTermMemory.appendChronicDangerMessage();
-                case STABLE -> longTermMemory.clearDangerMessage();
-            }
-            emotionRepository.save(emotion.get());
+        openAiResponse.getDangerScore().ifPresent(dangerScore -> {
+            DangerState state = emotionService.applyAndGetDangerState(userId, dangerScore);
+            state.adjust(longTermMemory);
             longTermMemoryJpaRepository.save(longTermMemory);
-        }
+        });
 
-        Message userMessage = new Message(userId, Sender.USER, messageContent, dangerScore.orElseGet(() -> null),
+        Integer dangerScore = openAiResponse.getDangerScore().orElseGet(() -> null);
+        Message userMessage = new Message(userId, Sender.USER, messageContent, dangerScore,
             LocalDateTime.now());
         messageRepository.save(userMessage);
-        Message catMessage = new Message(userId, Sender.CAT, openAiResponse.getMessage(), dangerScore.orElseGet(() -> null),
+        Message catMessage = new Message(userId, Sender.CAT, openAiResponse.getMessage(), dangerScore,
             LocalDateTime.now());
         messageRepository.save(catMessage);
 
