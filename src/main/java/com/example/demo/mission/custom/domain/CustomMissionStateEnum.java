@@ -1,4 +1,4 @@
-package com.example.demo.mission.custom.infrastructure.jpa;
+package com.example.demo.mission.custom.domain;
 
 public enum CustomMissionStateEnum {
     WAITING,    // 필터 대기 상태
