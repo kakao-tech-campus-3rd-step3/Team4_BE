@@ -1,21 +1,39 @@
 package com.example.demo.common.infrastructure.openai.helper;
 
+import com.example.demo.common.infrastructure.openai.OpenAiException;
 import com.example.demo.common.infrastructure.openai.dto.ChatCompletionResponse;
+import com.example.demo.common.infrastructure.openai.dto.OpenAiMissionScoreResponse;
 import com.example.demo.common.infrastructure.openai.dto.OpenAiResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 
 public class OpenAiResponseConverter {
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     public static OpenAiResponse convert(ChatCompletionResponse response) {
+        String content = getContentFrom(response);
+        return parse(content);
+    }
+
+    public static OpenAiMissionScoreResponse convertToScoreResponse(ChatCompletionResponse response) {
+        String content = getContentFrom(response);
+        try {
+            return MAPPER.readValue(content, OpenAiMissionScoreResponse.class);
+        } catch (JsonProcessingException e) {
+            throw new OpenAiException("[OpenAi] OpenAi 커스텀 미션 점수 역직렬화에 실패했습니다", e);
+        }
+    }
+
+    private static String getContentFrom(ChatCompletionResponse response) {
         if (response == null
             || response.getChoices() == null
             || response.getChoices().isEmpty()) {
-            throw new RuntimeException("OpenAI 응답이 비어있습니다.");
+            throw new OpenAiException("[OpenAi] OpenAI 응답이 비어있습니다.");
         }
-        String content = response.getChoices().get(0).getMessage().getContent();
-
-        return parse(content);
+        return response.getChoices().get(0).getMessage().getContent();
     }
 
     private static OpenAiResponse parse(String content) {

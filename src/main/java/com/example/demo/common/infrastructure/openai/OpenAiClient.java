@@ -4,6 +4,7 @@ import com.example.demo.common.exception.BusinessException;
 import com.example.demo.common.exception.errorcode.OpenAiErrorCode;
 import com.example.demo.common.infrastructure.openai.dto.ChatCompletionRequest;
 import com.example.demo.common.infrastructure.openai.dto.ChatCompletionResponse;
+import com.example.demo.common.infrastructure.openai.dto.OpenAiMissionScoreResponse;
 import com.example.demo.common.infrastructure.openai.dto.OpenAiResponse;
 import com.example.demo.common.infrastructure.openai.helper.ChatCompletionRequestFactory;
 import com.example.demo.common.infrastructure.openai.helper.OpenAiResponseConverter;
@@ -52,6 +53,13 @@ public class OpenAiClient {
         return OpenAiResponseConverter.convert(response);
     }
 
+    public OpenAiMissionScoreResponse getScore(String content) {
+        ChatCompletionRequest request = requestFactory.buildCustomMissionEvaluateRequest(
+            content);
+        ChatCompletionResponse response = sendRequest(request);
+        return OpenAiResponseConverter.convertToScoreResponse(response);
+    }
+
     private ChatCompletionResponse sendRequest(ChatCompletionRequest request) {
         try {
             return restClient.post()
@@ -63,9 +71,9 @@ public class OpenAiClient {
             log.error("OPEN_AI_SERVER_ERROR: ", e);
             throw new BusinessException(OpenAiErrorCode.OPEN_AI_SERVER_ERROR);
         } catch (HttpClientErrorException e) {
-            throw new OpenAiException("ChatCompletionRequest가 잘못되었습니다: " + request + "\n" + e);
+            throw new OpenAiException("[OpenAi] ChatCompletionRequest가 잘못되었습니다: " + request, e);
         } catch (RestClientException e) {
-            throw new OpenAiException("OpenAi 응답 역직렬화에 실패했습니다.\n" + e);
+            throw new OpenAiException("[OpenAi] OpenAi 응답 역직렬화에 실패했습니다.", e);
         }
     }
 }
