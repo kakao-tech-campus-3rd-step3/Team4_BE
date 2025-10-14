@@ -3,8 +3,8 @@ package com.example.demo.common.admin.infrastructure.jpa;
 import com.example.demo.common.admin.domain.MissionPromotion;
 import com.example.demo.common.admin.domain.MissionPromotionScore;
 import com.example.demo.mission.MissionCategoryEnum;
+import com.example.demo.mission.custom.domain.CustomMissionStateEnum;
 import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionScore;
-import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionStateEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -54,27 +54,34 @@ public class MissionPromotionEntity {
 
     public static MissionPromotionEntity fromModel(MissionPromotion missionPromotion) {
         MissionPromotionScore score = missionPromotion.getScore();
+        CustomMissionScore customMissionScore = null;
+        if (score != null) {
+            customMissionScore = new CustomMissionScore(score.getSentimentScore(),
+                    score.getEnergyScore(),
+                    score.getCognitiveScore(), score.getRelationshipScore(),
+                    score.getStressScore(), score.getEmploymentScore());
+        }
         return new MissionPromotionEntity(
                 missionPromotion.getId(),
                 missionPromotion.getContent(),
                 missionPromotion.getCategory(),
-                new CustomMissionScore(score.getSentimentScore(), score.getEnergyScore(),
-                        score.getCognitiveScore(), score.getRelationshipScore(),
-                        score.getStressScore(), score.getEmploymentScore()),
+                customMissionScore,
                 missionPromotion.getLevel(),
                 missionPromotion.getState()
         );
     }
 
     public MissionPromotion toModel() {
-        return new MissionPromotion(id, content, category, level,
-                new MissionPromotionScore(
-                        missionScore.getSentimentScore(),
-                        missionScore.getEnergyScore(),
-                        missionScore.getCognitiveScore(),
-                        missionScore.getRelationshipScore(),
-                        missionScore.getStressScore(),
-                        missionScore.getEmploymentScore()),
-                state);
+        MissionPromotionScore promotionScore = null;
+        if (missionScore != null) {
+            promotionScore = new MissionPromotionScore(
+                    missionScore.getSentimentScore(),
+                    missionScore.getEnergyScore(),
+                    missionScore.getCognitiveScore(),
+                    missionScore.getRelationshipScore(),
+                    missionScore.getStressScore(),
+                    missionScore.getEmploymentScore());
+        }
+        return new MissionPromotion(id, content, category, level, promotionScore, state);
     }
 }
