@@ -23,7 +23,7 @@ public class CustomMissionRepositoryImpl implements CustomMissionRepository {
     @Override
     public Optional<CustomMission> findById(Long id) {
         return customMissionJpaRepository.findById(id)
-            .map(CustomMissionEntity::toModel);
+                .map(CustomMissionEntity::toModel);
     }
 
 }
