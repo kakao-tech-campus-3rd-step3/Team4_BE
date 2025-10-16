@@ -4,14 +4,22 @@ import com.example.demo.common.exception.errorcode.ErrorCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 @Getter
 public class ErrorResponse {
 
-    private Integer status;
-    private String errorCode;
-    private String message;
+    private final Integer status;
+    private final String errorCode;
+    private final List<String> message;
 
-    private ErrorResponse(Integer status, String errorCode, String message) {
+    ErrorResponse(Integer status, String errorCode, String message) {
+        this.status = status;
+        this.errorCode = errorCode;
+        this.message = List.of(message);
+    }
+
+    ErrorResponse(Integer status, String errorCode, List<String> message) {
         this.status = status;
         this.errorCode = errorCode;
         this.message = message;
