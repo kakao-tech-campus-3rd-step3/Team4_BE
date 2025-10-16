@@ -4,11 +4,13 @@ import com.example.demo.common.admin.controller.dto.UpdateMissionPromotion;
 import com.example.demo.common.admin.domain.MissionPromotion;
 import com.example.demo.common.admin.service.AdminService;
 import com.example.demo.mission.custom.domain.CustomMissionStateEnum;
+import jakarta.validation.Valid;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,7 +58,7 @@ public class AdminController {
     @PostMapping("/promotions/{id}/reject")
     public String rejectMission(@PathVariable Long id) {
         adminService.rejectMission(id);
-        return "redirect:/admin/promotions";
+        return "redirect:/admin/promotions?state=REJECTED";
     }
 
     @GetMapping("/promotions/{id}/update")
@@ -80,8 +82,14 @@ public class AdminController {
     @PostMapping("/promotions/{id}/update")
     public String updateContents(
         @PathVariable Long id,
-        @ModelAttribute UpdateMissionPromotion promotion
+        @ModelAttribute("promotion") @Valid UpdateMissionPromotion promotion,
+        BindingResult bindingResult,
+        Model model
     ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("promotionId", id);
+            return "admin/mission/promotion/updateContents";
+        }
         adminService.updatePromotion(id, promotion);
         return "redirect:/admin/promotions?state=FILTERED";
     }
