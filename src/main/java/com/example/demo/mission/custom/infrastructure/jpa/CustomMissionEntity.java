@@ -2,7 +2,6 @@ package com.example.demo.mission.custom.infrastructure.jpa;
 
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.domain.CustomMission;
-import com.example.demo.mission.custom.domain.CustomMissionStateEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,29 +34,24 @@ public class CustomMissionEntity {
     @Column(nullable = false)
     private MissionCategoryEnum category;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private CustomMissionStateEnum state;
-
     protected CustomMissionEntity() {
     }
 
     private CustomMissionEntity(Long id, Long userId, String content,
-        MissionCategoryEnum category, CustomMissionStateEnum state) {
+            MissionCategoryEnum category) {
         this.id = id;
         this.userId = userId;
         this.content = content;
         this.category = category;
-        this.state = state;
     }
 
     public static CustomMissionEntity fromModel(CustomMission customMission) {
         return new CustomMissionEntity(customMission.getId(), customMission.getUserId(),
-            customMission.getContent(), customMission.getCategory(), customMission.getState());
+                customMission.getContent(), customMission.getCategory());
     }
 
     public CustomMission toModel() {
-        return new CustomMission(id, content, category, userId, state);
+        return new CustomMission(id, content, category, userId);
     }
 
 }

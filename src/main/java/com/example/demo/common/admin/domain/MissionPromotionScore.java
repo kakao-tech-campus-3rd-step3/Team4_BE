@@ -1,9 +1,9 @@
-package com.example.demo.mission.regular.domain;
+package com.example.demo.common.admin.domain;
 
 import lombok.Getter;
 
 @Getter
-public class MissionScore {
+public class MissionPromotionScore {
 
     private Integer sentimentScore;
     private Integer energyScore;
@@ -12,7 +12,9 @@ public class MissionScore {
     private Integer stressScore;
     private Integer employmentScore;
 
-    public MissionScore(Integer sentimentScore, Integer energyScore, Integer cognitiveScore, Integer relationshipScore, Integer stressScore, Integer employmentScore) {
+    public MissionPromotionScore(Integer sentimentScore, Integer energyScore,
+            Integer cognitiveScore, Integer relationshipScore, Integer stressScore,
+            Integer employmentScore) {
         this.sentimentScore = sentimentScore;
         this.energyScore = energyScore;
         this.cognitiveScore = cognitiveScore;

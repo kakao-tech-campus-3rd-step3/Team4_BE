@@ -3,6 +3,8 @@ package com.example.demo.plan.service;
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.regular.service.MissionRepository;
 import com.example.demo.plan.controller.dto.PlanCreateRequest;
+import com.example.demo.plan.controller.dto.TodayPlansResponse;
+import com.example.demo.plan.domain.Plan;
 import com.example.demo.plan.domain.TodayPlans;
 import com.example.demo.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -26,17 +28,24 @@ public class PlanServiceImpl implements PlanService, PlanInternalService {
         return mission.getId();
     }
 
-    public Long updatePlanStatus(Long planId, boolean isDone, User user) {
+    public Plan updatePlanStatus(Long planId, boolean isDone, User user) {
         TodayPlans todayPlans = planRepository.findTodayPlans(user);
-        Long missionId = todayPlans.updateDone(planId, isDone);
+        Plan plan = todayPlans.updateDone(planId, isDone);
         planRepository.saveAll(todayPlans.getPlans());
-        return missionId;
+        return plan;
     }
 
     public void deletePlan(Long planId, User user) {
         TodayPlans todayPlans = planRepository.findTodayPlans(user);
         todayPlans.deletePlan(planId);
-        planRepository.saveAll(todayPlans.getPlans());
+        planRepository.deleteById(planId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TodayPlansResponse getTodayPlans(User user) {
+        TodayPlans todayPlans = planRepository.findTodayPlans(user);
+        return new TodayPlansResponse(todayPlans);
     }
 
 }

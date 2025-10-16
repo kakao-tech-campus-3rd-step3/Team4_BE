@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.domain.CustomMission;
-import com.example.demo.mission.custom.domain.CustomMissionStateEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +25,6 @@ class CustomMissionTest {
         assertThat(mission.getContent()).isEqualTo(content);
         assertThat(mission.getCategory()).isEqualTo(category);
         assertThat(mission.getUserId()).isEqualTo(authorId);
-        assertThat(mission.getState()).isEqualTo(CustomMissionStateEnum.WAITING);
         assertThat(mission.getId()).isNull(); // ID는 저장 전이므로 null
     }
 

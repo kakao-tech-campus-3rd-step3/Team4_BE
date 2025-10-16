@@ -1,6 +1,7 @@
 package com.example.demo.plan.domain;
 
 import com.example.demo.mission.Mission;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
@@ -12,7 +13,7 @@ public class TodayPlans {
 
     public TodayPlans(Long userId, List<Plan> plans) {
         this.userId = userId;
-        this.plans = plans;
+        this.plans = new ArrayList<>(plans);
     }
 
     public void addMission(Mission mission) {
@@ -20,10 +21,10 @@ public class TodayPlans {
         plans.add(mission.toPlan(userId));
     }
 
-    public Long updateDone(Long planId, boolean isDone) {
+    public Plan updateDone(Long planId, boolean isDone) {
         Plan plan = getPlan(planId);
         plan.updateDone(isDone);
-        return plan.getMissionId();
+        return plan;
     }
 
     public void deletePlan(Long planId) {

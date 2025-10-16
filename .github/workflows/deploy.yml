@@ -30,6 +30,11 @@ jobs:
           mkdir -p src/main/resources
           echo "${{ secrets.APPLICATION_DEV_YML }}" > src/main/resources/application-dev.yml
 
+      - name: Generate application-prod.yml
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.APPLICATION_PROD_YML }}" > src/main/resources/application-prod.yml    
+
       - name: Generate secrets.properties
         run: |
           mkdir -p src/main/resources
