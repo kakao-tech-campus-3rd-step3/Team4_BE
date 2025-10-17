@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 수정</title>
+</head>
+<body>
+<h1>상품 수정</h1>
+<a href="/admin/items"> &laquo; 상품 목록으로 돌아가기</a>
+<form th:action="@{/admin/items/{id}/edit(id=${itemId})}" th:object="${itemRequest}" method="post">
+  <div>
+    <label for="name">상품명:</label>
+    <input type="text" id="name" th:field="*{name}" required>
+  </div>
+  <div>
+    <label for="price">가격:</label>
+    <input type="number" id="price" th:field="*{price}" required>
+  </div>
+  <div>
+    <label for="item-category">카테고리:</label>
+    <select id="item-category" th:field="*{category}" required>
+      <option th:each="slotValue : ${T(com.example.demo.cat.domain.EquipSlot).values()}"
+              th:value="${slotValue}"
+              th:text="${slotValue}"></option>
+    </select>
+  </div>
+  <div>
+    <label for="imageUrl">이미지 URL:</label>
+    <input type="text" id="imageUrl" th:field="*{imageUrl}" required></div>
+  <div>
+    <label for="offsetX">Offset X:</label>
+    <input type="number" step="0.1" id="offsetX" th:field="*{offsetX}" required></div>
+  <div>
+    <label for="offsetY">Offset Y:</label>
+    <input type="number" step="0.1" id="offsetY" th:field="*{offsetY}" required></div>
+  <button type="submit">수정 완료</button>
+</form>
+</body>
+</html>
