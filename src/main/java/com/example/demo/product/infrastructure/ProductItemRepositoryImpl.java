@@ -8,6 +8,7 @@ import com.example.demo.product.domain.ProductItem;
 import com.example.demo.product.infrastructure.jpa.DisplayImageEmbeddable;
 import com.example.demo.product.infrastructure.jpa.ProductItemEntity;
 import com.example.demo.product.service.ProductItemRepository;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,9 +41,30 @@ public class ProductItemRepositoryImpl implements ProductItemRepository {
     }
 
     @Override
+    public List<ProductItem> findAll() {
+        return productItemJpaRepository.findAll().stream()
+            .map(ProductItemEntity::toModel)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        productItemJpaRepository.deleteById(id);
+    }
+
+    @Override
     public void save(ProductItem productItem) {
-        productItemJpaRepository.save(new ProductItemEntity(null, productItem.getName(), productItem.getPrice(),
-            productItem.getSlot(), new DisplayImageEmbeddable(productItem.getImage().getImageUrl(),
-            productItem.getImage().getOffsetX(), productItem.getImage().getOffsetY())));
+        ProductItemEntity entity = new ProductItemEntity(
+            productItem.getId(),
+            productItem.getName(),
+            productItem.getPrice(),
+            productItem.getSlot(),
+            new DisplayImageEmbeddable(
+                productItem.getImage().getImageUrl(),
+                productItem.getImage().getOffsetX(),
+                productItem.getImage().getOffsetY()
+            )
+        );
+        productItemJpaRepository.save(entity);
     }
 }
