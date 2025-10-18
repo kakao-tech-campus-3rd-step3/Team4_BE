@@ -3,12 +3,10 @@ package com.example.demo.common.admin.service;
 import com.example.demo.common.admin.controller.dto.CreateProductItemRequest;
 import com.example.demo.common.admin.controller.dto.MissionStatsResponse;
 import com.example.demo.mission.MissionCategoryEnum;
-import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionEntity;
 import com.example.demo.product.domain.DisplayImage;
 import com.example.demo.product.domain.ProductItem;
 import com.example.demo.product.service.ProductItemRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -65,11 +63,9 @@ public class AdminService {
         String sortOrder) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder),
             "missionCountEmbeddable." + sortBy);
-        List<RegularMissionEntity> missions = adminMissionRepository.findMissionStatistics(category,
+        List<MissionStatsResponse> stats = adminMissionRepository.findMissionStatistics(category,
             sort);
-        return missions.stream()
-            .map(MissionStatsResponse::new)
-            .collect(Collectors.toList());
+        return stats;
     }
 
 }
