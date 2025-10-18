@@ -101,9 +101,9 @@ public class AdminController {
         return "redirect:/admin/promotions?state=FILTERED";
     }
 
-    @GetMapping
+    @GetMapping("/dashboard")
     public String adminDashboard() {
-        return "admin/dashboard";
+        return "redirect:/admin/dashboard.html";
     }
 
     @GetMapping("/missions/stats/view")
