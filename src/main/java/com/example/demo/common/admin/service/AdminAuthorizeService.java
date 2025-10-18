@@ -1,6 +1,8 @@
 package com.example.demo.common.admin.service;
 
 import com.example.demo.common.admin.domain.Admin;
+import com.example.demo.common.exception.BusinessException;
+import com.example.demo.common.exception.errorcode.AdminErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,14 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AdminAuthorizeService {
 
-    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder(12);
     private final AdminRepository adminRepository;
 
     public Long login(String name, String rawPassword) {
         Admin admin = adminRepository.findByName(name)
-            .orElseThrow(() -> new RuntimeException("admin 없음"));
+            .orElseThrow(() -> new BusinessException(AdminErrorCode.ADMIN_ACCOUNT_NOT_EXIST));
         if (!encoder.matches(rawPassword, admin.getHashedPassword())) {
-            throw new RuntimeException("로그인 실패: " + name + " " + rawPassword + " " + admin.getHashedPassword());
+            throw new BusinessException(AdminErrorCode.ADMIN_PASSWORD_NOT_MATCH);
         }
         return admin.getId();
     }
