@@ -1,7 +1,7 @@
 package com.example.demo.mission.regular.infrastructure;
 
-import com.example.demo.common.admin.domain.MissionPromotion;
-import com.example.demo.common.admin.domain.MissionPromotionScore;
+import com.example.demo.admin.domain.MissionPromotion;
+import com.example.demo.admin.domain.MissionPromotionScore;
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionEntity;

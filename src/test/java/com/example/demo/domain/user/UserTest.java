@@ -3,8 +3,8 @@ package com.example.demo.domain.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.example.demo.common.exception.BusinessException;
-import com.example.demo.common.exception.errorcode.UserErrorCode;
+import com.example.demo.exception.BusinessException;
+import com.example.demo.exception.errorcode.UserErrorCode;
 import com.example.demo.domain.cat.CatTest.CatTestFixture;
 import com.example.demo.user.domain.User;
 import org.junit.jupiter.api.Test;

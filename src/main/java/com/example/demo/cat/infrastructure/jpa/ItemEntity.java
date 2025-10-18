@@ -2,7 +2,7 @@ package com.example.demo.cat.infrastructure.jpa;
 
 import com.example.demo.cat.domain.EquipSlot;
 import com.example.demo.cat.domain.Item;
-import com.example.demo.common.infrastructure.jpa.BaseEntity;
+import com.example.demo.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

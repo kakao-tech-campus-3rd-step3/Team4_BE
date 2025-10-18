@@ -4,7 +4,7 @@ import com.example.demo.cat.controller.dto.EquipItemRequest;
 import com.example.demo.cat.controller.dto.ItemResponse;
 import com.example.demo.cat.domain.EquipSlot;
 import com.example.demo.cat.service.ItemService;
-import com.example.demo.common.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.product.controller.dto.ProductItemResponse;
 import com.example.demo.user.domain.User;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.example.demo.diary.service;
 
-import com.example.demo.common.infrastructure.openai.OpenAiClient;
-import com.example.demo.common.infrastructure.openai.dto.OpenAiResponse;
+import com.example.demo.openai.OpenAiClient;
+import com.example.demo.openai.dto.OpenAiResponse;
 import com.example.demo.diary.controller.dto.FeedbackResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

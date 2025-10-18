@@ -1,7 +1,7 @@
 package com.example.demo.mission.custom.service;
 
-import com.example.demo.common.infrastructure.openai.OpenAiClient;
-import com.example.demo.common.infrastructure.openai.dto.OpenAiMissionScoreResponse;
+import com.example.demo.openai.OpenAiClient;
+import com.example.demo.openai.dto.OpenAiMissionScoreResponse;
 import com.example.demo.mission.controller.dto.ScoreEvaluateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

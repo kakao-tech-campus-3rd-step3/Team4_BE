@@ -1,7 +1,7 @@
 package com.example.demo.mission.custom.service;
 
-import com.example.demo.common.admin.domain.MissionPromotion;
-import com.example.demo.common.admin.service.MissionPromotionRepository;
+import com.example.demo.admin.domain.MissionPromotion;
+import com.example.demo.admin.service.MissionPromotionRepository;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.domain.CustomMission;
 import com.example.demo.user.domain.User;

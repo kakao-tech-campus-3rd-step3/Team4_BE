@@ -1,6 +1,6 @@
 package com.example.demo.diary.controller;
 
-import com.example.demo.common.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.diary.controller.dto.DiaryEmotionResponse;
 import com.example.demo.diary.controller.dto.DiaryRequest;
 import com.example.demo.diary.controller.dto.DiaryResponse;

@@ -1,6 +1,6 @@
 package com.example.demo.mission.regular.service;
 
-import com.example.demo.common.admin.domain.MissionPromotion;
+import com.example.demo.admin.domain.MissionPromotion;
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.regular.domain.RegularMission;
