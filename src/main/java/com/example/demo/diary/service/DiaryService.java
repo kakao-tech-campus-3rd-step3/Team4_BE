@@ -11,7 +11,6 @@ import com.example.demo.emotion.service.EmotionService;
 import com.example.demo.user.domain.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
