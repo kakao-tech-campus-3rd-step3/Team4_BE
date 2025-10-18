@@ -15,7 +15,11 @@ public class MissionMinMaxCacheInitializer implements CommandLineRunner {
     private final MissionRepository missionRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
+        initializeCache();
+    }
+
+    public void initializeCache() throws CachingFailedException {
         MissionScoreMinMax missionScoreMinMax = missionRepository.calculateMissionScoreMinMax()
                 .orElseThrow(CachingFailedException::new);
         MissionMinMaxCache.caching(missionScoreMinMax);

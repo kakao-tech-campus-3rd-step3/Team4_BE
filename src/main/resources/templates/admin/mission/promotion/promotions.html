@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Mission Promotion List</title>
+  <link href="/admin/sidebar.css" rel="stylesheet">
+  <style>
+    .content { margin-left: 240px; padding: 30px; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+    }
+    button {
+      padding: 6px 12px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+<div id="sidebar-container"></div>
+
+<div class="content">
+<h1>미션 프로모션 목록</h1>
+
+<div class="filter-container">
+  <form th:action="@{/admin/promotions}" method="get">
+    <label for="state-select">상태 선택:</label>
+    <select id="state-select" name="state" onchange="this.form.submit()">
+      <option
+          th:each="s : ${states}"
+          th:value="${s}"
+          th:text="${s.name()}"
+          th:selected="${s == currentState}">
+        WAITING
+      </option>
+    </select>
+  </form>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>내용</th>
+    <th>카테고리</th>
+    <th>레벨</th>
+    <th>상태</th>
+    <th>감정</th>
+    <th>에너지</th>
+    <th>인지</th>
+    <th>관계</th>
+    <th>스트레스</th>
+    <th>취업</th>
+    <th>AI 채점</th>
+    <th>정보 수정</th>
+    <th>미션 승격</th>
+    <th>미션 거절</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="p : ${promotions}">
+    <td th:text="${p.id}">1</td>
+    <td th:text="${p.content}">내용</td>
+    <td th:text="${p.category}">EMPLOYMENT</td>
+    <td th:text="${p.level != null ? p.level : '-'}">0</td>
+    <td th:text="${p.state}">WAITING</td>
+
+    <td th:text="${p.score != null ? p.score.sentimentScore : '-'}">0</td>
+    <td th:text="${p.score != null ? p.score.energyScore : '-'}">0</td>
+    <td th:text="${p.score != null ? p.score.cognitiveScore : '-'}">0</td>
+    <td th:text="${p.score != null ? p.score.relationshipScore : '-'}">0</td>
+    <td th:text="${p.score != null ? p.score.stressScore : '-'}">0</td>
+    <td th:text="${p.score != null ? p.score.employmentScore : '-'}">0</td>
+
+    <!-- AI 채점 버튼 -->
+    <td th:if="${p.state == T(com.example.demo.mission.custom.domain.CustomMissionStateEnum).WAITING}">
+      <form th:action="@{'/admin/promotions/' + ${p.id} + '/evaluate'}" method="post">
+        <button type="submit">AI 채점</button>
+      </form>
+    </td>
+    <td th:unless="${p.state == T(com.example.demo.mission.custom.domain.CustomMissionStateEnum).WAITING}">-</td>
+
+    <!-- 미션 정보 수정 버튼 -->
+    <td th:if="${p.state == T(com.example.demo.mission.custom.domain.CustomMissionStateEnum).FILTERED}">
+      <form th:action="@{'/admin/promotions/' + ${p.id} + '/update'}" method="get">
+        <button type="submit">정보 수정</button>
+      </form>
+    </td>
+    <td th:unless="${p.state == T(com.example.demo.mission.custom.domain.CustomMissionStateEnum).FILTERED}">-</td>
+
+    <!-- 미션 승격 버튼 -->
+    <td th:if="${p.state == T(com.example.demo.mission.custom.domain.CustomMissionStateEnum).FILTERED}">
+      <form th:action="@{'/admin/promotions/' + ${p.id} + '/promote'}" method="post">
+        <button type="submit">미션 승격</button>
+      </form>
+    </td>
+    <td th:unless="${p.state == T(com.example.demo.mission.custom.domain.CustomMissionStateEnum).FILTERED}">-</td>
+
+    <!-- 미션 거절 버튼 -->
+    <td th:if="${p.state != T(com.example.demo.mission.custom.domain.CustomMissionStateEnum).REJECTED
+          and p.state != T(com.example.demo.mission.custom.domain.CustomMissionStateEnum).PROMOTED}">
+      <form th:action="@{'/admin/promotions/' + ${p.id} + '/reject'}" method="post">
+        <button type="submit">미션 거절</button>
+      </form>
+    </td>
+    <td th:unless="${p.state != T(com.example.demo.mission.custom.domain.CustomMissionStateEnum).REJECTED
+              and p.state != T(com.example.demo.mission.custom.domain.CustomMissionStateEnum).PROMOTED}">-</td>
+
+  </tr>
+  </tbody>
+</table>
+
+<!-- 테이블 아래에 페이징 추가 -->
+<div class="pagination">
+  <ul style="list-style: none; display: flex; justify-content: center; padding: 0;">
+    <!-- 이전 페이지 -->
+    <li th:classappend="${promotions.hasPrevious()} ? '' : 'disabled'" style="margin: 0 5px;">
+      <a th:if="${promotions.hasPrevious()}"
+         th:href="@{/admin/promotions(state=${currentState}, page=${promotions.number - 1})}">
+        &laquo; 이전
+      </a>
+      <span th:unless="${promotions.hasPrevious()}">&laquo; 이전</span>
+    </li>
+
+    <!-- 페이지 번호 -->
+    <li th:each="i : ${#numbers.sequence(0, promotions.totalPages - 1)}"
+        th:classappend="${i == promotions.number} ? 'active' : ''"
+        style="margin: 0 5px;">
+      <a th:href="@{/admin/promotions(state=${currentState}, page=${i})}"
+         th:text="${i + 1}">1</a>
+    </li>
+
+    <!-- 다음 페이지 -->
+    <li th:classappend="${promotions.hasNext()} ? '' : 'disabled'" style="margin: 0 5px;">
+      <a th:if="${promotions.hasNext()}"
+         th:href="@{/admin/promotions(state=${currentState}, page=${promotions.number + 1})}">
+        다음 &raquo;
+      </a>
+      <span th:unless="${promotions.hasNext()}">다음 &raquo;</span>
+    </li>
+  </ul>
+</div>
+</div>
+
+<script src="/admin/config.js"></script>
+<script src="/admin/sidebar.js"></script>
+<script>
+  loadSidebar();
+</script>
+
+</body>
+</html>

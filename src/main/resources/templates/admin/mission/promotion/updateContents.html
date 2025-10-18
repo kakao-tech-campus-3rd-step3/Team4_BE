@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Promotion 수정</title>
+  <style>
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+<h1>Promotion 수정</h1>
+
+<form th:action="@{'/admin/promotions/' + ${promotionId} + '/update'}"
+      th:object="${promotion}"
+      method="post">
+
+  <!-- 내용 -->
+  <label>내용:
+    <input type="text" th:field="*{content}" />
+  </label>
+  <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error"></div>
+  <br/>
+
+  <!-- 카테고리 -->
+  <label>카테고리:
+    <select th:field="*{category}">
+      <option th:each="c : ${T(com.example.demo.mission.MissionCategoryEnum).values()}"
+              th:value="${c}"
+              th:text="${c.name()}"></option>
+    </select>
+  </label>
+  <div th:if="${#fields.hasErrors('category')}" th:errors="*{category}" class="error"></div>
+  <br/>
+
+  <!-- 레벨 -->
+  <label>레벨:
+    <input type="number" th:field="*{level}" min="1" />
+  </label>
+  <div th:if="${#fields.hasErrors('level')}" th:errors="*{level}" class="error"></div>
+  <br/>
+
+  <!-- 점수 필드셋 -->
+  <fieldset>
+    <legend>점수</legend>
+
+    <label>감정:
+      <input type="number" th:field="*{sentimentScore}" min="0" max="10" />
+    </label>
+    <div th:if="${#fields.hasErrors('sentimentScore')}" th:errors="*{sentimentScore}" class="error"></div>
+    <br/>
+
+    <label>에너지:
+      <input type="number" th:field="*{energyScore}" min="0" max="10" />
+    </label>
+    <div th:if="${#fields.hasErrors('energyScore')}" th:errors="*{energyScore}" class="error"></div>
+    <br/>
+
+    <label>인지:
+      <input type="number" th:field="*{cognitiveScore}" min="0" max="10" />
+    </label>
+    <div th:if="${#fields.hasErrors('cognitiveScore')}" th:errors="*{cognitiveScore}" class="error"></div>
+    <br/>
+
+    <label>관계:
+      <input type="number" th:field="*{relationshipScore}" min="0" max="10" />
+    </label>
+    <div th:if="${#fields.hasErrors('relationshipScore')}" th:errors="*{relationshipScore}" class="error"></div>
+    <br/>
+
+    <label>스트레스:
+      <input type="number" th:field="*{stressScore}" min="0" max="10" />
+    </label>
+    <div th:if="${#fields.hasErrors('stressScore')}" th:errors="*{stressScore}" class="error"></div>
+    <br/>
+
+    <label>취업:
+      <input type="number" th:field="*{employmentScore}" min="0" max="10" />
+    </label>
+    <div th:if="${#fields.hasErrors('employmentScore')}" th:errors="*{employmentScore}" class="error"></div>
+    <br/>
+  </fieldset>
+
+  <button type="submit">수정</button>
+</form>
+
+</body>
+</html>

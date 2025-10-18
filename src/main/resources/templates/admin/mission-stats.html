@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>미션 통계</title>
+  <link href="/admin/sidebar.css" rel="stylesheet">
+  <style>
+    .content { margin-left: 240px; padding: 30px; }
+    body { font-family: sans-serif; margin: 2em; }
+    h1 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    .controls { margin-bottom: 1em; }
+    a { text-decoration: none; color: #007bff; }
+  </style>
+</head>
+<body>
+<div id="sidebar-container"></div>
+
+<div class="content">
+<h1>미션 통계</h1>
+<a href="/admin/dashboard"> &laquo; 뒤로가기</a>
+<div class="controls">
+  <form action="/admin/missions/stats/view" id="filter-form" method="get">
+    <label for="category">카테고리 필터:</label>
+    <select id="category" name="category" onchange="this.form.submit()">
+      <option value="">전체</option>
+      <option th:each="cat : ${categories}"
+              th:selected="${cat == currentCategory}"
+              th:text="${cat}"
+              th:value="${cat}"></option>
+    </select>
+    <input name="sortBy" th:value="${sortBy}" type="hidden">
+    <input name="sortOrder" th:value="${sortOrder}" type="hidden">
+  </form>
+</div>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>내용</th>
+    <th>카테고리</th>
+    <th><a
+        th:href="@{/admin/missions/stats/view(category=${currentCategory}, sortBy='exposureCount', sortOrder=${sortBy == 'exposureCount' && sortOrder == 'ASC' ? 'DESC' : 'ASC'})}">노출
+      수</a></th>
+    <th><a
+        th:href="@{/admin/missions/stats/view(category=${currentCategory}, sortBy='selectionCount', sortOrder=${sortBy == 'selectionCount' && sortOrder == 'ASC' ? 'DESC' : 'ASC'})}">선택
+      수</a></th>
+    <th><a
+        th:href="@{/admin/missions/stats/view(category=${currentCategory}, sortBy='completionCount', sortOrder=${sortBy == 'completionCount' && sortOrder == 'ASC' ? 'DESC' : 'ASC'})}">완료
+      수</a></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="stat : ${missionStats}">
+    <td th:text="${stat.id}"></td>
+    <td th:text="${stat.content}"></td>
+    <td th:text="${stat.category}"></td>
+    <td th:text="${stat.exposureCount}"></td>
+    <td th:text="${stat.selectionCount}"></td>
+    <td th:text="${stat.completionCount}"></td>
+  </tr>
+  </tbody>
+</table>
+</div>
+
+<script src="/admin/config.js"></script>
+<script src="/admin/sidebar.js"></script>
+<script>
+  loadSidebar();
+</script>
+
+</body>
+</html>

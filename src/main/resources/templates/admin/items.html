@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 목록</title>
+  <link href="/admin/sidebar.css" rel="stylesheet">
+  <style>
+    .content { margin-left: 240px; padding: 30px; }
+    body { font-family: sans-serif; margin: 2em; }
+    h1 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1.5em; }
+    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    a { text-decoration: none; color: #007bff; }
+    .action-links a, .action-links button { margin-right: 10px; }
+    .action-links button { background: none; border: none; color: #dc3545; cursor: pointer; padding: 0; font-size: 1em; }
+    .btn-new { padding: 10px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; }
+  </style>
+</head>
+
+<body>
+<div id="sidebar-container"></div>
+<div class="content">
+  <h1>상품 관리</h1>
+  <a href="/admin/dashboard">&laquo; 대시보드로 돌아가기</a>
+  <br><br>
+  <a class="btn-new" href="/admin/items/new">+ 새 상품 등록</a>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>상품명</th>
+      <th>가격</th>
+      <th>카테고리</th>
+      <th>작업</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${items}">
+      <td th:text="${item.id}"></td>
+      <td th:text="${item.name}"></td>
+      <td th:text="${item.price}"></td>
+      <td th:text="${item.slot}"></td>
+      <td class="action-links">
+        <a th:href="@{/admin/items/{id}/edit(id=${item.id})}">수정</a>
+        <form method="post" style="display:inline;"
+              th:action="@{/admin/items/{id}/delete(id=${item.id})}">
+          <button onclick="return confirm('정말 삭제하시겠습니까?');" type="submit">삭제</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script src="/admin/config.js"></script>
+<script src="/admin/sidebar.js"></script>
+<script>
+  loadSidebar();
+</script>
+
+</body>
+</html>
