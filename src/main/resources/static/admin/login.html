@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>관리자 로그인</title>
+  <link href="sidebar.css" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 340px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #111827;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 15px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2563eb;
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1e40af;
+    }
+
+    .error {
+      color: #dc2626;
+      margin-top: 10px;
+      font-size: 14px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+<div class="login-container">
+  <h2>관리자 로그인</h2>
+  <form id="login-form">
+    <input id="name" placeholder="관리자 이름" required type="text">
+    <input id="password" placeholder="비밀번호" required type="password">
+    <button type="submit">로그인</button>
+  </form>
+  <div class="error" id="error-msg">로그인에 실패했습니다.</div>
+</div>
+
+<script>
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const password = document.getElementById('password').value;
+    const errorMsg = document.getElementById('error-msg');
+
+    try {
+      const res = await fetch('/admin/api/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ name, password }),
+      });
+
+      if (res.ok) {
+        // 로그인 성공 → 관리자 대시보드로 이동
+        window.location.href = '/admin/dashboard.html';
+      } else {
+        // 로그인 실패
+        errorMsg.style.display = 'block';
+      }
+    } catch (err) {
+      console.error(err);
+      errorMsg.style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>
