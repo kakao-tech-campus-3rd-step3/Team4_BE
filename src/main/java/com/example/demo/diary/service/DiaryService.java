@@ -1,7 +1,7 @@
 package com.example.demo.diary.service;
 
-import com.example.demo.common.exception.BusinessException;
-import com.example.demo.common.exception.errorcode.DiaryErrorCode;
+import com.example.demo.exception.BusinessException;
+import com.example.demo.exception.errorcode.DiaryErrorCode;
 import com.example.demo.diary.controller.dto.DiaryEmotionResponse;
 import com.example.demo.diary.controller.dto.DiaryRequest;
 import com.example.demo.diary.controller.dto.DiaryResponse;

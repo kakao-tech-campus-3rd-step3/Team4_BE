@@ -4,7 +4,7 @@ import com.example.demo.chat.controller.dto.ChatRequest;
 import com.example.demo.chat.controller.dto.ChatResponse;
 import com.example.demo.chat.controller.dto.MessageResponse;
 import com.example.demo.chat.service.ChatService;
-import com.example.demo.common.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

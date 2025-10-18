@@ -1,6 +1,6 @@
 package com.example.demo.mission.controller;
 
-import com.example.demo.common.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.mission.controller.dto.CustomMissionCreateRequest;
 import com.example.demo.mission.controller.dto.MissionResponse;
 import com.example.demo.mission.custom.domain.CustomMission;

@@ -1,6 +1,6 @@
 package com.example.demo.plan.controller;
 
-import com.example.demo.common.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.mission.regular.service.ActivityService;
 import com.example.demo.plan.controller.dto.PlanCreateRequest;
 import com.example.demo.plan.controller.dto.PlanUpdateRequest;

@@ -1,6 +1,6 @@
 package com.example.demo.plan.infrastructure.jpa;
 
-import com.example.demo.common.infrastructure.jpa.BaseEntity;
+import com.example.demo.common.BaseEntity;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.plan.domain.MissionType;
 import com.example.demo.plan.domain.Plan;

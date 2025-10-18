@@ -1,7 +1,7 @@
 package com.example.demo.emotion.domain;
 
-import com.example.demo.common.exception.BusinessException;
-import com.example.demo.common.exception.errorcode.EmotionTestErrorCode;
+import com.example.demo.exception.BusinessException;
+import com.example.demo.exception.errorcode.EmotionTestErrorCode;
 import lombok.Getter;
 
 @Getter
