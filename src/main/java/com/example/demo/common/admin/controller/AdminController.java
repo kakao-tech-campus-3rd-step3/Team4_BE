@@ -32,12 +32,6 @@ public class AdminController {
 
     private final AdminService adminService;
 
-//    @PostMapping("/admin/items")
-//    public ResponseEntity<Void> registerItem(@RequestBody CreateProductItemRequest request) {
-//        adminService.registerItem(request);
-//        return ResponseEntity.ok().build();
-//    }
-
     @GetMapping("/promotions")
     public String getPromotionsForm(
         Model model,

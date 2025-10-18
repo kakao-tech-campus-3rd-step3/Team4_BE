@@ -15,15 +15,6 @@ public class AdminAuthorizeService {
     private final PasswordEncoder encoder = new BCryptPasswordEncoder();
     private final AdminRepository adminRepository;
 
-//    @PostConstruct
-//    public void check() {
-//        Admin admin = adminRepository.findByName("admin")
-//            .orElseThrow(() -> new RuntimeException("admin 없음"));
-//        if (!encoder.matches("rkddnjseo4xla123!@#", admin.getHashedPassword())) {
-//            throw new RuntimeException("초기화 실패");
-//        }
-//    }
-
     public Long login(String name, String rawPassword) {
         Admin admin = adminRepository.findByName(name)
             .orElseThrow(() -> new RuntimeException("admin 없음"));
