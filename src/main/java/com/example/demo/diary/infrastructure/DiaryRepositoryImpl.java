@@ -28,7 +28,7 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     }
 
     @Override
-    public List<DiaryEmotionResponse> findAllByDateBetween(
+    public List<DiaryEmotionResponse> findAllByDateBetweenAndUserId(
         LocalDateTime start,
         LocalDateTime end,
         Long userId

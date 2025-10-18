@@ -40,9 +40,9 @@ public class DiaryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DiaryEmotionResponse>> monthDiaries(
+    public ResponseEntity<List<DiaryEmotionResponse>> getMonthlyDiaries(
         @RequestParam @DateTimeFormat(pattern = "yyyyMM") YearMonth month,
         @CurrentUser User user) {
-        return ResponseEntity.ok(diaryService.getMonthDiaries(month, user));
+        return ResponseEntity.ok(diaryService.getMonthlyDiaries(month, user));
     }
 }
