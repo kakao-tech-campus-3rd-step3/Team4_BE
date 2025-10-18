@@ -5,9 +5,12 @@ import com.example.demo.mission.controller.dto.CustomMissionCreateRequest;
 import com.example.demo.mission.controller.dto.MissionResponse;
 import com.example.demo.mission.custom.domain.CustomMission;
 import com.example.demo.mission.custom.service.CustomMissionService;
+import com.example.demo.mission.regular.service.recommend.MissionRecommendService;
 import com.example.demo.user.domain.User;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MissionController {
 
     private final CustomMissionService customMissionService;
+    private final MissionRecommendService missionRecommendService;
 
     @PostMapping("/custom")
     public ResponseEntity<MissionResponse> createCustomMission(
@@ -50,6 +54,11 @@ public class MissionController {
         );
 
         return ResponseEntity.ok(new MissionResponse(customMission));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<MissionResponse>> getRecommendedMissions(@CurrentUser User user) {
+        return ResponseEntity.ok(missionRecommendService.getRecommendedMissions(user));
     }
 
 }
