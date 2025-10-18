@@ -48,9 +48,15 @@ public class RegularMissionEntity {
     protected RegularMissionEntity() {
     }
 
-    private RegularMissionEntity(Long id, String content, MissionCategoryEnum category,
-                                 Integer missionLevel,
-                                 MissionScoreEmbeddable missionScoreEmbeddable, MissionCountEmbeddable missionCountEmbeddable, List<MissionTagEntity> missionTagEntities) {
+    public RegularMissionEntity(
+        Long id,
+        String content,
+        MissionCategoryEnum category,
+        Integer missionLevel,
+        MissionScoreEmbeddable missionScoreEmbeddable,
+        MissionCountEmbeddable missionCountEmbeddable,
+        List<MissionTagEntity> missionTagEntities
+    ) {
         this.id = id;
         this.content = content;
         this.category = category;

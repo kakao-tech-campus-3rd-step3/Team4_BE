@@ -13,15 +13,15 @@ public class ScoreEvaluationService {
     private final OpenAiClient openAiClient;
 
     public ScoreEvaluateResponse evaluateScore(String content) {
-        OpenAiMissionScoreResponse response = openAiClient.getScore(content);
+        OpenAiMissionScoreResponse score = openAiClient.getScore(content);
         return new ScoreEvaluateResponse(
-            response.getSentimentScore(),
-            response.getEnergyScore(),
-            response.getCognitiveScore(),
-            response.getRelationshipScore(),
-            response.getStressScore(),
-            response.getEmploymentScore(),
-            response.getLevel()
+            score.getSentimentScore(),
+            score.getEnergyScore(),
+            score.getCognitiveScore(),
+            score.getRelationshipScore(),
+            score.getStressScore(),
+            score.getEmploymentScore(),
+            score.getLevel()
         );
     }
 

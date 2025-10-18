@@ -4,8 +4,11 @@ import com.example.demo.common.admin.domain.MissionPromotion;
 import com.example.demo.common.admin.infrastructure.jpa.MissionPromotionEntity;
 import com.example.demo.common.admin.infrastructure.jpa.MissionPromotionJpaRepository;
 import com.example.demo.common.admin.service.MissionPromotionRepository;
-import java.util.List;
+import com.example.demo.mission.custom.domain.CustomMissionStateEnum;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,10 +18,14 @@ public class MissionPromotionRepositoryImpl implements MissionPromotionRepositor
     private final MissionPromotionJpaRepository missionPromotionJpaRepository;
 
     @Override
-    public List<MissionPromotion> findAll() {
-        return missionPromotionJpaRepository.findAll().stream()
-                .map(MissionPromotionEntity::toModel)
-                .toList();
+    public Optional<MissionPromotion> findById(Long id) {
+        return missionPromotionJpaRepository.findById(id).map(MissionPromotionEntity::toModel);
+    }
+
+    @Override
+    public Page<MissionPromotion> findAllByState(Pageable pageable, CustomMissionStateEnum state) {
+        return missionPromotionJpaRepository.findAllByState(pageable, state)
+            .map(MissionPromotionEntity::toModel);
     }
 
     @Override
