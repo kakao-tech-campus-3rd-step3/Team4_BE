@@ -28,9 +28,14 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     }
 
     @Override
-    public List<DiaryEmotionResponse> findAllByDateBetween(LocalDateTime start, LocalDateTime end) {
-        List<DiaryEntity> entities = diaryJpaRepository.findAllByCreatedAtBetween(
-            start, end);
+    public List<DiaryEmotionResponse> findAllByDateBetween(
+        LocalDateTime start,
+        LocalDateTime end,
+        Long userId
+    ) {
+        List<DiaryEntity> entities = diaryJpaRepository.findAllByCreatedAtBetweenAndAuthorId(
+            start, end, userId
+        );
         return entities.stream()
             .map(e -> new DiaryEmotionResponse(e.getId(), e.getEmotion(), e.getCreatedAt()))
             .toList();

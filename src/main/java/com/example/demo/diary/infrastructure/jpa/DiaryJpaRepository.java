@@ -6,5 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DiaryJpaRepository extends JpaRepository<DiaryEntity, Long> {
 
-    List<DiaryEntity> findAllByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+    List<DiaryEntity> findAllByCreatedAtBetweenAndAuthorId(
+        LocalDateTime start,
+        LocalDateTime end,
+        Long userId
+    );
 }

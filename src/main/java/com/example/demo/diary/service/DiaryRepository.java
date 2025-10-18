@@ -12,5 +12,8 @@ public interface DiaryRepository {
 
     Optional<Diary> findById(Long diaryId);
 
-    List<DiaryEmotionResponse> findAllByDateBetween(LocalDateTime start, LocalDateTime end);
+    List<DiaryEmotionResponse> findAllByDateBetween(
+        LocalDateTime start,
+        LocalDateTime end,
+        Long userId);
 }

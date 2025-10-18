@@ -57,7 +57,7 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public List<DiaryEmotionResponse> getMonthDiaries(YearMonth yearMonth) {
+    public List<DiaryEmotionResponse> getMonthDiaries(YearMonth yearMonth, User user) {
         LocalDate localDate = yearMonth.atDay(1);
         LocalTime localTime = LocalTime.MIDNIGHT;
         LocalDateTime start = LocalDateTime.of(localDate, localTime);
@@ -65,6 +65,6 @@ public class DiaryService {
         LocalDateTime end = start.withDayOfMonth(start.toLocalDate().lengthOfMonth())
             .withHour(23).withMinute(59).withSecond(59);
 
-        return diaryRepository.findAllByDateBetween(start, end);
+        return diaryRepository.findAllByDateBetween(start, end, user.getId());
     }
 }
