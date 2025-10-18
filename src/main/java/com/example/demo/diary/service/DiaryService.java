@@ -2,12 +2,17 @@ package com.example.demo.diary.service;
 
 import com.example.demo.common.exception.BusinessException;
 import com.example.demo.common.exception.errorcode.DiaryErrorCode;
+import com.example.demo.diary.controller.dto.DiaryEmotionResponse;
 import com.example.demo.diary.controller.dto.DiaryRequest;
 import com.example.demo.diary.controller.dto.DiaryResponse;
 import com.example.demo.diary.controller.dto.FeedbackResult;
 import com.example.demo.diary.domain.Diary;
 import com.example.demo.emotion.service.EmotionService;
 import com.example.demo.user.domain.User;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -48,5 +53,15 @@ public class DiaryService {
             throw new BusinessException(DiaryErrorCode.DIARY_ACCESS_DENIED);
         }
         return new DiaryResponse(diary);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DiaryEmotionResponse> getMonthlyDiaries(YearMonth yearMonth, User user) {
+        LocalDate localDate = yearMonth.atDay(1);
+
+        LocalDateTime start = localDate.atStartOfDay();
+        LocalDateTime end = localDate.plusMonths(1).atStartOfDay().minusNanos(1);
+
+        return diaryRepository.findAllByDateBetweenAndUserId(start, end, user.getId());
     }
 }
