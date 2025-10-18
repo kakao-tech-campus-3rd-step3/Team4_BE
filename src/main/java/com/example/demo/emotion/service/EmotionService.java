@@ -53,7 +53,7 @@ public class EmotionService {
         emotionRepository.save(emotion);
     }
 
-    public int calculateDelta(Integer score, Integer input) {
+    private int calculateDelta(Integer score, Integer input) {
         double a = 0.3;   // 최소 반영 비율 (30%)
         double b = 0.7;   // 감쇠 비율
         double k = 100.0; // 감쇠 강도
