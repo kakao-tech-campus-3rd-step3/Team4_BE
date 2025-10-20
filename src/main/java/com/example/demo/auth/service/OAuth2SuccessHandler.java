@@ -5,6 +5,7 @@ import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         user.updateRefreshToken(refreshToken);
         userRepository.save(user);
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
 
         String targetUrl = UriComponentsBuilder.fromUriString(
                 redirectUrl)
