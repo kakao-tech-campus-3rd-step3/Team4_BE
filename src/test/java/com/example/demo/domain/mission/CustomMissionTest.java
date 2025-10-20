@@ -3,6 +3,8 @@ package com.example.demo.domain.mission;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.MissionErrorCode;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.domain.CustomMission;
 import org.junit.jupiter.api.DisplayName;
@@ -65,8 +67,13 @@ class CustomMissionTest {
         CustomMission mission = new CustomMission("내용", MissionCategoryEnum.REFRESH, authorId);
 
         // when & then
-        assertThatThrownBy(() -> mission.validateUser(otherUserId))
-            .isInstanceOf(RuntimeException.class)
-            .hasMessage("미션을 수정하거나 삭제할 권한이 없습니다.");
+        assertThatThrownBy(
+            () -> mission.validateUser(otherUserId)
+        ).satisfies(
+            ex -> {
+                BusinessException e = (BusinessException) ex;
+                assertThat(e.getErrorCode()).isEqualTo(MissionErrorCode.MISSION_ACCESS_DENIED);
+            }
+        ).isInstanceOf(BusinessException.class);
     }
 }

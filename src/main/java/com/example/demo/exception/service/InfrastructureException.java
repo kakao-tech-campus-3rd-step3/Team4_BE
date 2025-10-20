@@ -6,7 +6,4 @@ public class InfrastructureException extends ServiceException {
         super(message);
     }
 
-    public InfrastructureException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }

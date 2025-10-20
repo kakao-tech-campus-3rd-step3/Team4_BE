@@ -1,5 +1,7 @@
 package com.example.demo.plan.domain;
 
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.PlanErrorCode;
 import com.example.demo.mission.Mission;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +35,12 @@ public class TodayPlans {
 
     private Plan getPlan(Long planId) {
         return plans.stream().filter(p -> p.getId().equals(planId)).findAny()
-            .orElseThrow(() -> new RuntimeException("플랜이 존재하지 않습니다."));
+            .orElseThrow(() -> new BusinessException(PlanErrorCode.PLAN_NOT_FOUND));
     }
 
     private void validateMissionExist(Mission mission) {
         if (plans.stream().filter(p -> !p.isDone()).anyMatch(p -> p.hasSameMission(mission))) {
-            throw new RuntimeException("이미 미션이 오늘의 계획에 존재합니다.");
+            throw new BusinessException(PlanErrorCode.MISSION_ALREADY_EXIST_IN_TODAY_PLANS);
         }
     }
 }

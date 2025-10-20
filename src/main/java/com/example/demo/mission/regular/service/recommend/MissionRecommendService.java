@@ -7,6 +7,8 @@ import static com.example.demo.mission.MissionCategoryEnum.REFRESH;
 import com.example.demo.emotion.domain.Emotion;
 import com.example.demo.emotion.domain.EmotionType;
 import com.example.demo.emotion.service.EmotionRepository;
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.EmotionErrorCode;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.controller.dto.MissionCompletionCount;
 import com.example.demo.mission.controller.dto.MissionResponse;
@@ -46,7 +48,7 @@ public class MissionRecommendService {
         Map<MissionCategoryEnum, Integer> distribution = calculateDistribution(completed);
 
         Emotion emotion = emotionRepository.findById(user.getId())
-            .orElseThrow(() -> new RuntimeException(""));
+            .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_NOT_FOUND));
         EmotionType minEmotion = emotion.getMinEmotion();
 
         List<RegularMission> dailyMissions = getDailyMissions(minEmotion);
