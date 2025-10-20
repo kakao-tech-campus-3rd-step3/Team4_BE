@@ -2,7 +2,8 @@ package com.example.demo.exception.service;
 
 public abstract class ServiceException extends RuntimeException {
 
-    public ServiceException() {
+    public ServiceException(Throwable cause) {
+        super(cause);
     }
 
     public ServiceException(String message) {
