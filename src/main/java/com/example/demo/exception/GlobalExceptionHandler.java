@@ -1,5 +1,6 @@
 package com.example.demo.exception;
 
+import com.example.demo.exception.auth.AuthException;
 import com.example.demo.exception.business.BusinessException;
 import com.example.demo.exception.business.errorcode.ErrorCode;
 
@@ -59,9 +60,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<ErrorResponse> handleServiceException(ServiceException e) {
-        log.error("Service error occurred", e);
+        log.error("Service exception occurred", e);
         ErrorResponse response = ErrorResponse.internal();
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ErrorResponse> handleAuthException(AuthException e) {
+        log.error("Auth exception occurred", e);
+        ErrorResponse response = ErrorResponse.from(e);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
