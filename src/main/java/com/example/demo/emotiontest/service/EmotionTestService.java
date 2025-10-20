@@ -1,7 +1,7 @@
 package com.example.demo.emotiontest.service;
 
-import com.example.demo.exception.BusinessException;
-import com.example.demo.exception.errorcode.EmotionTestErrorCode;
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.EmotionTestErrorCode;
 import com.example.demo.emotion.domain.Emotion;
 import com.example.demo.emotion.domain.EmotionType;
 import com.example.demo.emotion.service.EmotionRepository;

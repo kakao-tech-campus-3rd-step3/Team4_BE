@@ -1,19 +1,18 @@
-package com.example.demo.exception.errorcode;
+package com.example.demo.exception.business.errorcode;
 
 import org.springframework.http.HttpStatus;
 
-public enum ItemErrorCode implements ErrorCode {
+public enum DiaryErrorCode implements ErrorCode {
 
-    ITEM_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ITEM_ALREADY_EXIST", "이미 아이템을 소유하고 있어요."),
-    ITEM_NOT_EXIST(HttpStatus.BAD_REQUEST, "ITEM_NOT_EXIST", "아이템을 소유하고 있지 않아요."),
+    DIARY_NOT_FOUND(HttpStatus.BAD_REQUEST, "DIARY_NOT_FOUND", "일기를 찾을 수 없어요."),
+    DIARY_ACCESS_DENIED(HttpStatus.BAD_REQUEST, "DIARY_ACCESS_DENIED", "다른 사용자의 일기는 볼 수 없어요.");
 
-    PRODUCT_NOT_FOUND(HttpStatus.BAD_REQUEST, "PRODUCT_NOT_FOUND", "상품을 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;
     private final String defaultMessage;
 
-    ItemErrorCode(HttpStatus status, String code, String defaultMessage) {
+    DiaryErrorCode(HttpStatus status, String code, String defaultMessage) {
         this.status = status;
         this.code = code;
         this.defaultMessage = defaultMessage;

@@ -1,7 +1,7 @@
 package com.example.demo.openai;
 
-import com.example.demo.exception.BusinessException;
-import com.example.demo.exception.errorcode.OpenAiErrorCode;
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.OpenAiErrorCode;
 import com.example.demo.openai.dto.ChatCompletionRequest;
 import com.example.demo.openai.dto.ChatCompletionResponse;
 import com.example.demo.openai.dto.OpenAiMissionScoreResponse;

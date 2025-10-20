@@ -1,7 +1,9 @@
 package com.example.demo.exception;
 
-import com.example.demo.exception.errorcode.ErrorCode;
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.ErrorCode;
 
+import com.example.demo.exception.service.ServiceException;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +55,13 @@ public class GlobalExceptionHandler {
         }
 
         return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.from(e));
+    }
+
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<ErrorResponse> handleServiceException(ServiceException e) {
+        log.error("Service error occurred", e);
+        ErrorResponse response = ErrorResponse.internal();
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

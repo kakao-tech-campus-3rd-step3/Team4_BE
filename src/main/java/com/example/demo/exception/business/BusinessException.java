@@ -1,6 +1,6 @@
-package com.example.demo.exception;
+package com.example.demo.exception.business;
 
-import com.example.demo.exception.errorcode.ErrorCode;
+import com.example.demo.exception.business.errorcode.ErrorCode;
 import lombok.Getter;
 
 @Getter

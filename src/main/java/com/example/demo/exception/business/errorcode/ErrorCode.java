@@ -1,4 +1,4 @@
-package com.example.demo.exception.errorcode;
+package com.example.demo.exception.business.errorcode;
 
 import org.springframework.http.HttpStatus;
 

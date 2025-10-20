@@ -1,16 +1,16 @@
-package com.example.demo.exception.errorcode;
+package com.example.demo.exception.business.errorcode;
 
 import org.springframework.http.HttpStatus;
 
-public enum UserErrorCode implements ErrorCode {
+public enum EmotionErrorCode implements ErrorCode {
 
-    NOT_ENOUGH_POINTS(HttpStatus.BAD_REQUEST, "NOT_ENOUGH_POINTS", "포인트가 부족해요.");
+    EMOTION_NOT_FOUND(HttpStatus.BAD_REQUEST, "EMOTION_NOT_FOUND", "유저 감정을 찾을 수 없어요.");
 
     private final HttpStatus status;
     private final String code;
     private final String defaultMessage;
 
-    UserErrorCode(HttpStatus status, String code, String defaultMessage) {
+    EmotionErrorCode(HttpStatus status, String code, String defaultMessage) {
         this.status = status;
         this.code = code;
         this.defaultMessage = defaultMessage;

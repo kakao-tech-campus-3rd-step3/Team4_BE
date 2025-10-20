@@ -1,8 +1,8 @@
 package com.example.demo.admin.service;
 
 import com.example.demo.admin.domain.Admin;
-import com.example.demo.exception.BusinessException;
-import com.example.demo.exception.errorcode.AdminErrorCode;
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.AdminErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,19 +1,19 @@
-package com.example.demo.exception.errorcode;
+package com.example.demo.exception.business.errorcode;
 
 import org.springframework.http.HttpStatus;
 
-public enum MissionErrorCode implements ErrorCode {
+public enum ItemErrorCode implements ErrorCode {
 
-    MISSION_NOT_FOUND(HttpStatus.BAD_REQUEST, "MISSION_NOT_FOUND", "미션을 찾을 수 없어요."),
-    NORMALIZATION_BASELINE_MISSING(HttpStatus.INTERNAL_SERVER_ERROR,
-            "NORMALIZATION_BASELINE_MISSING",
-            "정규화 MIN/MAX 계산에 필요한 미션 데이터가 없어요.");
+    ITEM_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ITEM_ALREADY_EXIST", "이미 아이템을 소유하고 있어요."),
+    ITEM_NOT_EXIST(HttpStatus.BAD_REQUEST, "ITEM_NOT_EXIST", "아이템을 소유하고 있지 않아요."),
+
+    PRODUCT_NOT_FOUND(HttpStatus.BAD_REQUEST, "PRODUCT_NOT_FOUND", "상품을 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;
     private final String defaultMessage;
 
-    MissionErrorCode(HttpStatus status, String code, String defaultMessage) {
+    ItemErrorCode(HttpStatus status, String code, String defaultMessage) {
         this.status = status;
         this.code = code;
         this.defaultMessage = defaultMessage;

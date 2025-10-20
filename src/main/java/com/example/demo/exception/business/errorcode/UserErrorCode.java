@@ -1,18 +1,16 @@
-package com.example.demo.exception.errorcode;
+package com.example.demo.exception.business.errorcode;
 
 import org.springframework.http.HttpStatus;
 
-public enum DiaryErrorCode implements ErrorCode {
+public enum UserErrorCode implements ErrorCode {
 
-    DIARY_NOT_FOUND(HttpStatus.BAD_REQUEST, "DIARY_NOT_FOUND", "일기를 찾을 수 없어요."),
-    DIARY_ACCESS_DENIED(HttpStatus.BAD_REQUEST, "DIARY_ACCESS_DENIED", "다른 사용자의 일기는 볼 수 없어요.");
-
+    NOT_ENOUGH_POINTS(HttpStatus.BAD_REQUEST, "NOT_ENOUGH_POINTS", "포인트가 부족해요.");
 
     private final HttpStatus status;
     private final String code;
     private final String defaultMessage;
 
-    DiaryErrorCode(HttpStatus status, String code, String defaultMessage) {
+    UserErrorCode(HttpStatus status, String code, String defaultMessage) {
         this.status = status;
         this.code = code;
         this.defaultMessage = defaultMessage;
