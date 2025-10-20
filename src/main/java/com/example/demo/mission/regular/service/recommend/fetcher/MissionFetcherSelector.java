@@ -1,7 +1,7 @@
 package com.example.demo.mission.regular.service.recommend.fetcher;
 
 import com.example.demo.emotion.domain.EmotionType;
-import com.example.demo.exception.service.InfrastructureException;
+import com.example.demo.exception.service.InternalServerException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -24,7 +24,7 @@ public class MissionFetcherSelector {
     public MissionFetcher getFetcher(EmotionType emotionType) {
         MissionFetcher fetcher = fetchers.get(emotionType);
         if (fetcher == null) {
-            throw new InfrastructureException("Fetcher Not Found");
+            throw new InternalServerException("Fetcher Not Found");
         }
         return fetcher;
     }
