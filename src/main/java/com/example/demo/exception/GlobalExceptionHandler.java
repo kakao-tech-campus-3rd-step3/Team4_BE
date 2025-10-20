@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleAuthException(AuthException e) {
         log.error("Auth exception occurred", e);
         ErrorResponse response = ErrorResponse.from(e);
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

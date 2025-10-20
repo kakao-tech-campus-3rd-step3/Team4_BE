@@ -39,7 +39,7 @@ public class ErrorResponse {
     }
 
     public static ErrorResponse from(AuthException e) {
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "AUTHENTICATION_FAILED",
+        return new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "AUTHENTICATION_FAILED",
             "인증 정보가 유효하지 않습니다. 다시 로그인해주세요.");
     }
 }
