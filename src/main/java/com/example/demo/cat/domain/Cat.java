@@ -1,7 +1,7 @@
 package com.example.demo.cat.domain;
 
-import com.example.demo.exception.BusinessException;
-import com.example.demo.exception.errorcode.ItemErrorCode;
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.ItemErrorCode;
 import com.example.demo.product.domain.ProductItem;
 import java.util.ArrayList;
 import java.util.List;

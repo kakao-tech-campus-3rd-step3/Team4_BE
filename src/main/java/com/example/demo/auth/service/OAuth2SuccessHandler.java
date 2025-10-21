@@ -1,6 +1,7 @@
 package com.example.demo.auth.service;
 
 import com.example.demo.auth.infrastructure.jwt.JwtTokenProvider;
+import com.example.demo.exception.auth.AuthException;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String email = oAuth2User.getAttribute("email");
 
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("User not found: " + email));
+            .orElseThrow(() -> new AuthException("사용자를 찾을 수 없습니다. 유저 이메일: " + email));
 
         String accessToken = jwtTokenProvider.createAccessToken(user.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getId());

@@ -2,6 +2,8 @@ package com.example.demo.mission.custom.service;
 
 import com.example.demo.admin.domain.MissionPromotion;
 import com.example.demo.admin.service.MissionPromotionRepository;
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.MissionErrorCode;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.domain.CustomMission;
 import com.example.demo.user.domain.User;
@@ -27,7 +29,7 @@ public class CustomMissionService {
     public CustomMission update(Long missionId, String content, MissionCategoryEnum category,
             User user) {
         CustomMission mission = customMissionRepository.findById(missionId)
-                .orElseThrow(() -> new RuntimeException("해당 미션을 찾을 수 없습니다. id: " + missionId));
+            .orElseThrow(() -> new BusinessException(MissionErrorCode.MISSION_NOT_FOUND));
 
         mission.validateUser(user.getId());
         mission.update(content, category);

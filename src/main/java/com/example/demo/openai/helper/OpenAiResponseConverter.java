@@ -1,6 +1,6 @@
 package com.example.demo.openai.helper;
 
-import com.example.demo.openai.OpenAiException;
+import com.example.demo.exception.service.OpenAiException;
 import com.example.demo.openai.dto.ChatCompletionResponse;
 import com.example.demo.openai.dto.OpenAiMissionScoreResponse;
 import com.example.demo.openai.dto.OpenAiResponse;
@@ -23,7 +23,7 @@ public class OpenAiResponseConverter {
         try {
             return MAPPER.readValue(content, OpenAiMissionScoreResponse.class);
         } catch (JsonProcessingException e) {
-            throw new OpenAiException("[OpenAi] OpenAi 커스텀 미션 점수 역직렬화에 실패했습니다", e);
+            throw new OpenAiException("OpenAi 커스텀 미션 점수 역직렬화에 실패했습니다", e);
         }
     }
 
@@ -31,7 +31,7 @@ public class OpenAiResponseConverter {
         if (response == null
             || response.getChoices() == null
             || response.getChoices().isEmpty()) {
-            throw new OpenAiException("[OpenAi] OpenAI 응답이 비어있습니다.");
+            throw new OpenAiException("OpenAI 응답이 비어있습니다.");
         }
         return response.getChoices().get(0).getMessage().getContent();
     }
