@@ -35,7 +35,8 @@ public class Emotion {
     }
 
     public Emotion(Long userId, Integer sentimentLevel, Integer energyLevel, Integer cognitiveLevel,
-        Integer relationshipLevel, Integer stressLevel, Integer employmentLevel, double avgDangerLevel, double recentDangerLevel) {
+            Integer relationshipLevel, Integer stressLevel, Integer employmentLevel,
+            double avgDangerLevel, double recentDangerLevel) {
         this.userId = userId;
         emotions.put(EmotionType.SENTIMENT, sentimentLevel);
         emotions.put(EmotionType.ENERGY, energyLevel);
@@ -60,11 +61,9 @@ public class Emotion {
         double changeRate = (recentDangerLevel - avgDangerLevel) / avgDangerLevel;
         if (recentDangerLevel > HIGH_THRESHOLD) {
             return DangerState.HIGH_DANGER;
-        }
-        else if (recentDangerLevel > MID_THRESHOLD && changeRate > CHANGE_RATE_THRESHOLD) {
+        } else if (recentDangerLevel > MID_THRESHOLD && changeRate > CHANGE_RATE_THRESHOLD) {
             return DangerState.BURST;
-        }
-        else if (avgDangerLevel > MID_THRESHOLD) {
+        } else if (avgDangerLevel > MID_THRESHOLD) {
             return DangerState.CHRONIC;
         }
         return DangerState.STABLE;
@@ -74,7 +73,7 @@ public class Emotion {
         return emotions.entrySet().stream()
                 .min(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
-                .orElse(null);
+                .orElse(EmotionType.EMPLOYMENT);
     }
 
     public Integer getLevel(EmotionType emotionType) {
