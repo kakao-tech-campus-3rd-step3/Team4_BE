@@ -1,10 +1,9 @@
 package com.example.demo.admin.controller.dto;
 
 import com.example.demo.mission.MissionCategoryEnum;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,38 +18,31 @@ public class UpdateMissionPromotion {
     private MissionCategoryEnum category;
 
     @NotNull(message = "감정 점수는 필수 항목입니다.")
-    @Min(value = 0, message = "감정 점수는 0 이상입니다.")
-    @Max(value = 10, message = "감정 점수는 10 이하입니다.")
+    @Size(min = 0, max = 10, message = "{admin.score.Size}")
     private Integer sentimentScore;
 
     @NotNull(message = "에너지 점수는 필수 항목입니다.")
-    @Min(value = 0, message = "에너지 점수는 0 이상입니다.")
-    @Max(value = 10, message = "에너지 점수는 10 이하입니다.")
+    @Size(min = 0, max = 10, message = "{admin.score.Size}")
     private Integer energyScore;
 
     @NotNull(message = "인지 점수는 필수 항목입니다.")
-    @Min(value = 0, message = "인지 점수는 0 이상입니다.")
-    @Max(value = 10, message = "인지 점수는 10 이하입니다.")
+    @Size(min = 0, max = 10, message = "{admin.score.Size}")
     private Integer cognitiveScore;
 
     @NotNull(message = "관계 점수는 필수 항목입니다.")
-    @Min(value = 0, message = "관계 점수는 0 이상입니다.")
-    @Max(value = 10, message = "관계 점수는 10 이하입니다.")
+    @Size(min = 0, max = 10, message = "{admin.score.Size}")
     private Integer relationshipScore;
 
     @NotNull(message = "스트레스 점수는 필수 항목입니다.")
-    @Min(value = 0, message = "스트레스 점수는 0 이상입니다.")
-    @Max(value = 10, message = "스트레스 점수는 10 이하입니다.")
+    @Size(min = 0, max = 10, message = "{admin.score.Size}")
     private Integer stressScore;
 
     @NotNull(message = "취업 점수는 필수 항목입니다.")
-    @Min(value = 0, message = "취업 점수는 0 이상입니다.")
-    @Max(value = 10, message = "취업 점수는 10 이하입니다.")
+    @Size(min = 0, max = 10, message = "{admin.score.Size}")
     private Integer employmentScore;
 
     @NotNull(message = "난이도는 필수 항목입니다.")
-    @Min(value = 0, message = "난이도는 0 이상입니다.")
-    @Max(value = 10, message = "난이도는 10 이하입니다.")
+    @Size(min = 0, max = 10, message = "{admin.level.Size}")
     private Integer level;
 
     public UpdateMissionPromotion() {
