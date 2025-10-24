@@ -7,12 +7,15 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Entity
-@Table(name = "message")
+@Table(name = "message", indexes = {
+    @Index(name = "idx_message_user_id", columnList = "user_id")
+})
 @Getter
 public class Message {
 

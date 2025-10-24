@@ -6,11 +6,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "long_term_memory")
 @Getter
-public class LongTermMemory {
+public class ChatMemory {
 
     private static final String SYSTEM_TAG = "[FROM SYSTEM] ";
     private static final String HIGH_DANGER_MESSAGE = "사용자가 극심한 우울증세를 보이고 있습니다. 사용자를 진정시키고 전문적인 도움을 받을 수 있도록 유도하십시오.";
@@ -21,11 +22,12 @@ public class LongTermMemory {
     private Long userId;
 
     @Column
+    @Setter
     private String memory;
 
-    protected LongTermMemory() {}
+    protected ChatMemory() {}
 
-    public LongTermMemory(Long userId) {
+    public ChatMemory(Long userId) {
         this.userId = userId;
         memory = "";
     }

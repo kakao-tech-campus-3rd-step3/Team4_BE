@@ -52,6 +52,12 @@ public class OpenAiClient {
         return OpenAiResponseConverter.convert(response);
     }
 
+    public String getUpdatedMemory(String memory, List<String> context) {
+        ChatCompletionRequest request = requestFactory.buildMemoryExtractorRequest(memory, context);
+        ChatCompletionResponse response = sendRequest(request);
+        return OpenAiResponseConverter.convert(response).getMessage();
+    }
+
     public OpenAiMissionScoreResponse getScore(String content) {
         ChatCompletionRequest request = requestFactory.buildCustomMissionEvaluateRequest(
             content);

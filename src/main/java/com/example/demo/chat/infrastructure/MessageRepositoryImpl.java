@@ -32,4 +32,9 @@ public class MessageRepositoryImpl implements MessageRepository {
         return messageJpaRepository.findByUserIdOrderByCreatedAtDesc(userId, topN).getContent();
     }
 
+    @Override
+    public long countByUserId(Long userId) {
+        return messageJpaRepository.countByUserId(userId);
+    }
+
 }
