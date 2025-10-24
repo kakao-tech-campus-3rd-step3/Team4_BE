@@ -3,9 +3,9 @@ package com.example.demo.admin.controller.dto;
 import com.example.demo.mission.MissionCategoryEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 @Getter
 @Setter
@@ -18,31 +18,31 @@ public class UpdateMissionPromotion {
     private MissionCategoryEnum category;
 
     @NotNull(message = "감정 점수는 필수 항목입니다.")
-    @Size(min = 0, max = 10, message = "{admin.score.Size}")
+    @Range(min = 0, max = 10, message = "{admin.score.Range}")
     private Integer sentimentScore;
 
     @NotNull(message = "에너지 점수는 필수 항목입니다.")
-    @Size(min = 0, max = 10, message = "{admin.score.Size}")
+    @Range(min = 0, max = 10, message = "{admin.score.Range}")
     private Integer energyScore;
 
     @NotNull(message = "인지 점수는 필수 항목입니다.")
-    @Size(min = 0, max = 10, message = "{admin.score.Size}")
+    @Range(min = 0, max = 10, message = "{admin.score.Range}")
     private Integer cognitiveScore;
 
     @NotNull(message = "관계 점수는 필수 항목입니다.")
-    @Size(min = 0, max = 10, message = "{admin.score.Size}")
+    @Range(min = 0, max = 10, message = "{admin.score.Range}")
     private Integer relationshipScore;
 
     @NotNull(message = "스트레스 점수는 필수 항목입니다.")
-    @Size(min = 0, max = 10, message = "{admin.score.Size}")
+    @Range(min = 0, max = 10, message = "{admin.score.Range}")
     private Integer stressScore;
 
     @NotNull(message = "취업 점수는 필수 항목입니다.")
-    @Size(min = 0, max = 10, message = "{admin.score.Size}")
+    @Range(min = 0, max = 10, message = "{admin.score.Range}")
     private Integer employmentScore;
 
     @NotNull(message = "난이도는 필수 항목입니다.")
-    @Size(min = 0, max = 10, message = "{admin.level.Size}")
+    @Range(min = 0, max = 10, message = "{admin.level.Range}")
     private Integer level;
 
     public UpdateMissionPromotion() {
