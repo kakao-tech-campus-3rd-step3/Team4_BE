@@ -3,7 +3,7 @@ package com.example.demo.cat.controller;
 import com.example.demo.cat.controller.dto.CatResponse;
 import com.example.demo.cat.controller.dto.CatNameRequest;
 import com.example.demo.cat.service.CatService;
-import com.example.demo.common.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.user.domain.User;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;

@@ -26,4 +26,16 @@ public class CustomMissionScore {
     @Column
     private Integer employmentScore;
 
+    protected CustomMissionScore() {
+    }
+
+    public CustomMissionScore(Integer sentimentScore, Integer energyScore, Integer cognitiveScore,
+            Integer relationshipScore, Integer stressScore, Integer employmentScore) {
+        this.sentimentScore = sentimentScore;
+        this.energyScore = energyScore;
+        this.cognitiveScore = cognitiveScore;
+        this.relationshipScore = relationshipScore;
+        this.stressScore = stressScore;
+        this.employmentScore = employmentScore;
+    }
 }

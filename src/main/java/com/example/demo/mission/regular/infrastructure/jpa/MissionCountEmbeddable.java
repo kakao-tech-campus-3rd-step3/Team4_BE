@@ -3,7 +3,9 @@ package com.example.demo.mission.regular.infrastructure.jpa;
 import com.example.demo.mission.regular.domain.MissionCount;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
+@Getter
 @Embeddable
 public class MissionCountEmbeddable {
 
@@ -22,7 +24,8 @@ public class MissionCountEmbeddable {
         this.completionCount = 0;
     }
 
-    private MissionCountEmbeddable(Integer exposureCount, Integer selectionCount, Integer completionCount) {
+    private MissionCountEmbeddable(Integer exposureCount, Integer selectionCount,
+        Integer completionCount) {
         this.exposureCount = exposureCount;
         this.selectionCount = selectionCount;
         this.completionCount = completionCount;
@@ -33,6 +36,7 @@ public class MissionCountEmbeddable {
     }
 
     public static MissionCountEmbeddable fromModel(MissionCount missionCount) {
-        return new MissionCountEmbeddable(missionCount.getExposureCount(), missionCount.getSelectionCount(), missionCount.getCompletionCount());
+        return new MissionCountEmbeddable(missionCount.getExposureCount(),
+            missionCount.getSelectionCount(), missionCount.getCompletionCount());
     }
 }

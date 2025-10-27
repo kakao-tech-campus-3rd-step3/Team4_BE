@@ -1,7 +1,7 @@
 package com.example.demo.user.domain;
 
-import com.example.demo.common.exception.BusinessException;
-import com.example.demo.common.exception.errorcode.UserErrorCode;
+import com.example.demo.exception.BusinessException;
+import com.example.demo.exception.errorcode.UserErrorCode;
 import lombok.Getter;
 
 @Getter

@@ -2,8 +2,8 @@ package com.example.demo.cat.service;
 
 import com.example.demo.cat.controller.dto.CatResponse;
 import com.example.demo.cat.domain.Cat;
-import com.example.demo.common.exception.BusinessException;
-import com.example.demo.common.exception.errorcode.CatErrorCode;
+import com.example.demo.exception.BusinessException;
+import com.example.demo.exception.errorcode.CatErrorCode;
 import com.example.demo.product.domain.DisplayImage;
 import com.example.demo.user.domain.User;
 import java.util.List;

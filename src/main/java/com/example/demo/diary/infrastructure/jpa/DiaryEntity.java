@@ -1,6 +1,6 @@
 package com.example.demo.diary.infrastructure.jpa;
 
-import com.example.demo.common.infrastructure.jpa.BaseEntity;
+import com.example.demo.common.BaseEntity;
 import com.example.demo.diary.domain.Diary;
 import com.example.demo.diary.domain.EmotionEnum;
 import com.example.demo.diary.domain.Feedback;

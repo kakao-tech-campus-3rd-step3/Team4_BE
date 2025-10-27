@@ -1,6 +1,6 @@
 package com.example.demo.emotiontest.controller;
 
-import com.example.demo.common.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.emotiontest.controller.dto.EmotionTestResponse;
 import com.example.demo.emotiontest.controller.dto.EmotionTestResultDto;
 import com.example.demo.emotiontest.service.EmotionTestService;

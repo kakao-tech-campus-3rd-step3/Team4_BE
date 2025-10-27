@@ -30,6 +30,17 @@ public class MissionScoreEmbeddable {
     protected MissionScoreEmbeddable() {
     }
 
+    public MissionScoreEmbeddable(Integer sentimentScore, Integer energyScore,
+        Integer cognitiveScore,
+        Integer relationshipScore, Integer stressScore, Integer employmentScore) {
+        this.sentimentScore = sentimentScore;
+        this.energyScore = energyScore;
+        this.cognitiveScore = cognitiveScore;
+        this.relationshipScore = relationshipScore;
+        this.stressScore = stressScore;
+        this.employmentScore = employmentScore;
+    }
+
     public MissionScores toModel() {
         return new MissionScores(sentimentScore, energyScore, cognitiveScore, relationshipScore,
             stressScore, employmentScore);

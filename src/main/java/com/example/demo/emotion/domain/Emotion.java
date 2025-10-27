@@ -67,9 +67,7 @@ public class Emotion {
         else if (avgDangerLevel > MID_THRESHOLD) {
             return DangerState.CHRONIC;
         }
-        else {
-            return DangerState.STABLE;
-        }
+        return DangerState.STABLE;
     }
 
     public EmotionType getMinEmotion() {

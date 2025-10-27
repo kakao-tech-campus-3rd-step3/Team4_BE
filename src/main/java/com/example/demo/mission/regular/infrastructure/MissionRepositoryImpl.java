@@ -1,15 +1,20 @@
 package com.example.demo.mission.regular.infrastructure;
 
+import com.example.demo.admin.domain.MissionPromotion;
+import com.example.demo.admin.domain.MissionPromotionScore;
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionEntity;
 import com.example.demo.mission.custom.infrastructure.jpa.CustomMissionJpaRepository;
 import com.example.demo.mission.regular.domain.RegularMission;
 import com.example.demo.mission.regular.domain.score.MissionScores;
+import com.example.demo.mission.regular.infrastructure.jpa.MissionCountEmbeddable;
+import com.example.demo.mission.regular.infrastructure.jpa.MissionScoreEmbeddable;
 import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionEntity;
 import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionJpaRepository;
 import com.example.demo.mission.regular.service.MissionRepository;
 import com.example.demo.plan.domain.MissionType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -81,5 +86,27 @@ public class MissionRepositoryImpl implements MissionRepository {
     @Override
     public MissionScores findMissionScoreByMissionId(Long missionId) {
         return null;
+    }
+
+    @Override
+    public void saveAsRegularMission(MissionPromotion missionPromotion) {
+        MissionPromotionScore score = missionPromotion.getScore();
+        RegularMissionEntity regularMissionEntity = new RegularMissionEntity(
+            null,
+            missionPromotion.getContent(),
+            missionPromotion.getCategory(),
+            missionPromotion.getLevel(),
+            new MissionScoreEmbeddable(
+                score.getSentimentScore(),
+                score.getEnergyScore(),
+                score.getCognitiveScore(),
+                score.getRelationshipScore(),
+                score.getStressScore(),
+                score.getEmploymentScore()
+            ),
+            new MissionCountEmbeddable(),
+            new ArrayList<>());
+
+        regularMissionJpaRepository.save(regularMissionEntity);
     }
 }
