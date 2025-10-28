@@ -15,11 +15,16 @@ import com.example.demo.mission.custom.domain.CustomMission;
 import com.example.demo.mission.custom.domain.CustomMissionStateEnum;
 import com.example.demo.mission.custom.service.CustomMissionRepository;
 import com.example.demo.mission.custom.service.CustomMissionService;
+import com.example.demo.mission.regular.infrastructure.jpa.MissionCountEmbeddable;
+import com.example.demo.mission.regular.infrastructure.jpa.MissionScoreEmbeddable;
+import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionEntity;
+import com.example.demo.mission.regular.infrastructure.jpa.RegularMissionJpaRepository;
 import com.example.demo.mission.regular.service.recommend.MissionRecommendService;
 import com.example.demo.plan.service.PlanRepository;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserRepository;
 import jakarta.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,6 +63,9 @@ public class MissionServiceTest {
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private RegularMissionJpaRepository regularMissionJpaRepository;
+
     private User testUser;
     private User anotherUser;
 
@@ -66,8 +74,43 @@ public class MissionServiceTest {
         testUser = userRepository.save(new User("test@example.com", "TestUser"));
         anotherUser = userRepository.save(new User("another@example.com", "AnotherUser"));
 
-        Emotion emotion = new Emotion(testUser.getId(), 50, 50, 50, 50, 50, 50, 3.0, 3.0);
+        Emotion emotion = new Emotion(testUser.getId(), 30, 50, 60, 70, 80, 40, 3.0,
+            3.0);
         emotionRepository.save(emotion);
+
+        createTestRegularMission("DAILY 미션 1 (Sentiment 높음)", MissionCategoryEnum.DAILY, 8, 5, 5, 5,
+            5, 5, 1);
+        createTestRegularMission("DAILY 미션 2 (Sentiment 높음)", MissionCategoryEnum.DAILY, 8, 5, 5, 5,
+            5, 5, 1);
+        createTestRegularMission("DAILY 미션 3 (Sentiment 낮음)", MissionCategoryEnum.DAILY, 2, 5, 5, 5,
+            5, 5, 1);
+        createTestRegularMission("REFRESH 미션 1 (Sentiment 높음)", MissionCategoryEnum.REFRESH, 9, 6,
+            6, 6, 6, 6, 2);
+        createTestRegularMission("REFRESH 미션 2 (Sentiment 높음)", MissionCategoryEnum.REFRESH, 9, 6,
+            6, 6, 6, 6, 2);
+        createTestRegularMission("REFRESH 미션 3 (Sentiment 낮음)", MissionCategoryEnum.REFRESH, 1, 6,
+            6, 6, 6, 6, 2);
+        createTestRegularMission("EMPLOYMENT 미션 1", MissionCategoryEnum.EMPLOYMENT, 5, 5, 8, 5, 5,
+            9, 3);
+        createTestRegularMission("EMPLOYMENT 미션 2", MissionCategoryEnum.EMPLOYMENT, 5, 5, 7, 5, 5,
+            8, 3);
+
+        entityManager.flush();
+        entityManager.clear();
+    }
+
+    private RegularMissionEntity createTestRegularMission(
+        String content, MissionCategoryEnum category,
+        int sentiment, int energy, int cognitive, int relationship, int stress, int employment,
+        int level) {
+
+        MissionScoreEmbeddable scores = new MissionScoreEmbeddable(sentiment, energy, cognitive,
+            relationship, stress, employment);
+        MissionCountEmbeddable counts = new MissionCountEmbeddable();
+
+        RegularMissionEntity mission = new RegularMissionEntity(null, content, category, level,
+            scores, counts, new ArrayList<>());
+        return regularMissionJpaRepository.save(mission);
     }
 
     @Test
@@ -76,13 +119,17 @@ public class MissionServiceTest {
         List<MissionResponse> recommendedMissions = missionRecommendService.getRecommendedMissions(
             testUser);
 
-        assertThat(recommendedMissions).isNotNull();
-        assertThat(recommendedMissions).hasSize(6);
-        recommendedMissions.forEach(mission -> {
-            assertThat(mission.getId()).isNotNull();
-            assertThat(mission.getContent()).isNotBlank();
-            assertThat(mission.getCategory()).isNotNull();
-        });
+        assertThat(recommendedMissions).isNotNull().hasSize(6);
+
+        boolean containsHighSentimentDaily = recommendedMissions.stream()
+            .filter(m -> m.getCategory() == MissionCategoryEnum.DAILY)
+            .anyMatch(m -> m.getContent().contains("Sentiment 높음"));
+
+        assertThat(containsHighSentimentDaily).isTrue();
+
+        System.out.println("추천된 미션 목록:");
+        recommendedMissions.forEach(
+            m -> System.out.println("- " + m.getCategory() + ": " + m.getContent()));
     }
 
     @Test
