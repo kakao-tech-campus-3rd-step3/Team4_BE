@@ -73,13 +73,9 @@ public class CatServiceTest {
             //when
             String catName = "야옹이";
             assertThatThrownBy(() -> catService.createCat(user, catName))
-                .satisfies(
-                    ex-> {
-                        BusinessException e = (BusinessException) ex;
-                        assertThat(e.getErrorCode()).isEqualTo(CatErrorCode.CAT_ALREADY_EXIST);
-                    }
-                ).isInstanceOf(
-                    BusinessException.class);
+                .isInstanceOf(BusinessException.class)
+                .extracting("errorCode")
+                .isEqualTo(CatErrorCode.CAT_ALREADY_EXIST);
         }
 
         @Test
