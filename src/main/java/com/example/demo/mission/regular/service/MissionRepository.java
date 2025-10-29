@@ -25,6 +25,9 @@ public interface MissionRepository {
     List<RegularMission> findRelationshipMissionsAboveAverageByCategory(
             MissionCategoryEnum category);
 
+    List<RegularMission> findByCategoryAndEmploymentScoreBetween(
+            MissionCategoryEnum category, int scoreFloor, int scoreCeil);
+
     List<RegularMission> findStressMissionsAboveAverageByCategory(MissionCategoryEnum category);
 
     List<RegularMission> findAllByCategory(MissionCategoryEnum missionCategoryEnum);
