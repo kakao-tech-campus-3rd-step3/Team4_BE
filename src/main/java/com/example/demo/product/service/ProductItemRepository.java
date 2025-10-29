@@ -20,5 +20,5 @@ public interface ProductItemRepository {
 
     void deleteById(Long id);
 
-    void save(ProductItem product);
+    ProductItem save(ProductItem product);
 }

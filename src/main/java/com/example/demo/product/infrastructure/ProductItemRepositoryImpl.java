@@ -53,7 +53,7 @@ public class ProductItemRepositoryImpl implements ProductItemRepository {
     }
 
     @Override
-    public void save(ProductItem productItem) {
+    public ProductItem save(ProductItem productItem) {
         ProductItemEntity entity = new ProductItemEntity(
             productItem.getId(),
             productItem.getName(),
@@ -65,6 +65,6 @@ public class ProductItemRepositoryImpl implements ProductItemRepository {
                 productItem.getImage().getOffsetY()
             )
         );
-        productItemJpaRepository.save(entity);
+        return productItemJpaRepository.save(entity).toModel();
     }
 }

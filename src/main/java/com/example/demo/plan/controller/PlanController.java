@@ -7,6 +7,7 @@ import com.example.demo.plan.controller.dto.PlanUpdateRequest;
 import com.example.demo.plan.controller.dto.TodayPlansResponse;
 import com.example.demo.plan.service.PlanService;
 import com.example.demo.user.domain.User;
+import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class PlanController {
 
     @PostMapping
     public ResponseEntity<Void> addMissionToPlan(
-        @RequestBody PlanCreateRequest request,
+        @RequestBody @Valid PlanCreateRequest request,
         @CurrentUser User user
     ) {
         activityService.addMissionToPlan(request, user);
@@ -47,7 +48,7 @@ public class PlanController {
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updatePlanStatus(
         @PathVariable Long id,
-        @RequestBody PlanUpdateRequest request,
+        @RequestBody @Valid PlanUpdateRequest request,
         @CurrentUser User user
     ) {
         activityService.updatePlanStatus(id, request.getIsDone(), user);

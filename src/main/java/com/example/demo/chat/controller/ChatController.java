@@ -1,11 +1,12 @@
 package com.example.demo.chat.controller;
 
+import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.chat.controller.dto.ChatRequest;
 import com.example.demo.chat.controller.dto.ChatResponse;
 import com.example.demo.chat.controller.dto.MessageResponse;
 import com.example.demo.chat.service.ChatService;
-import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.user.domain.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping
-    public ResponseEntity<ChatResponse> postMessage(@RequestBody ChatRequest request,
+    public ResponseEntity<ChatResponse> postMessage(@RequestBody @Valid ChatRequest request,
         @CurrentUser User user) {
         return ResponseEntity.ok(chatService.postMessage(request.getMessage(), user.getId()));
     }
