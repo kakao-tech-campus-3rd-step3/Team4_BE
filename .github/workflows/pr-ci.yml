@@ -1,9 +1,10 @@
-name: Testcontainers MySQL Test
+name: Test CI using Testcontainers
 
 on:
-  push:
+  pull_request:
     branches:
-      - feature/test-containers
+      - develop
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 jobs:
@@ -12,6 +13,7 @@ jobs:
     env:
       CI: true
       SPRING_PROFILES_ACTIVE: ci
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,6 +23,14 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
