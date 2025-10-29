@@ -34,41 +34,43 @@ public class MissionRecommendService {
     private final PlanRepository planRepository;
     private final EmotionRepository emotionRepository;
     private final MissionFetcherSelector missionFetcherSelector;
+    private final EmploymentMissionProvider employmentMissionProvider;
 
     private static final Integer RECOMMEND_SIZE = 6;
     private static final Map<MissionCategoryEnum, Integer> DEFAULT_RECOMMEND_RATE = Map.of(
-        REFRESH, 2, DAILY, 2,
-        EMPLOYMENT, 2);
+            REFRESH, 2, DAILY, 2,
+            EMPLOYMENT, 2);
 
     @Transactional(readOnly = true)
     public List<MissionResponse> getRecommendedMissions(User user) {
         List<MissionCompletionCount> completed = planRepository.findCompletedMissionCount(
-            user.getId());
+                user.getId());
 
         Map<MissionCategoryEnum, Integer> distribution = calculateDistribution(completed);
 
         Emotion emotion = emotionRepository.findById(user.getId())
-            .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_NOT_FOUND));
         EmotionType minEmotion = emotion.getMinEmotion();
 
         List<RegularMission> dailyMissions = getDailyMissions(minEmotion);
         List<RegularMission> refreshMissions = getRefreshMissions(minEmotion);
+        List<RegularMission> employmentMissions = employmentMissionProvider.getMissions(emotion);
 
         Map<MissionCategoryEnum, List<RegularMission>> missionsByCategory = Map.of(
-            DAILY, dailyMissions,
-            REFRESH, refreshMissions,
-            EMPLOYMENT, missionRepository.findAllByCategory(EMPLOYMENT)
+                DAILY, dailyMissions,
+                REFRESH, refreshMissions,
+                EMPLOYMENT, employmentMissions
         );
 
         return missionsByCategory.entrySet().stream()
-            .flatMap(entry -> selectRandomMissions(entry.getValue(),
-                distribution.get(entry.getKey())).stream())
-            .map(MissionResponse::new)
-            .toList();
+                .flatMap(entry -> selectRandomMissions(entry.getValue(),
+                        distribution.get(entry.getKey())).stream())
+                .map(MissionResponse::new)
+                .toList();
     }
 
     private Map<MissionCategoryEnum, Integer> calculateDistribution(
-        List<MissionCompletionCount> counts) {
+            List<MissionCompletionCount> counts) {
 
         // 전체 수행 횟수 합
         int total = counts.stream().mapToInt(MissionCompletionCount::getCount).sum();
@@ -130,7 +132,7 @@ public class MissionRecommendService {
         Collections.shuffle(shuffled);
 
         return shuffled.stream()
-            .limit(limit)
-            .toList();
+                .limit(limit)
+                .toList();
     }
 }
