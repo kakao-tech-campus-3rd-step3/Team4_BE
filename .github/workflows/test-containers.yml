@@ -25,5 +25,10 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Generate secrets.properties
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.SECRETS_PROPERTIES }}" > src/main/resources/secrets.properties
+
       - name: Run tests with Gradle
         run: ./gradlew clean test --info
