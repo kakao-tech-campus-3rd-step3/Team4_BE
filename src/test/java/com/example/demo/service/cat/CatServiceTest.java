@@ -3,6 +3,7 @@ package com.example.demo.service.cat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.example.demo.cat.controller.dto.CatExistResponse;
 import com.example.demo.cat.controller.dto.CatResponse;
 import com.example.demo.cat.domain.Cat;
 import com.example.demo.cat.service.CatRepository;
@@ -57,6 +58,13 @@ public class CatServiceTest {
             assertThat(cat.getName()).isEqualTo(catName);
             assertThat(cat.getUserId()).isEqualTo(user.getId());
         }
+
+        @Test
+        void 고양이_존재여부_조회_시_false를_반환한다() {
+            CatExistResponse response = catService.checkCat(user);
+
+            assertThat(response.isExist()).isFalse();
+        }
     }
 
 
@@ -102,6 +110,13 @@ public class CatServiceTest {
         @Test
         void 고양이가_아이템을_보유하고_있을_경우_아이템_목록도_같이_조회_할_수_있다() {
             // TODO
+        }
+
+        @Test
+        void 고양이_존재여부_조회_시_true를_반환한다() {
+            CatExistResponse response = catService.checkCat(user);
+
+            assertThat(response.isExist()).isTrue();
         }
     }
 
