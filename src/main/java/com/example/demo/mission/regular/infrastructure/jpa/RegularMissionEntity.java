@@ -1,7 +1,7 @@
 package com.example.demo.mission.regular.infrastructure.jpa;
 
-import com.example.demo.mission.regular.domain.RegularMission;
 import com.example.demo.mission.MissionCategoryEnum;
+import com.example.demo.mission.regular.domain.RegularMission;
 import com.example.demo.mission.regular.infrastructure.jpa.tag.MissionTagEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -49,13 +49,13 @@ public class RegularMissionEntity {
     }
 
     public RegularMissionEntity(
-        Long id,
-        String content,
-        MissionCategoryEnum category,
-        Integer missionLevel,
-        MissionScoreEmbeddable missionScoreEmbeddable,
-        MissionCountEmbeddable missionCountEmbeddable,
-        List<MissionTagEntity> missionTagEntities
+            Long id,
+            String content,
+            MissionCategoryEnum category,
+            Integer missionLevel,
+            MissionScoreEmbeddable missionScoreEmbeddable,
+            MissionCountEmbeddable missionCountEmbeddable,
+            List<MissionTagEntity> missionTagEntities
     ) {
         this.id = id;
         this.content = content;
