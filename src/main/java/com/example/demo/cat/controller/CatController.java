@@ -1,6 +1,7 @@
 package com.example.demo.cat.controller;
 
 import com.example.demo.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.cat.controller.dto.CatExistResponse;
 import com.example.demo.cat.controller.dto.CatNameRequest;
 import com.example.demo.cat.controller.dto.CatResponse;
 import com.example.demo.cat.service.CatService;
@@ -42,5 +43,11 @@ public class CatController {
         @CurrentUser User user) {
         CatResponse updated = catService.rename(user, request.getName());
         return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<CatExistResponse> checkCat(@CurrentUser User user) {
+        CatExistResponse response = catService.checkCat(user);
+        return ResponseEntity.ok(response);
     }
 }
