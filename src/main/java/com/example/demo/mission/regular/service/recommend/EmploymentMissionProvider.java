@@ -25,9 +25,15 @@ public class EmploymentMissionProvider {
         int userScore = userEmotion.getLevel(EmotionType.EMPLOYMENT);
 
         MissionScoreMinMax minMax = MissionMinMaxCache.getMissionScoreMinMax();
+        if (minMax == null) {
+            return missionRepository.findAllByCategory(EMPLOYMENT);
+        }
         double min = minMax.getEmploymentMin();
         double max = minMax.getEmploymentMax();
         double range = max - min;
+        if (range == 0) {
+            return missionRepository.findAllByCategory(EMPLOYMENT);
+        }
 
         double effectiveScore = Math.min(userScore, EFFECTIVE_SCORE_CAP);
 
