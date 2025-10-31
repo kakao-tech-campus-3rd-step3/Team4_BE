@@ -69,11 +69,12 @@ public class Emotion {
         return DangerState.STABLE;
     }
 
-    public EmotionType getMinEmotion() {
+    public EmotionType getMinEmotionExcludeEmployment() {
         return emotions.entrySet().stream()
-                .min(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey)
-                .orElse(EmotionType.EMPLOYMENT);
+            .filter(entry -> entry.getKey() != EmotionType.EMPLOYMENT)
+            .min(Map.Entry.comparingByValue())
+            .map(Map.Entry::getKey)
+            .orElse(EmotionType.SENTIMENT);
     }
 
     public Integer getLevel(EmotionType emotionType) {

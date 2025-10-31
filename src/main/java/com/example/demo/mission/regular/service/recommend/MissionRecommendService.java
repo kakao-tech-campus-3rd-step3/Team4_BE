@@ -50,7 +50,7 @@ public class MissionRecommendService {
 
         Emotion emotion = emotionRepository.findById(user.getId())
                 .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_NOT_FOUND));
-        EmotionType minEmotion = emotion.getMinEmotion();
+        EmotionType minEmotion = emotion.getMinEmotionExcludeEmployment();
 
         List<RegularMission> dailyMissions = getDailyMissions(minEmotion);
         List<RegularMission> refreshMissions = getRefreshMissions(minEmotion);
