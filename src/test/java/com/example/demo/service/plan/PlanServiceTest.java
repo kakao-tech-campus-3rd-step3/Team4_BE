@@ -90,6 +90,10 @@ public class PlanServiceTest {
 
         testRegularMission = createTestRegularMission("정규 미션: 물 한 잔 마시기", MissionCategoryEnum.DAILY,
             1, 3, 1, 1, 3, 1, 1);
+
+        createTestRegularMission("다른 정규 미션", MissionCategoryEnum.REFRESH,
+            5, 5, 5, 5, 5, 5, 2);
+
         testCustomMission = customMissionRepository.save(
             new CustomMission("커스텀 미션: 5분 명상", MissionCategoryEnum.REFRESH, testUser.getId()));
 
