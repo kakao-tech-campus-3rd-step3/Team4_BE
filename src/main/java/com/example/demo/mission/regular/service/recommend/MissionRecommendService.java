@@ -34,12 +34,12 @@ public class MissionRecommendService {
     private final PlanRepository planRepository;
     private final EmotionRepository emotionRepository;
     private final MissionFetcherSelector missionFetcherSelector;
-    private final EmploymentMissionProvider employmentMissionProvider;
-
-    private static final Integer RECOMMEND_SIZE = 6;
     private static final Map<MissionCategoryEnum, Integer> DEFAULT_RECOMMEND_RATE = Map.of(
             REFRESH, 2, DAILY, 2,
             EMPLOYMENT, 2);
+
+    private static final Integer RECOMMEND_SIZE = 6;
+    private final EmploymentMissionProvider employmentMissionProvider;
 
     @Transactional(readOnly = true)
     public List<MissionResponse> getRecommendedMissions(User user) {

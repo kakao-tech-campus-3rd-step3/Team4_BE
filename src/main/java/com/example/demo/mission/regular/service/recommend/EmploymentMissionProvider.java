@@ -16,10 +16,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmploymentMissionProvider {
 
-    private final MissionRepository missionRepository;
-
     private static final double EFFECTIVE_SCORE_CAP = 200.0;
     private static final Integer RECOMMEND_MAX_SIZE = 4;
+    private final MissionRepository missionRepository;
 
     public List<RegularMission> getMissions(Emotion userEmotion) {
         int userScore = userEmotion.getLevel(EmotionType.EMPLOYMENT);

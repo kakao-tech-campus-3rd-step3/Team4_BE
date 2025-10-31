@@ -13,4 +13,5 @@ public interface MessageRepository {
 
     List<Message> findTopNByUserIdOrderByCreatedAtDesc(Long userId, int n);
 
+    long countByUserId(Long userId);
 }

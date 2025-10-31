@@ -2,8 +2,7 @@ package com.example.demo.chat.service;
 
 import com.example.demo.chat.controller.dto.ChatResponse;
 import com.example.demo.chat.controller.dto.MessageResponse;
-import com.example.demo.chat.infrastructure.jpa.LongTermMemory;
-import com.example.demo.chat.infrastructure.jpa.LongTermMemoryJpaRepository;
+import com.example.demo.chat.infrastructure.jpa.ChatMemory;
 import com.example.demo.chat.infrastructure.jpa.Message;
 import com.example.demo.chat.infrastructure.jpa.Sender;
 import com.example.demo.emotion.domain.DangerState;
@@ -26,21 +25,21 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ChatService {
 
+    private static final int CONTEXT_SIZE = 10;
+
     private final OpenAiClient openAiClient;
     private final MessageRepository messageRepository;
     private final EmotionService emotionService;
-    private final LongTermMemoryJpaRepository longTermMemoryJpaRepository;
+    private final ChatMemoryService chatMemoryService;
 
     public ChatResponse postMessage(String messageContent, Long userId) {
         List<String> context = fetchContext(userId);
-        LongTermMemory longTermMemory = fetchLongTermMemory(userId);
-        OpenAiResponse openAiResponse = openAiClient.getChatResponse(messageContent, context,
-            longTermMemory.getMemory());
+        ChatMemory memory = chatMemoryService.get(userId);
+        OpenAiResponse openAiResponse = openAiClient.getChatResponse(messageContent, context, memory.getMemory());
 
         openAiResponse.getDangerScore().ifPresent(dangerScore -> {
             DangerState state = emotionService.applyAndGetDangerState(userId, dangerScore);
-            state.adjust(longTermMemory);
-            longTermMemoryJpaRepository.save(longTermMemory);
+            state.adjust(memory);
         });
 
         Integer dangerScore = openAiResponse.getDangerScore().orElseGet(() -> null);
@@ -51,6 +50,11 @@ public class ChatService {
             dangerScore,
             LocalDateTime.now());
         messageRepository.save(catMessage);
+
+        if (messageRepository.countByUserId(userId) % CONTEXT_SIZE == 0) {
+            context = fetchContext(userId);
+            chatMemoryService.callUpdate(userId, context);
+        }
 
         return new ChatResponse(openAiResponse.getMessage());
     }
@@ -77,16 +81,10 @@ public class ChatService {
     }
 
     private List<String> fetchContext(Long userId) {
-        List<String> context = messageRepository.findTopNByUserIdOrderByCreatedAtDesc(userId, 10)
-            .stream()
+        List<String> context = messageRepository.findTopNByUserIdOrderByCreatedAtDesc(userId, CONTEXT_SIZE).stream()
             .map(Message::getContent)
             .collect(Collectors.toList());
         Collections.reverse(context);
         return context;
-    }
-
-    private LongTermMemory fetchLongTermMemory(Long userId) {
-        return longTermMemoryJpaRepository.findById(userId)
-            .orElseGet(() -> longTermMemoryJpaRepository.save(new LongTermMemory(userId)));
     }
 }

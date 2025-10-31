@@ -8,4 +8,5 @@ public interface MessageJpaRepository extends JpaRepository<Message, Long> {
 
     Page<Message> findByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);
 
+    long countByUserId(Long userId);
 }
