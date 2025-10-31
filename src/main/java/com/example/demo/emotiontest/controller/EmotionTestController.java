@@ -1,10 +1,11 @@
 package com.example.demo.emotiontest.controller;
 
 import com.example.demo.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.emotiontest.controller.dto.EmotionTestRequest;
 import com.example.demo.emotiontest.controller.dto.EmotionTestResponse;
-import com.example.demo.emotiontest.controller.dto.EmotionTestResultDto;
 import com.example.demo.emotiontest.service.EmotionTestService;
 import com.example.demo.user.domain.User;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,9 @@ public class EmotionTestController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> applyResult(@RequestBody List<EmotionTestResultDto> request, @CurrentUser User user) {
-        emotionTestService.applyEmotionTestResult(user, request);
+    public ResponseEntity<Void> applyResult(@RequestBody @Valid EmotionTestRequest request,
+        @CurrentUser User user) {
+        emotionTestService.applyEmotionTestResult(user, request.getRequest());
         return ResponseEntity.ok().build();
     }
 

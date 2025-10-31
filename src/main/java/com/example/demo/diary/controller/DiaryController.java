@@ -6,6 +6,7 @@ import com.example.demo.diary.controller.dto.DiaryRequest;
 import com.example.demo.diary.controller.dto.DiaryResponse;
 import com.example.demo.diary.service.DiaryService;
 import com.example.demo.user.domain.User;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.time.YearMonth;
 import java.util.List;
@@ -28,7 +29,8 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @PostMapping
-    public ResponseEntity<DiaryResponse> create(@RequestBody DiaryRequest request, @CurrentUser User user) {
+    public ResponseEntity<DiaryResponse> create(@RequestBody @Valid DiaryRequest request,
+        @CurrentUser User user) {
         DiaryResponse created = diaryService.createDiary(request, user);
         String location = "/api/diaries/" + created.getId();
         return ResponseEntity.created(URI.create(location)).body(created);

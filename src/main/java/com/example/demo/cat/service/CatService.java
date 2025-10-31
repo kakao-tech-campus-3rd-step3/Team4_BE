@@ -1,5 +1,6 @@
 package com.example.demo.cat.service;
 
+import com.example.demo.cat.controller.dto.CatExistResponse;
 import com.example.demo.cat.controller.dto.CatResponse;
 import com.example.demo.cat.domain.Cat;
 import com.example.demo.exception.business.BusinessException;
@@ -48,4 +49,7 @@ public class CatService {
     }
 
 
+    public CatExistResponse checkCat(User user) {
+        return new CatExistResponse(catRepository.findById(user.getId()).isPresent());
+    }
 }
