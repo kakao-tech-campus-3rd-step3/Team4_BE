@@ -48,9 +48,9 @@ public class PromptManager {
         return buildBaseMessages(customMissionEvaluationPrompt, new ArrayList<>());
     }
 
-    public List<Message> getChatMemoryExtractorBaseMessages(List<String> context) {
+    public List<Message> getChatMemoryExtractorBaseMessages(String memory) {
         String prompt = chatMemoryExtractorPrompt.getSystem() +
-            "context: " + context;
+            "Current Memory: " + memory;
         SystemPrompt system = new SystemPrompt(prompt);
         return buildBaseMessages(system, new ArrayList<>());
     }

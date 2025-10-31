@@ -43,8 +43,7 @@ public class ChatCompletionRequestFactory {
     }
 
     public ChatCompletionRequest buildMemoryExtractorRequest(String memory, List<String> context) {
-        List<String> entries = List.of(memory);
-        return multiEntry(promptManager.getChatMemoryExtractorBaseMessages(context), entries);
+        return multiEntry(promptManager.getChatMemoryExtractorBaseMessages(memory), context);
     }
 
     private ChatCompletionRequest singleEntry(List<Message> baseMessages, String entry) {

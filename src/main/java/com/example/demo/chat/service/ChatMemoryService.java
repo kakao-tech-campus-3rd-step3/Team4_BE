@@ -7,6 +7,7 @@ import com.example.demo.openai.OpenAiClient;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -37,7 +38,13 @@ public class ChatMemoryService {
     }
 
     public ChatMemory get(Long userId) {
-        return chatMemoryRepository.findById(userId)
-            .orElseGet(() -> chatMemoryRepository.save(new ChatMemory(userId)));
+        return chatMemoryRepository.findById(userId).orElseGet(() -> {
+            try {
+                return chatMemoryRepository.saveAndFlush(new ChatMemory(userId));
+            } catch (DataIntegrityViolationException e) {
+                return chatMemoryRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalStateException("Failed to get ChatMemory for user " + userId, e));
+            }
+        });
     }
 }

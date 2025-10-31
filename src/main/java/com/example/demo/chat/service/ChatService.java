@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ChatService {
 
-    private static final int CONTEXT_SIZE = 20;
+    private static final int CONTEXT_SIZE = 10;
 
     private final OpenAiClient openAiClient;
     private final MessageRepository messageRepository;
@@ -51,6 +51,7 @@ public class ChatService {
         messageRepository.save(catMessage);
 
         if (messageRepository.countByUserId(userId) % CONTEXT_SIZE == 0) {
+            context = fetchContext(userId);
             chatMemoryService.callUpdate(userId, context);
         }
 

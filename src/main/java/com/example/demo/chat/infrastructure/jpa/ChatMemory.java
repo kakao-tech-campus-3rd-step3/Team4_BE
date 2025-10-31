@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "long_term_memory")
+@Table(name = "chat_memory")
 @Getter
 public class ChatMemory {
 
@@ -21,8 +21,8 @@ public class ChatMemory {
     @Id
     private Long userId;
 
-    @Column
     @Setter
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String memory;
 
     protected ChatMemory() {}
