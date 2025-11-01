@@ -5,6 +5,7 @@ import com.example.demo.exception.business.errorcode.MissionErrorCode;
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.regular.service.MissionRepository;
 import com.example.demo.plan.controller.dto.PlanCreateRequest;
+import com.example.demo.plan.controller.dto.PlanUpdateRequest;
 import com.example.demo.plan.controller.dto.TodayPlansResponse;
 import com.example.demo.plan.domain.Plan;
 import com.example.demo.plan.domain.TodayPlans;
@@ -21,6 +22,7 @@ public class PlanServiceImpl implements PlanService, PlanInternalService {
     private final PlanRepository planRepository;
     private final MissionRepository missionRepository;
 
+    @Override
     public Long addMissionToPlan(PlanCreateRequest request, User user) {
         Mission mission = missionRepository.findByIdAndType(request.getMissionId(),
                 request.getMissionType())
@@ -31,6 +33,7 @@ public class PlanServiceImpl implements PlanService, PlanInternalService {
         return mission.getId();
     }
 
+    @Override
     public Plan updatePlanStatus(Long planId, boolean isDone, User user) {
         TodayPlans todayPlans = planRepository.findTodayPlans(user);
         Plan plan = todayPlans.updateDone(planId, isDone);
@@ -38,6 +41,15 @@ public class PlanServiceImpl implements PlanService, PlanInternalService {
         return plan;
     }
 
+    @Override
+    public Plan update(Long id, PlanUpdateRequest request, User user) {
+        TodayPlans todayPlans = planRepository.findTodayPlans(user);
+        Plan plan = todayPlans.update(id, request.getContent(), request.getCategory());
+        planRepository.saveAll(todayPlans.getPlans());
+        return plan;
+    }
+
+    @Override
     public void deletePlan(Long planId, User user) {
         TodayPlans todayPlans = planRepository.findTodayPlans(user);
         todayPlans.deletePlan(planId);

@@ -3,6 +3,7 @@ package com.example.demo.plan.controller;
 import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.mission.regular.service.ActivityService;
 import com.example.demo.plan.controller.dto.PlanCreateRequest;
+import com.example.demo.plan.controller.dto.PlanCompletionRequest;
 import com.example.demo.plan.controller.dto.PlanUpdateRequest;
 import com.example.demo.plan.controller.dto.TodayPlansResponse;
 import com.example.demo.plan.service.PlanService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,12 +48,22 @@ public class PlanController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updatePlanStatus(
+    public ResponseEntity<Void> updateCompletion(
+        @PathVariable Long id,
+        @RequestBody @Valid PlanCompletionRequest request,
+        @CurrentUser User user
+    ) {
+        activityService.updateCompletion(id, request.getIsDone(), user);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePlan(
         @PathVariable Long id,
         @RequestBody @Valid PlanUpdateRequest request,
         @CurrentUser User user
     ) {
-        activityService.updatePlanStatus(id, request.getIsDone(), user);
+        planService.update(id, request, user);
         return ResponseEntity.ok().build();
     }
 

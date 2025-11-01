@@ -3,6 +3,7 @@ package com.example.demo.plan.domain;
 import com.example.demo.exception.business.BusinessException;
 import com.example.demo.exception.business.errorcode.PlanErrorCode;
 import com.example.demo.mission.Mission;
+import com.example.demo.mission.MissionCategoryEnum;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -26,6 +27,12 @@ public class TodayPlans {
     public Plan updateDone(Long planId, boolean isDone) {
         Plan plan = getPlan(planId);
         plan.updateDone(isDone);
+        return plan;
+    }
+
+    public Plan update(Long planId, String content, MissionCategoryEnum category) {
+        Plan plan = getPlan(planId);
+        plan.updateContent(content, category);
         return plan;
     }
 

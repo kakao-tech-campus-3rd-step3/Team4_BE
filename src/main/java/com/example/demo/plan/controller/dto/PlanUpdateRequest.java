@@ -1,13 +1,17 @@
 package com.example.demo.plan.controller.dto;
 
+import com.example.demo.mission.MissionCategoryEnum;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class PlanUpdateRequest {
 
-    @NotNull(message = "{plan.isDone.NotNull}")
-    private Boolean isDone;
+    @NotBlank(message = "{plan.content.NotBlank}")
+    private String content;
+
+    @NotNull(message = "{plan.category.NotNull}")
+    private MissionCategoryEnum category;
+
 }

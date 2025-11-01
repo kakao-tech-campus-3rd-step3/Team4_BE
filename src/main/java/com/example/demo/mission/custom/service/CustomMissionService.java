@@ -2,8 +2,6 @@ package com.example.demo.mission.custom.service;
 
 import com.example.demo.admin.domain.MissionPromotion;
 import com.example.demo.admin.service.MissionPromotionRepository;
-import com.example.demo.exception.business.BusinessException;
-import com.example.demo.exception.business.errorcode.MissionErrorCode;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.custom.domain.CustomMission;
 import com.example.demo.user.domain.User;
@@ -24,17 +22,6 @@ public class CustomMissionService {
         MissionPromotion adminCustomMission = new MissionPromotion(content, category);
         missionPromotionRepository.save(adminCustomMission);
         return customMissionRepository.save(customMission);
-    }
-
-    public CustomMission update(Long missionId, String content, MissionCategoryEnum category,
-            User user) {
-        CustomMission mission = customMissionRepository.findById(missionId)
-            .orElseThrow(() -> new BusinessException(MissionErrorCode.MISSION_NOT_FOUND));
-
-        mission.validateUser(user.getId());
-        mission.update(content, category);
-
-        return customMissionRepository.save(mission);
     }
 
 }
