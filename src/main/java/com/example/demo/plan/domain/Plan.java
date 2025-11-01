@@ -1,5 +1,7 @@
 package com.example.demo.plan.domain;
 
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.PlanErrorCode;
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
 import lombok.Getter;
@@ -42,5 +44,13 @@ public class Plan {
 
     public void updateDone(boolean isDone) {
         this.isDone = isDone;
+    }
+
+    public void updateContent(String content, MissionCategoryEnum category) {
+        if (missionType != MissionType.CUSTOM) {
+            throw new BusinessException(PlanErrorCode.CUSTOM_MISSION_CAN_BE_MODIFIED_ONLY);
+        }
+        this.content = content;
+        this.category = category;
     }
 }
