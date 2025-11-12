@@ -220,7 +220,7 @@ public class PlanServiceTest {
         Plan addedPlan = planRepository.findTodayPlans(testUser).getPlans().get(0);
         Long planId = addedPlan.getId();
 
-        activityService.updatePlanStatus(planId, true, testUser);
+        activityService.updateCompletion(planId, true, testUser);
 
         entityManager.flush();
         entityManager.clear();
@@ -255,11 +255,11 @@ public class PlanServiceTest {
         activityService.addMissionToPlan(request, testUser);
         Plan addedPlan = planRepository.findTodayPlans(testUser).getPlans().get(0);
         Long planId = addedPlan.getId();
-        activityService.updatePlanStatus(planId, true, testUser);
+        activityService.updateCompletion(planId, true, testUser);
         entityManager.flush();
         entityManager.clear();
 
-        activityService.updatePlanStatus(planId, false, testUser);
+        activityService.updateCompletion(planId, false, testUser);
 
         entityManager.flush();
         entityManager.clear();

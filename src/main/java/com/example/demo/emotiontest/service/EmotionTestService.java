@@ -52,7 +52,7 @@ public class EmotionTestService {
         Set<Long> questionIds = new HashSet<>();
         result.forEach(r -> {
             questionIds.add(r.getQuestionId());
-            if (r.getChoiceIndex() < 0 || 3 < r.getChoiceIndex()) {
+            if (r.getChoiceIndex() < 1 || 4 < r.getChoiceIndex()) {
                 throw new BusinessException(EmotionTestErrorCode.ILLEGAL_CHOICE_INDEX);
             }
         });

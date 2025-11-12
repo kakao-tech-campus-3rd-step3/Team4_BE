@@ -33,7 +33,7 @@ public class ActivityService {
         }
     }
 
-    public void updatePlanStatus(Long planId, boolean isDone, User user) {
+    public void updateCompletion(Long planId, boolean isDone, User user) {
         Plan plan = planInternalService.updatePlanStatus(planId, isDone, user);
         if (isDone) {
             try {
