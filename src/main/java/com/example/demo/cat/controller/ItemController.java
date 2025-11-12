@@ -1,12 +1,13 @@
 package com.example.demo.cat.controller;
 
+import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.cat.controller.dto.EquipItemRequest;
 import com.example.demo.cat.controller.dto.ItemResponse;
 import com.example.demo.cat.domain.EquipSlot;
 import com.example.demo.cat.service.ItemService;
-import com.example.demo.auth.infrastructure.resolver.CurrentUser;
 import com.example.demo.product.controller.dto.ProductItemResponse;
 import com.example.demo.user.domain.User;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,7 +46,7 @@ public class ItemController {
     }
 
     @PatchMapping("/me/items/{id}")
-    public ResponseEntity<Void> setItemEquipped(@RequestBody EquipItemRequest request,
+    public ResponseEntity<Void> setItemEquipped(@RequestBody @Valid EquipItemRequest request,
         @PathVariable Long id, @CurrentUser User user) {
         itemService.setItemEquipped(request, id, user);
         return ResponseEntity.ok().build();

@@ -1,10 +1,12 @@
 package com.example.demo.cat.controller;
 
-import com.example.demo.cat.controller.dto.CatResponse;
-import com.example.demo.cat.controller.dto.CatNameRequest;
-import com.example.demo.cat.service.CatService;
 import com.example.demo.auth.infrastructure.resolver.CurrentUser;
+import com.example.demo.cat.controller.dto.CatExistResponse;
+import com.example.demo.cat.controller.dto.CatNameRequest;
+import com.example.demo.cat.controller.dto.CatResponse;
+import com.example.demo.cat.service.CatService;
 import com.example.demo.user.domain.User;
+import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,7 @@ public class CatController {
     private final CatService catService;
 
     @PostMapping
-    public ResponseEntity<Void> createCat(@RequestBody CatNameRequest request,
+    public ResponseEntity<Void> createCat(@RequestBody @Valid CatNameRequest request,
         @CurrentUser User user) {
         catService.createCat(user, request.getName());
         String location = "/api/cats";
@@ -37,9 +39,15 @@ public class CatController {
     }
 
     @PutMapping
-    public ResponseEntity<CatResponse> renameCat(@RequestBody CatNameRequest request,
+    public ResponseEntity<CatResponse> renameCat(@RequestBody @Valid CatNameRequest request,
         @CurrentUser User user) {
         CatResponse updated = catService.rename(user, request.getName());
         return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<CatExistResponse> checkCat(@CurrentUser User user) {
+        CatExistResponse response = catService.checkCat(user);
+        return ResponseEntity.ok(response);
     }
 }

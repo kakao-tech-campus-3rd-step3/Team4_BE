@@ -1,6 +1,8 @@
 package com.example.demo.exception;
 
-import com.example.demo.exception.errorcode.ErrorCode;
+import com.example.demo.exception.auth.AuthException;
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.ErrorCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -33,6 +35,11 @@ public class ErrorResponse {
     public static ErrorResponse internal() {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
             "INTERNAL_SERVER_ERROR",
-            "Unexpected error occurred. Please try again later.");
+            "잠시 문제가 생겼어요. 조금 뒤 다시 시도해주세요!");
+    }
+
+    public static ErrorResponse from(AuthException e) {
+        return new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "AUTHENTICATION_FAILED",
+            "인증 정보가 유효하지 않습니다. 다시 로그인해주세요.");
     }
 }

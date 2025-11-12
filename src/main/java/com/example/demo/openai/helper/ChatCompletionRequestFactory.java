@@ -42,6 +42,10 @@ public class ChatCompletionRequestFactory {
         return singleEntry(promptManager.getCustomMissionEvaluateBaseMessages(), entry);
     }
 
+    public ChatCompletionRequest buildMemoryExtractorRequest(String memory, List<String> context) {
+        return multiEntry(promptManager.getChatMemoryExtractorBaseMessages(memory), context);
+    }
+
     private ChatCompletionRequest singleEntry(List<Message> baseMessages, String entry) {
         baseMessages.add(
             Message.builder()

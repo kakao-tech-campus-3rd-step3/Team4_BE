@@ -73,6 +73,14 @@ public class MissionRepositoryImpl implements MissionRepository {
     }
 
     @Override
+    public List<RegularMission> findByCategoryAndEmploymentScoreBetween(
+            MissionCategoryEnum category, int scoreFloor, int scoreCeil) {
+        return regularMissionJpaRepository.findByCategoryAndEmploymentScoreBetween(category,
+                        scoreFloor, scoreCeil)
+                .stream().map(RegularMissionEntity::toModel).toList();
+    }
+
+    @Override
     public List<RegularMission> findAllByCategory(MissionCategoryEnum category) {
         return regularMissionJpaRepository.findAllByCategory(category).stream()
                 .map(RegularMissionEntity::toModel).toList();
@@ -85,27 +93,30 @@ public class MissionRepositoryImpl implements MissionRepository {
 
     @Override
     public MissionScores findMissionScoreByMissionId(Long missionId) {
-        return null;
+        return regularMissionJpaRepository.findById(missionId)
+                .map(RegularMissionEntity::getMissionScoreEmbeddable)
+                .map(MissionScoreEmbeddable::toModel)
+                .orElse(null);
     }
 
     @Override
     public void saveAsRegularMission(MissionPromotion missionPromotion) {
         MissionPromotionScore score = missionPromotion.getScore();
         RegularMissionEntity regularMissionEntity = new RegularMissionEntity(
-            null,
-            missionPromotion.getContent(),
-            missionPromotion.getCategory(),
-            missionPromotion.getLevel(),
-            new MissionScoreEmbeddable(
-                score.getSentimentScore(),
-                score.getEnergyScore(),
-                score.getCognitiveScore(),
-                score.getRelationshipScore(),
-                score.getStressScore(),
-                score.getEmploymentScore()
-            ),
-            new MissionCountEmbeddable(),
-            new ArrayList<>());
+                null,
+                missionPromotion.getContent(),
+                missionPromotion.getCategory(),
+                missionPromotion.getLevel(),
+                new MissionScoreEmbeddable(
+                        score.getSentimentScore(),
+                        score.getEnergyScore(),
+                        score.getCognitiveScore(),
+                        score.getRelationshipScore(),
+                        score.getStressScore(),
+                        score.getEmploymentScore()
+                ),
+                new MissionCountEmbeddable(),
+                new ArrayList<>());
 
         regularMissionJpaRepository.save(regularMissionEntity);
     }

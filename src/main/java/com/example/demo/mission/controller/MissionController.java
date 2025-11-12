@@ -5,8 +5,9 @@ import com.example.demo.mission.controller.dto.CustomMissionCreateRequest;
 import com.example.demo.mission.controller.dto.MissionResponse;
 import com.example.demo.mission.custom.domain.CustomMission;
 import com.example.demo.mission.custom.service.CustomMissionService;
-import com.example.demo.mission.regular.service.recommend.MissionRecommendService;
+import com.example.demo.mission.regular.service.ActivityService;
 import com.example.demo.user.domain.User;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MissionController {
 
     private final CustomMissionService customMissionService;
-    private final MissionRecommendService missionRecommendService;
+    private final ActivityService activityService;
 
     @PostMapping("/custom")
     public ResponseEntity<MissionResponse> createCustomMission(
-        @RequestBody CustomMissionCreateRequest request,
+        @RequestBody @Valid CustomMissionCreateRequest request,
         @CurrentUser User user
     ) {
         CustomMission customMission = customMissionService.create(
@@ -43,7 +44,7 @@ public class MissionController {
     @PutMapping("/custom/{missionId}")
     public ResponseEntity<MissionResponse> updateCustomMission(
         @PathVariable Long missionId,
-        @RequestBody CustomMissionCreateRequest request,
+        @RequestBody @Valid CustomMissionCreateRequest request,
         @CurrentUser User user
     ) {
         CustomMission customMission = customMissionService.update(
@@ -58,7 +59,7 @@ public class MissionController {
 
     @GetMapping
     public ResponseEntity<List<MissionResponse>> getRecommendedMissions(@CurrentUser User user) {
-        return ResponseEntity.ok(missionRecommendService.getRecommendedMissions(user));
+        return ResponseEntity.ok(activityService.getRecommendedMissions(user));
     }
 
 }

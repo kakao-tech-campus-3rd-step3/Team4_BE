@@ -1,10 +1,12 @@
 package com.example.demo.auth.service;
 
 import com.example.demo.auth.infrastructure.jwt.JwtTokenProvider;
+import com.example.demo.exception.auth.AuthException;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,13 +34,18 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String email = oAuth2User.getAttribute("email");
 
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("User not found: " + email));
+            .orElseThrow(() -> new AuthException("사용자를 찾을 수 없습니다. 유저 이메일: " + email));
 
         String accessToken = jwtTokenProvider.createAccessToken(user.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getId());
 
         user.updateRefreshToken(refreshToken);
         userRepository.save(user);
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
 
         String targetUrl = UriComponentsBuilder.fromUriString(
                 redirectUrl)

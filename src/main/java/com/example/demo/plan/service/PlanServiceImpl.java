@@ -1,5 +1,7 @@
 package com.example.demo.plan.service;
 
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.MissionErrorCode;
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.regular.service.MissionRepository;
 import com.example.demo.plan.controller.dto.PlanCreateRequest;
@@ -21,7 +23,8 @@ public class PlanServiceImpl implements PlanService, PlanInternalService {
 
     public Long addMissionToPlan(PlanCreateRequest request, User user) {
         Mission mission = missionRepository.findByIdAndType(request.getMissionId(),
-            request.getMissionType()).orElseThrow(() -> new RuntimeException("Mission Not Found"));
+                request.getMissionType())
+            .orElseThrow(() -> new BusinessException(MissionErrorCode.MISSION_NOT_FOUND));
         TodayPlans todayPlans = planRepository.findTodayPlans(user);
         todayPlans.addMission(mission);
         planRepository.saveAll(todayPlans.getPlans());

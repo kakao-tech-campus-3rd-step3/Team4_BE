@@ -3,6 +3,7 @@ package com.example.demo.auth.service;
 import com.example.demo.auth.controller.dto.TokenRequest;
 import com.example.demo.auth.controller.dto.TokenResponse;
 import com.example.demo.auth.infrastructure.jwt.JwtTokenProvider;
+import com.example.demo.exception.auth.AuthException;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.service.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +22,16 @@ public class AuthService {
 
         String refreshToken = tokenRequestDto.getRefreshToken();
         if (!jwtTokenProvider.validateToken(refreshToken)) {
-            throw new RuntimeException("유효하지 않은 Refresh Token 입니다.");
+            throw new AuthException("유효하지 않은 Refresh Token 입니다.");
         }
 
         Long userId = jwtTokenProvider.getUserIdFromToken(refreshToken);
 
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+            .orElseThrow(() -> new AuthException("사용자를 찾을 수 없습니다. 유저 아이디: " + userId));
 
         if (!user.getRefreshToken().equals(refreshToken)) {
-            throw new RuntimeException("DB의 토큰과 일치하지 않습니다.");
+            throw new AuthException("DB의 토큰과 일치하지 않습니다.");
         }
 
         String newAccessToken = jwtTokenProvider.createAccessToken(userId);

@@ -7,6 +7,8 @@ import static com.example.demo.mission.MissionCategoryEnum.REFRESH;
 import com.example.demo.emotion.domain.Emotion;
 import com.example.demo.emotion.domain.EmotionType;
 import com.example.demo.emotion.service.EmotionRepository;
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.EmotionErrorCode;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.controller.dto.MissionCompletionCount;
 import com.example.demo.mission.controller.dto.MissionResponse;
@@ -32,41 +34,43 @@ public class MissionRecommendService {
     private final PlanRepository planRepository;
     private final EmotionRepository emotionRepository;
     private final MissionFetcherSelector missionFetcherSelector;
+    private static final Map<MissionCategoryEnum, Integer> DEFAULT_RECOMMEND_RATE = Map.of(
+            REFRESH, 2, DAILY, 2,
+            EMPLOYMENT, 2);
 
     private static final Integer RECOMMEND_SIZE = 6;
-    private static final Map<MissionCategoryEnum, Integer> DEFAULT_RECOMMEND_RATE = Map.of(
-        REFRESH, 2, DAILY, 2,
-        EMPLOYMENT, 2);
+    private final EmploymentMissionProvider employmentMissionProvider;
 
     @Transactional(readOnly = true)
     public List<MissionResponse> getRecommendedMissions(User user) {
         List<MissionCompletionCount> completed = planRepository.findCompletedMissionCount(
-            user.getId());
+                user.getId());
 
         Map<MissionCategoryEnum, Integer> distribution = calculateDistribution(completed);
 
         Emotion emotion = emotionRepository.findById(user.getId())
-            .orElseThrow(() -> new RuntimeException(""));
-        EmotionType minEmotion = emotion.getMinEmotion();
+                .orElseThrow(() -> new BusinessException(EmotionErrorCode.EMOTION_NOT_FOUND));
+        EmotionType minEmotion = emotion.getMinEmotionExcludeEmployment();
 
         List<RegularMission> dailyMissions = getDailyMissions(minEmotion);
         List<RegularMission> refreshMissions = getRefreshMissions(minEmotion);
+        List<RegularMission> employmentMissions = employmentMissionProvider.getMissions(emotion);
 
         Map<MissionCategoryEnum, List<RegularMission>> missionsByCategory = Map.of(
-            DAILY, dailyMissions,
-            REFRESH, refreshMissions,
-            EMPLOYMENT, missionRepository.findAllByCategory(EMPLOYMENT)
+                DAILY, dailyMissions,
+                REFRESH, refreshMissions,
+                EMPLOYMENT, employmentMissions
         );
 
         return missionsByCategory.entrySet().stream()
-            .flatMap(entry -> selectRandomMissions(entry.getValue(),
-                distribution.get(entry.getKey())).stream())
-            .map(MissionResponse::new)
-            .toList();
+                .flatMap(entry -> selectRandomMissions(entry.getValue(),
+                        distribution.get(entry.getKey())).stream())
+                .map(MissionResponse::new)
+                .toList();
     }
 
     private Map<MissionCategoryEnum, Integer> calculateDistribution(
-        List<MissionCompletionCount> counts) {
+            List<MissionCompletionCount> counts) {
 
         // 전체 수행 횟수 합
         int total = counts.stream().mapToInt(MissionCompletionCount::getCount).sum();
@@ -128,7 +132,7 @@ public class MissionRecommendService {
         Collections.shuffle(shuffled);
 
         return shuffled.stream()
-            .limit(limit)
-            .toList();
+                .limit(limit)
+                .toList();
     }
 }

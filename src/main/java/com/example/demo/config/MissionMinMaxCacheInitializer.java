@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.exception.CachingFailedException;
+import com.example.demo.exception.service.CachingFailedException;
 import com.example.demo.mission.regular.infrastructure.MissionScoreMinMax;
 import com.example.demo.mission.regular.service.MissionMinMaxCache;
 import com.example.demo.mission.regular.service.MissionRepository;
@@ -19,7 +19,7 @@ public class MissionMinMaxCacheInitializer implements CommandLineRunner {
         initializeCache();
     }
 
-    public void initializeCache() throws CachingFailedException {
+    public void initializeCache() {
         MissionScoreMinMax missionScoreMinMax = missionRepository.calculateMissionScoreMinMax()
                 .orElseThrow(CachingFailedException::new);
         MissionMinMaxCache.caching(missionScoreMinMax);

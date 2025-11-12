@@ -1,6 +1,10 @@
-package com.example.demo.openai;
+package com.example.demo.exception.service;
 
-public class OpenAiException extends RuntimeException {
+public class OpenAiException extends ServiceException {
+
+    public OpenAiException(Throwable cause) {
+        super(cause);
+    }
 
     public OpenAiException(String message) {
         super(message);

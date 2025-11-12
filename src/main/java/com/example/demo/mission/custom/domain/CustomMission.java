@@ -1,5 +1,7 @@
 package com.example.demo.mission.custom.domain;
 
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.MissionErrorCode;
 import com.example.demo.mission.Mission;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.plan.domain.MissionType;
@@ -43,7 +45,7 @@ public class CustomMission implements Mission {
 
     public void validateUser(Long userId) {
         if (!this.userId.equals(userId)) {
-            throw new RuntimeException("미션을 수정하거나 삭제할 권한이 없습니다.");
+            throw new BusinessException(MissionErrorCode.MISSION_ACCESS_DENIED);
         }
     }
 

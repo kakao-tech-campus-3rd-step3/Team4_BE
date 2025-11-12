@@ -5,6 +5,8 @@ import com.example.demo.admin.controller.dto.UpdateMissionPromotion;
 import com.example.demo.admin.controller.dto.CreateProductItemRequest;
 import com.example.demo.admin.domain.MissionPromotion;
 import com.example.demo.config.MissionMinMaxCacheInitializer;
+import com.example.demo.exception.business.BusinessException;
+import com.example.demo.exception.business.errorcode.AdminErrorCode;
 import com.example.demo.mission.MissionCategoryEnum;
 import com.example.demo.mission.controller.dto.ScoreEvaluateResponse;
 import com.example.demo.mission.custom.domain.CustomMissionStateEnum;
@@ -55,7 +57,7 @@ public class AdminService {
         MissionPromotion missionPromotion = getPromotionById(promotionId);
 
         if (missionPromotion.getState() != CustomMissionStateEnum.WAITING) {
-            throw new RuntimeException("WAITING 상태의 프로모션만 필터링할 수 있습니다");
+            throw new BusinessException(AdminErrorCode.INVALID_FILTER_REQUEST);
         }
 
         ScoreEvaluateResponse response = scoreEvaluationService.evaluateScore(
@@ -72,7 +74,7 @@ public class AdminService {
         MissionPromotion missionPromotion = getPromotionById(promotionId);
 
         if (missionPromotion.getState() != CustomMissionStateEnum.FILTERED) {
-            throw new RuntimeException("FILTERED 상태의 미션만 승격할 수 있습니다");
+            throw new BusinessException(AdminErrorCode.INVALID_PROMOTE_REQUEST);
         }
 
         missionPromotion.promoted();
@@ -122,7 +124,7 @@ public class AdminService {
     @Transactional(readOnly = true)
     public ProductItem getProductById(Long id) {
         return productItemRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다: " + id));
+            .orElseThrow(() -> new BusinessException(AdminErrorCode.PRODUCT_NOT_FOUND));
     }
 
     public void updateProduct(Long id, CreateProductItemRequest request) {

@@ -2,14 +2,13 @@ package com.example.demo.chat.service;
 
 import com.example.demo.chat.controller.dto.ChatResponse;
 import com.example.demo.chat.controller.dto.MessageResponse;
-import com.example.demo.chat.infrastructure.jpa.LongTermMemory;
-import com.example.demo.chat.infrastructure.jpa.LongTermMemoryJpaRepository;
+import com.example.demo.chat.infrastructure.jpa.ChatMemory;
 import com.example.demo.chat.infrastructure.jpa.Message;
 import com.example.demo.chat.infrastructure.jpa.Sender;
-import com.example.demo.openai.OpenAiClient;
-import com.example.demo.openai.dto.OpenAiResponse;
 import com.example.demo.emotion.domain.DangerState;
 import com.example.demo.emotion.service.EmotionService;
+import com.example.demo.openai.OpenAiClient;
+import com.example.demo.openai.dto.OpenAiResponse;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -26,29 +25,36 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ChatService {
 
+    private static final int CONTEXT_SIZE = 10;
+
     private final OpenAiClient openAiClient;
     private final MessageRepository messageRepository;
     private final EmotionService emotionService;
-    private final LongTermMemoryJpaRepository longTermMemoryJpaRepository;
+    private final ChatMemoryService chatMemoryService;
 
     public ChatResponse postMessage(String messageContent, Long userId) {
         List<String> context = fetchContext(userId);
-        LongTermMemory longTermMemory = fetchLongTermMemory(userId);
-        OpenAiResponse openAiResponse = openAiClient.getChatResponse(messageContent, context, longTermMemory.getMemory());
+        ChatMemory memory = chatMemoryService.get(userId);
+        OpenAiResponse openAiResponse = openAiClient.getChatResponse(messageContent, context, memory.getMemory());
 
         openAiResponse.getDangerScore().ifPresent(dangerScore -> {
             DangerState state = emotionService.applyAndGetDangerState(userId, dangerScore);
-            state.adjust(longTermMemory);
-            longTermMemoryJpaRepository.save(longTermMemory);
+            state.adjust(memory);
         });
 
         Integer dangerScore = openAiResponse.getDangerScore().orElseGet(() -> null);
         Message userMessage = new Message(userId, Sender.USER, messageContent, dangerScore,
             LocalDateTime.now());
         messageRepository.save(userMessage);
-        Message catMessage = new Message(userId, Sender.CAT, openAiResponse.getMessage(), dangerScore,
+        Message catMessage = new Message(userId, Sender.CAT, openAiResponse.getMessage(),
+            dangerScore,
             LocalDateTime.now());
         messageRepository.save(catMessage);
+
+        if (messageRepository.countByUserId(userId) % CONTEXT_SIZE == 0) {
+            context = fetchContext(userId);
+            chatMemoryService.callUpdate(userId, context);
+        }
 
         return new ChatResponse(openAiResponse.getMessage());
     }
@@ -57,20 +63,28 @@ public class ChatService {
     public Page<MessageResponse> getMessages(Long userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return messageRepository.findByUserId(userId, pageable)
-            .map(message -> new MessageResponse(message.getId(), message.getContent(), null,
-                message.getCreatedAt()));
+            .map(message -> {
+                String role = mapSenderToRole(message.getSender());
+                return new MessageResponse(message.getId(), role, message.getContent(), null,
+                    message.getCreatedAt());
+            });
+    }
+
+    private String mapSenderToRole(Sender sender) {
+        if (sender == Sender.USER) {
+            return "user";
+        }
+        if (sender == Sender.CAT) {
+            return "assistant";
+        }
+        return "unknown";
     }
 
     private List<String> fetchContext(Long userId) {
-        List<String> context = messageRepository.findTopNByUserIdOrderByCreatedAtDesc(userId, 10).stream()
+        List<String> context = messageRepository.findTopNByUserIdOrderByCreatedAtDesc(userId, CONTEXT_SIZE).stream()
             .map(Message::getContent)
             .collect(Collectors.toList());
         Collections.reverse(context);
         return context;
-    }
-
-    private LongTermMemory fetchLongTermMemory(Long userId) {
-        return longTermMemoryJpaRepository.findById(userId)
-            .orElseGet(() -> longTermMemoryJpaRepository.save(new LongTermMemory(userId)));
     }
 }
